@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: space,
 		borderRadius: 20,
 		flex: 0,
-		flexBasis: 0,
+		// flexBasis: 0, // react native oversqueezes
 		//width: 'auto',
 		//minHeight: '-webkit-min-content',
 		//minWidth: '-webkit-min-content'
@@ -209,12 +209,12 @@ const styles = StyleSheet.create({
 	// TEXT
 	text: {
 		fontSize: base,
-		//fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
 		fontFamily: 'System',
 		fontWeight: '400',
 		color: swatches.textPrimary,
 		lineHeight: base * 1.4,
 		//WebkitFontSmoothing: 'antialiased', // retina/non-retina rendering
+		//fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
 	},
 	textSecondary:{
 		color: swatches.textSecondary
@@ -230,14 +230,17 @@ const styles = StyleSheet.create({
 	},
 	textBig: {
 		fontSize: base * 1.375,
+		lineHeight: base * 1.375 * 1.4,
 		fontWeight: '800'
 	},
 	textSectionHead: {
 		fontSize: base * 1.125,
+		lineHeight: base * 1.125 * 1.4,
 		fontWeight: '800'
 	},
 	textPageHead: {
 		fontSize: base * 2,
+		lineHeight: base * 2 * 1.4,
 		fontWeight: '800'
 	}
 });

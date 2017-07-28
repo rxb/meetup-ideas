@@ -39,7 +39,7 @@ class List extends React.Component {
 }
 
 List.propTypes = {
-	variant: PropTypes.oneOf(['grid', 'inline', 'hscroll']),
+	variant: PropTypes.oneOf(['grid', 'inline', 'hscroll', '']),
 }
 
 export default List;

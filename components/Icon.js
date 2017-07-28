@@ -32,7 +32,10 @@ class Icon extends React.Component {
 
 		if(Platform.OS == 'ios' || Platform.OS == 'android')
 			return(
-				<View style={{width: 24, height: 24, backgroundColor: 'red'}}></View>
+				<Image
+					source={{uri: `https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/png/512/android-alarm.png`}}
+					style={{width: 24, height: 24, tintColor: color}}
+					/>
 			);
 	}
 }
