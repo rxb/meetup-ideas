@@ -21,7 +21,11 @@ class Link extends React.Component {
 
 		if(Platform.OS == 'android')
 			return(
-				<TouchableNativeFeedback {...other}>
+				<TouchableNativeFeedback
+					useForeground={true}
+					delayPressIn={0}
+					{...other}
+					>
 					<View>{children}</View>
 				</TouchableNativeFeedback>
 			);

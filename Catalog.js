@@ -105,7 +105,7 @@ class Catalog extends React.Component {
 									<Chunk>
 										<Link
 											onPress={()=>{
-												this.setState({showModal: !this.state.showModal});
+												alert('ok fine');
 											}}>
 												<DumbButton label="Do it" />
 										</Link>
@@ -147,7 +147,7 @@ class Catalog extends React.Component {
 											/>
 									</Chunk>
 									<Chunk>
-										<Text style={[styles.text]}>Oh look it's a card</Text>
+										<Text style={[styles.text]}>{people[this.state.selectedPerson].name}</Text>
 									</Chunk>
 								</Section>
 							</Card>
@@ -176,6 +176,7 @@ class Catalog extends React.Component {
 							<List
 								variant={this.state.listVariant}
 								items={people}
+								hscrollItemStyle={{width: 300}}
 								renderItem={(item, i)=>{
 									return(
 										<Flex>

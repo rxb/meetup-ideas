@@ -11,6 +11,7 @@ class List extends React.Component {
 			children,
 			items = [],
 			renderItem = ()=>{},
+			hscrollItemStyle = {},
 			style,
 			variant,
 			...other
@@ -18,12 +19,14 @@ class List extends React.Component {
 
 		const variantStyleModifier = (variant) ? `--${variant}` : '';
 
+		const snapToInterval = (hscrollItemStyle) ? hscrollItemStyle.width : undefined;
+
 		const itemsElements = items.map((item, i)=>{
 			return (
 				<View
 					key={i}
 					accessibilityRole='listitem'
-					style={[styles[`list-item${variantStyleModifier}`], style]}
+					style={[styles[`list-item${variantStyleModifier}`], hscrollItemStyle]}
 					>
 					{ renderItem(item, i) }
 				</View>
@@ -32,7 +35,10 @@ class List extends React.Component {
 
 		if((Platform.OS == 'android' || Platform.OS == 'ios') && variant == 'hscroll')
 			return(
-				<ScrollView horizontal>
+				<ScrollView
+					horizontal
+					snapToInterval={snapToInterval}
+					>
 					{ itemsElements }
 					{ children }
 				</ScrollView>

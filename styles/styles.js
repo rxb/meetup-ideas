@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: space,
 		borderRadius: 20,
 		flex: 0,
-		// flexBasis: 0, // react native oversqueezes
+		//flexBasis: 0, // react native oversqueezes
 		//width: 'auto',
 		//minHeight: '-webkit-min-content',
 		//minWidth: '-webkit-min-content'
@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
 		shadowColor: 'rgba(0,0,0,.25)',
 		shadowOpacity: 1,
 		backgroundColor: 'white',
+		elevation: 3 // android
 	},
 
 	// TABS
