@@ -176,7 +176,7 @@ class Catalog extends React.Component {
 							<List
 								variant={this.state.listVariant}
 								items={people}
-								hscrollItemStyle={{width: 300}}
+								hscrollItemStyle={{width: 300, paddingRight: 16}}
 								renderItem={(item, i)=>{
 									return(
 										<Flex>
