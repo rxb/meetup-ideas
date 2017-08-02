@@ -9,6 +9,10 @@ const spaceSection = base * 1.5;
 
 const styles = StyleSheet.create({
 
+	  container: {
+	    flex: 1,
+	  },
+
 
 	// LAYOUT
 	stripe: {
@@ -103,7 +107,8 @@ const styles = StyleSheet.create({
 	},
 	buttonText: {
 		color: '#ffffff',
-		textAlign: 'center'
+		textAlign: 'center',
+		fontWeight: '500'
 	},
 
 	// CHIP
@@ -125,7 +130,7 @@ const styles = StyleSheet.create({
 	// CARD
 	card: {
 		borderRadius: 5,
-		shadowRadius: 12,
+		shadowRadius: 4,
 		shadowColor: 'rgba(0,0,0,.25)',
 		shadowOpacity: 1,
 		backgroundColor: 'white',
@@ -237,12 +242,12 @@ const styles = StyleSheet.create({
 	textSectionHead: {
 		fontSize: base * 1.125,
 		lineHeight: base * 1.125 * 1.4,
-		fontWeight: '800'
+		fontWeight: '700'
 	},
 	textPageHead: {
 		fontSize: base * 2,
-		lineHeight: base * 2 * 1.4,
-		fontWeight: '800'
+		lineHeight: base * 2 * 1.2,
+		fontWeight: '700'
 	}
 });
 

@@ -1,21 +1,21 @@
+// imports
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import Catalog from './Catalog';
+import { StackNavigator } from 'react-navigation';
 
+// screens
+import Choose from './screens/Choose';
+import GroupHome from './screens/GroupHome';
+import IdeaDetail from './screens/IdeaDetail';
+import Schedule from './screens/Schedule';
+import VenueDetail from './screens/VenueDetail';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <ScrollView style={styles.container}>
-        <Catalog />
-      </ScrollView>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
+// navigator
+export default App = StackNavigator({
+  Choose: { screen: Choose },
+  GroupHome: { screen: GroupHome },
+  IdeaDetail: { screen: IdeaDetail },
+  Schedule: { screen: Schedule },
+  VenueDetail: { screen: VenueDetail },
 });
+

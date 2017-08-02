@@ -2,25 +2,27 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-primitives';
 import styles from './styles/styles';
 
-import DumbButton from './components/DumbButton';
-import Stripe from './components/Stripe';
-import Bounds from './components/Bounds';
-import Section from './components/Section';
-import Chunk from './components/Chunk';
-import Flex from './components/Flex';
-import FlexItem from './components/FlexItem';
-import Avatar from './components/Avatar';
-import Icon from './components/Icon';
-//import TextInput from './components/TextInput';
-//import Picker from './components/Picker';
-import List from './components/List';
-import Card from './components/Card';
-import Chip from './components/Chip';
-import Inline from './components/Inline';
-import Tabs from './components/Tabs';
-import Link from './components/Link';
-import Modal from './components/Modal';
-import Toast from './components/Toast';
+import DumbButton from './basecomponents/DumbButton';
+import Stripe from './basecomponents/Stripe';
+import Bounds from './basecomponents/Bounds';
+import Section from './basecomponents/Section';
+import Chunk from './basecomponents/Chunk';
+import Flex from './basecomponents/Flex';
+import FlexItem from './basecomponents/FlexItem';
+import Avatar from './basecomponents/Avatar';
+import Icon from './basecomponents/Icon';
+//import TextInput from './basecomponents/TextInput';
+//import Picker from './basecomponents/Picker';
+import List from './basecomponents/List';
+import Card from './basecomponents/Card';
+import Chip from './basecomponents/Chip';
+import Inline from './basecomponents/Inline';
+import Tabs from './basecomponents/Tabs';
+import Link from './basecomponents/Link';
+import Modal from './basecomponents/Modal';
+import Toast from './basecomponents/Toast';
+
+import { MapView } from 'expo';
 
 
 const people = [
@@ -31,7 +33,6 @@ const people = [
 	{name: 'Fred Fakeperson'},
 	{name: 'Andy Avatar'}
 ]
-
 
 
 class Catalog extends React.Component {
@@ -47,9 +48,10 @@ class Catalog extends React.Component {
 
 	render() {
 
+		const { navigate } = this.props.navigation;
+
 		return(
 			<View>
-
 				<Stripe image="https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg" style={{minHeight: 250}}>
 					<Bounds>
 						<Section>
@@ -60,6 +62,28 @@ class Catalog extends React.Component {
 					</Bounds>
 				</Stripe>
 
+
+				<MapView
+			        style={{flex: 1, height: 200}}
+			        initialRegion={{
+			          latitude: 37.78825,
+			          longitude: -122.4324,
+			          latitudeDelta: 0.0922,
+			          longitudeDelta: 0.0421,
+			        }}
+			      >
+					<MapView.Polyline
+		              key={'someline'}
+		              coordinates={[
+		              	{ latitude: 37.78825, longitude: -122.4324 },
+		              	{ latitude: 37.78825 + 0.04, longitude: -122.4324 + 0.02 }
+		              ]}
+		              strokeColor="red"
+		              fillColor="rgba(255,0,0,0.5)"
+		              strokeWidth={2}
+		            />
+
+			    </MapView>
 
 
 				<Stripe>
@@ -105,9 +129,9 @@ class Catalog extends React.Component {
 									<Chunk>
 										<Link
 											onPress={()=>{
-												alert('ok fine');
+												navigate('Home')
 											}}>
-												<DumbButton label="Do it" />
+												<DumbButton label="Do it!" />
 										</Link>
 									</Chunk>
 								</FlexItem>
