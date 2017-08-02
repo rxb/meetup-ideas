@@ -50,7 +50,7 @@ class VenueDetail extends React.Component {
           <Bounds>
             <Section>
               <Chunk>
-                <Text style={[styles.text, styles.textSmall]}>Venue Idea</Text>
+                <Text style={[styles.text, styles.textKicker]}>VENUE IDEA</Text>
                 <Text style={[styles.text, styles.textPageHead]}>Venue Detail</Text>
               </Chunk>
               <Chunk>
@@ -86,7 +86,14 @@ class VenueDetail extends React.Component {
                   <Chunk>
                     {(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']).map((day, i)=>{
                       return(
-                        <Text key={i} style={[styles.text]}>{day} 7am - 11pm</Text>
+                        <Flex key={i}>
+                          <FlexItem>
+                            <Text style={[styles.text]}>{day}</Text>
+                          </FlexItem>
+                          <FlexItem>
+                            <Text style={[styles.text]}>7am - 11pm</Text>
+                          </FlexItem>
+                        </Flex>
                       );
                     })}
                   </Chunk>

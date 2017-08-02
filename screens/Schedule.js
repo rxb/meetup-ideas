@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, TextInput } from 'react-native';
 import { View, Text, Image, StyleSheet } from 'react-primitives';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styles from '../styles/styles';
 
 
@@ -31,25 +32,27 @@ class Schedule extends React.Component {
     const { navigate } = this.props.navigation;
 
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
+
+      <KeyboardAwareScrollView style={styles.container}>
         <Stripe>
           <Bounds>
 
             <Section>
               <Chunk>
-                <TextInput placeholder="Event title" />
+                <TextInput placeholder="Event title" style={[styles.input, styles.inputBig]}  />
               </Chunk>
             </Section>
 
             <Section>
               <Chunk>
-                <TextInput placeholder="What date?" />
-                <TextInput placeholder="What time?" />
+                <TextInput placeholder="What date?" style={[styles.input]} />
+                <TextInput placeholder="What time?" style={[styles.input]} />
               </Chunk>
               <List
                 variant='hscroll'
                 items={['idea 1', 'idea 2', 'idea 3', 'idea 4']}
-                hscrollItemStyle={{width: 100, paddingRight: 16}}
+                hscrollItemStyle={{width: 100, paddingLeft: 16}}
                 renderItem={(item, i)=>{
                   return(
                     <Card>
@@ -65,12 +68,12 @@ class Schedule extends React.Component {
 
             <Section>
               <Chunk>
-                <TextInput placeholder="How long will it be?" />
+                <TextInput placeholder="How long will it be?" style={[styles.input]} />
               </Chunk>
               <List
                 variant='hscroll'
                 items={['idea 1', 'idea 2', 'idea 3', 'idea 4']}
-                hscrollItemStyle={{width: 100, paddingRight: 16}}
+                hscrollItemStyle={{width: 100, paddingLeft: 16}}
                 renderItem={(item, i)=>{
                   return(
                     <Card>
@@ -86,12 +89,12 @@ class Schedule extends React.Component {
 
             <Section>
               <Chunk>
-                <TextInput placeholder="Where?" />
+                <TextInput placeholder="Where?" style={[styles.input]} />
               </Chunk>
               <List
                 variant='hscroll'
                 items={['idea 1', 'idea 2', 'idea 3', 'idea 4']}
-                hscrollItemStyle={{width: 100, paddingRight: 16}}
+                hscrollItemStyle={{width: 100, paddingLeft: 16}}
                 renderItem={(item, i)=>{
                   return(
                     <Card>
@@ -111,6 +114,7 @@ class Schedule extends React.Component {
                 <TextInput
                   placeholder="Event description"
                   multiline
+                  style={[styles.input]}
                   />
               </Chunk>
               <Chunk>
@@ -131,7 +135,9 @@ class Schedule extends React.Component {
             </Section>
           </Bounds>
         </Stripe>
-      </ScrollView>
+      </KeyboardAwareScrollView>
+
+      </View>
     );
   }
 }

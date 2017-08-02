@@ -24,7 +24,9 @@ const styles = StyleSheet.create({
 	section: {
 		paddingTop: spaceSection,
 		marginHorizontal: spaceSection,
-		paddingBottom: spaceSection - space
+		paddingBottom: spaceSection - space,
+		borderTopWidth: 1,
+		borderTopColor: 'rgba(0,0,0,.1)',
 	},
 	chunk: {
 		paddingBottom: space
@@ -74,8 +76,12 @@ const styles = StyleSheet.create({
 	'list--hscroll':{
 		flexDirection: 'row',
 		flexWrap: 'nowrap',
+		marginHorizontal: -1 * spaceSection,
 		//overflowY: 'scroll',
 		//WebkitOverflowScrolling: 'touch',
+	},
+	'list-container--hscroll': {
+		paddingHorizontal: spaceSection - space
 	},
 	'list-item--hscroll': {
 		flexBasis: 200
@@ -89,8 +95,12 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		borderWidth: 0,
 		color: swatches.textPrimary,
+		fontSize: base
 		//boxSizing: 'border-box',
 		//appearance: 'none'
+	},
+	inputBig: {
+		fontSize: base * 1.375,
 	},
 	'input--multiline': {
 		minHeight: base * 6
@@ -100,7 +110,7 @@ const styles = StyleSheet.create({
 	// BUTTON
 	button: {
 		backgroundColor: '#1D7CF2',
-		padding: space*1.5,
+		padding: space*1.75,
 		borderRadius: 5,
 		flexDirection: 'row',
 		justifyContent: 'center'
@@ -108,7 +118,10 @@ const styles = StyleSheet.create({
 	buttonText: {
 		color: '#ffffff',
 		textAlign: 'center',
-		fontWeight: '500'
+		fontWeight: '600'
+	},
+	'button--edge': {
+		borderRadius: 0,
 	},
 
 	// CHIP
@@ -252,6 +265,10 @@ const styles = StyleSheet.create({
 		fontSize: base * 2,
 		lineHeight: base * 2 * 1.2,
 		fontWeight: '700'
+	},
+	textKicker: {
+		fontSize: base * 0.75,
+		color: 'red'
 	}
 });
 

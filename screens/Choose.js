@@ -39,7 +39,7 @@ class Choose extends React.Component {
 			        	<Text style={[styles.text, styles.textPageHead]}>Choose your adventure</Text>
 			        </Chunk>
 			        <Chunk>
-			        	<Text style={[styles.text, styles.textSecondary]}>Test out the experience of starting a new Meetup Group</Text>
+			        	<Text style={[styles.text, styles.textSecondary]}>Test out the experience of starting a new Meetup Group in...</Text>
 			        </Chunk>
 			    </Section>
 			    <Section>

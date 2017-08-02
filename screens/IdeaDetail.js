@@ -38,7 +38,7 @@ class IdeaDetail extends React.Component {
 
             <Section>
               <Chunk>
-                <Text style={[styles.text, styles.textSmall]}>Meetup Idea</Text>
+                <Text style={[styles.text, styles.textKicker]}>MEETUP IDEA</Text>
                 <Text style={[styles.text, styles.textPageHead]}>Kids Clothing Swap</Text>
               </Chunk>
               <Chunk>
@@ -53,7 +53,7 @@ class IdeaDetail extends React.Component {
               <List
                 variant='hscroll'
                 items={['example 1', 'example 2', 'example 3', 'example 4']}
-                hscrollItemStyle={{width: 250, paddingRight: 16}}
+                hscrollItemStyle={{width: 250, paddingLeft: 16}}
                 renderItem={(item, i)=>{
                   return(
                     <Card>
@@ -93,7 +93,7 @@ class IdeaDetail extends React.Component {
               <List
                 variant='hscroll'
                 items={['place 1', 'place 2', 'place 3', 'place 4']}
-                hscrollItemStyle={{width: 250, paddingRight: 16}}
+                hscrollItemStyle={{width: 250, paddingLeft: 16}}
                 renderItem={(item, i)=>{
                   return(
                     <Card>
@@ -133,16 +133,16 @@ class IdeaDetail extends React.Component {
         </Stripe>
       </ScrollView>
 
-      <Section style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
-        <Chunk>
+
+      <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
           <Link
             onPress={()=>{
               navigate('Schedule')
             }}>
-            <DumbButton label="Plan a Meetup like this" />
+            <DumbButton label="Plan a Meetup like this" style={[styles['button--edge']]} />
           </Link>
-        </Chunk>
-      </Section>
+      </View>
+
       </View>
     );
   }
