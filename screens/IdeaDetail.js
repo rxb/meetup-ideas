@@ -52,7 +52,7 @@ class IdeaDetail extends React.Component {
               </Chunk>
               <List
                 variant='hscroll'
-                items={['idea 1', 'idea 2', 'idea 3', 'idea 4']}
+                items={['example 1', 'example 2', 'example 3', 'example 4']}
                 hscrollItemStyle={{width: 250, paddingRight: 16}}
                 renderItem={(item, i)=>{
                   return(

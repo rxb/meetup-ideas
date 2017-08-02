@@ -125,7 +125,7 @@ class Schedule extends React.Component {
                   onPress={()=>{
                     navigate('VenueDetail')
                   }}>
-                  <DumbButton label="Text venue Detail" />
+                  <DumbButton label="Test venue Detail" />
                 </Link>
               </Chunk>
             </Section>

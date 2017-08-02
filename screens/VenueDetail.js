@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, Linking } from 'react-native';
 import { View, Text, Image, StyleSheet } from 'react-primitives';
 import styles from '../styles/styles';
 
@@ -33,10 +33,85 @@ class VenueDetail extends React.Component {
     return (
       <ScrollView style={styles.container}>
         <Stripe>
+            <List
+                variant='hscroll'
+                items={['example 1', 'example 2', 'example 3', 'example 4']}
+                hscrollItemStyle={{width: 250, borderLeftWidth: 1, borderLeftColor: 'white'}}
+                renderItem={(item, i)=>{
+                  return(
+                      <Image
+                        source={{uri: 'https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg'}}
+                        style={{height: 160, resizeMode: 'cover'}}
+                       />
+                  );
+                }}
+                />
+
           <Bounds>
             <Section>
               <Chunk>
+                <Text style={[styles.text, styles.textSmall]}>Venue Idea</Text>
                 <Text style={[styles.text, styles.textPageHead]}>Venue Detail</Text>
+              </Chunk>
+              <Chunk>
+                <Text style={[styles.text, styles.textSmall]}>$$$ • Coffee Shop</Text>
+              </Chunk>
+            </Section>
+            <Section>
+              <Chunk>
+                <Text style={[styles.text, styles.textSmall]}>Coffee, tea, baked goods & desserts in a quirky, brick-walled space with outdoor tables.</Text>
+              </Chunk>
+            </Section>
+            <Section>
+              <Flex>
+                <FlexItem growFactor={1}>
+                  <Chunk>
+                    <Text style={[styles.text, styles.textSecondary]}>Address</Text>
+                  </Chunk>
+                </FlexItem>
+                <FlexItem growFactor={3}>
+                  <Chunk>
+                    <Text style={[styles.text]}>35 Puritan Ln</Text>
+                    <Text style={[styles.text]}>Stamford, CT 06906</Text>
+                  </Chunk>
+                </FlexItem>
+              </Flex>
+              <Flex>
+                <FlexItem growFactor={1}>
+                  <Chunk>
+                    <Text style={[styles.text, styles.textSecondary]}>Hours</Text>
+                  </Chunk>
+                </FlexItem>
+                <FlexItem growFactor={3}>
+                  <Chunk>
+                    {(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']).map((day, i)=>{
+                      return(
+                        <Text key={i} style={[styles.text]}>{day} 7am - 11pm</Text>
+                      );
+                    })}
+                  </Chunk>
+                </FlexItem>
+              </Flex>
+              <Flex>
+                <FlexItem growFactor={1}>
+                  <Chunk>
+                    <Text style={[styles.text, styles.textSecondary]}>Phone</Text>
+                  </Chunk>
+                </FlexItem>
+                <FlexItem growFactor={3}>
+                  <Chunk>
+                    <Text style={[styles.text]}>(412) 921-1613</Text>
+                  </Chunk>
+                </FlexItem>
+              </Flex>
+            </Section>
+            <Section>
+              <Chunk>
+                <Link onPress={()=>{
+                    alert('Calling venue...');
+                  }}>
+                  <DumbButton label="Call venue" />
+                </Link>
               </Chunk>
             </Section>
           </Bounds>
