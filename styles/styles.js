@@ -130,11 +130,15 @@ const styles = StyleSheet.create({
 	// CARD
 	card: {
 		borderRadius: 5,
+		backgroundColor: '#f2f2f2',
+		overflow: 'hidden',
+		/*
 		shadowRadius: 4,
 		shadowColor: 'rgba(0,0,0,.25)',
 		shadowOpacity: 1,
 		backgroundColor: 'white',
 		elevation: 3 // android
+		*/
 	},
 
 	// TABS

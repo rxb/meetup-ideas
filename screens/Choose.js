@@ -43,14 +43,19 @@ class Choose extends React.Component {
 			        </Chunk>
 			    </Section>
 			    <Section>
-			        <Chunk>
-						<Link
-							onPress={()=>{
-								navigate('GroupHome')
-							}}>
-				        	<DumbButton label="Parents Meetup" />
-				        </Link>
-			        </Chunk>
+			    	{(['Parents', 'Tech', 'Writing', 'Hiking', 'Running']).map((topic, i)=>{
+			    		return(
+							<Chunk key={i}>
+								<Link
+									onPress={()=>{
+										navigate('GroupHome')
+									}}>
+						        	<DumbButton label={topic} />
+						        </Link>
+					        </Chunk>
+			    		);
+			    	})}
+
 			    </Section>
 	        </Bounds>
        	</Stripe>
