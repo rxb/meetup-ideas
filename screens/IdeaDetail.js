@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ART, ScrollView } from 'react-native';
 import { View, Text, Image, StyleSheet } from 'react-primitives';
 import styles from '../styles/styles';
 
@@ -35,14 +35,13 @@ class IdeaDetail extends React.Component {
       <ScrollView style={styles.container}>
         <Stripe>
           <Bounds>
-
             <Section>
               <Chunk>
                 <Text style={[styles.text, styles.textKicker]}>MEETUP IDEA</Text>
                 <Text style={[styles.text, styles.textPageHead]}>Kids Clothing Swap</Text>
               </Chunk>
               <Chunk>
-                <Text style={[styles.text]}>At at a Kids’ Clothing Swap Meetup, parents bring clothes their kids have outgrown or no longer need to trade with other parents. It’s fun and free way to put those old clothes to good use.</Text>
+                <Text style={[styles.text, styles.textSecondary]}>At at a Kids’ Clothing Swap Meetup, parents bring clothes their kids have outgrown or no longer need to trade with other parents. It’s fun and free way to put those old clothes to good use.</Text>
               </Chunk>
             </Section>
 
@@ -53,16 +52,18 @@ class IdeaDetail extends React.Component {
               <List
                 variant='hscroll'
                 items={['example 1', 'example 2', 'example 3', 'example 4']}
-                hscrollItemStyle={{width: 250, paddingLeft: 16}}
+                hscrollItemStyle={{width: 200, paddingLeft: 16}}
                 renderItem={(item, i)=>{
                   return(
-                    <Card>
-                      <Image
-                        source={{uri: 'https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg'}}
-                        style={{height: 160, resizeMode: 'cover'}}
-                       />
-                      <Text style={[styles.text]}>{item}</Text>
-                    </Card>
+                      <View key={i}>
+                        <Image
+                            source={{uri: 'https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg'}}
+                            style={{height: 130, resizeMode: 'cover', borderRadius: 5, marginVertical: 6}}
+                           />
+                          <Text style={[styles.text, styles.textSmall, styles.textStrong]}>Meetup Playdate</Text>
+                          <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Santa Monica Dads</Text>
+                          <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>14 attended</Text>
+                      </View>
                   );
                 }}
                 />
@@ -72,13 +73,37 @@ class IdeaDetail extends React.Component {
               <Chunk>
                 <Text style={[styles.text, styles.textSectionHead]}>Sample Agenda</Text>
               </Chunk>
-              <Chunk>
-                {(['do this', 'do that', 'do the other thing']).map((step, i)=>{
+
+                <View>
+                <View style={{
+                  borderLeftColor: '#ccc',
+                  borderLeftWidth: 1,
+                  width: 20,
+                  position: 'absolute',
+                  top: 16,
+                  bottom: 16,
+                  left: 8
+                }} />
+
+                {(['do this', 'do that', 'do the other thing', 'keep going', 'ok stop']).map((step, i)=>{
                   return(
-                    <Text style={[styles.text]} key={i}>{step}</Text>
+                    <Chunk key={i}>
+
+                      <Flex>
+                        <FlexItem shrink>
+                          <View style={{width: 17, height: 17, borderRadius: 17, borderWidth: 1, borderColor: '#ccc', backgroundColor: 'white', marginTop: 2}} />
+                        </FlexItem>
+                        <FlexItem>
+                          <Text style={[styles.text, styles.textStrong]} >{step}</Text>
+                        </FlexItem>
+                        <FlexItem shrink>
+                          <Text style={[styles.text, styles.textSecondary, {textAlign: 'right'}]}>10min</Text>
+                        </FlexItem>
+                      </Flex>
+                    </Chunk>
                   );
                 })}
-              </Chunk>
+                </View>
             </Section>
 
             <Section>
@@ -93,10 +118,10 @@ class IdeaDetail extends React.Component {
               <List
                 variant='hscroll'
                 items={['place 1', 'place 2', 'place 3', 'place 4']}
-                hscrollItemStyle={{width: 250, paddingLeft: 16}}
+                hscrollItemStyle={{width: 230, paddingLeft: 16}}
                 renderItem={(item, i)=>{
                   return(
-                    <Card>
+                    <Card style={{marginVertical: 6}}>
                       <Image
                         source={{uri: 'https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg'}}
                         style={{height: 100, resizeMode: 'cover'}}
@@ -112,17 +137,26 @@ class IdeaDetail extends React.Component {
               <Chunk>
                 <Text style={[styles.text, styles.textSectionHead]}>Popular days and times</Text>
               </Chunk>
-              <Chunk>
+
                 {([
                     'Tuesdays at 10am',
                     'Thursdays at 10am',
                     'Saturdays at 3pm'
                   ]).map((step, i)=>{
                   return(
-                    <Text style={[styles.text]} key={i}>{step}</Text>
+                    <Chunk key={i}>
+                      <Flex>
+                        <FlexItem shrink>
+                          <View style={{width: 8, height: 8, borderRadius: 17, backgroundColor: 'black', marginTop: 7}} />
+                        </FlexItem>
+                        <FlexItem>
+                          <Text style={[styles.text]}>{step}</Text>
+                        </FlexItem>
+                      </Flex>
+                    </Chunk>
                   );
                 })}
-              </Chunk>
+
               <Chunk>
                 <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Meetups scheduled 2 weeks out get the most attendees .</Text>
               </Chunk>

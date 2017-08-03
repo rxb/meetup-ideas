@@ -34,28 +34,30 @@ class Schedule extends React.Component {
     return (
       <View style={styles.container}>
 
-      <KeyboardAwareScrollView style={styles.container}>
-        <Stripe>
+      <KeyboardAwareScrollView style={styles.stripeCollection}>
+        <Stripe style={styles.stripeCollection}>
           <Bounds>
 
-            <Section>
+            <Section style={styles.sectionCard}>
               <Chunk>
                 <TextInput placeholder="Event title" style={[styles.input, styles.inputBig]}  />
               </Chunk>
             </Section>
 
-            <Section>
+            <Section style={styles.sectionCard}>
               <Chunk>
                 <TextInput placeholder="What date?" style={[styles.input]} />
+              </Chunk>
+              <Chunk>
                 <TextInput placeholder="What time?" style={[styles.input]} />
               </Chunk>
               <List
                 variant='hscroll'
                 items={['idea 1', 'idea 2', 'idea 3', 'idea 4']}
-                hscrollItemStyle={{width: 100, paddingLeft: 16}}
+                hscrollItemStyle={{width: 100, paddingLeft: 8}}
                 renderItem={(item, i)=>{
                   return(
-                    <Card>
+                    <Card style={{paddingVertical: 8, paddingHorizontal: 16}}>
                       <Text style={[styles.text]}>{item}</Text>
                     </Card>
                   );
@@ -66,7 +68,7 @@ class Schedule extends React.Component {
               </Chunk>
             </Section>
 
-            <Section>
+            <Section style={styles.sectionCard}>
               <Chunk>
                 <TextInput placeholder="How long will it be?" style={[styles.input]} />
               </Chunk>
@@ -87,7 +89,7 @@ class Schedule extends React.Component {
               </Chunk>
             </Section>
 
-            <Section>
+            <Section style={styles.sectionCard}>
               <Chunk>
                 <TextInput placeholder="Where?" style={[styles.input]} />
               </Chunk>
@@ -109,7 +111,7 @@ class Schedule extends React.Component {
               </Chunk>
             </Section>
 
-            <Section>
+            <Section style={styles.sectionCard}>
               <Chunk>
                 <TextInput
                   placeholder="Event description"
@@ -123,7 +125,7 @@ class Schedule extends React.Component {
             </Section>
 
 
-            <Section>
+            <Section style={styles.sectionCard}>
               <Chunk>
                 <Link
                   onPress={()=>{

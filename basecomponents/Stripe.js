@@ -7,7 +7,7 @@ const Stripe = (props) => {
 	const {
 		children,
 		image,
-		style,
+		style = {},
 	} = props
 
 	if(image){
@@ -22,7 +22,7 @@ const Stripe = (props) => {
 	}
 	else{
 		return(
-			<View style={styles.stripe}>
+			<View style={[styles.stripe, style]}>
 				{children}
 			</View>
 		);

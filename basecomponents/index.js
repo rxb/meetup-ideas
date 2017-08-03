@@ -9,6 +9,7 @@ import Avatar from './Avatar';
 import Icon from './Icon';
 import List from './List';
 import Card from './Card';
+import CardSection from './CardSection';
 import Chip from './Chip';
 import Inline from './Inline';
 import Tabs from './Tabs';
@@ -28,6 +29,7 @@ export {
 	Icon,
 	List,
 	Card,
+	CardSection,
 	Chip,
 	Inline,
 	Tabs,

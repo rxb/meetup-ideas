@@ -3,21 +3,38 @@ import swatches from './swatches';
 import flexStyles from './flex';
 
 
-const base = 16;
+const base = 15;
 const space = base * .75;
 const spaceSection = base * 1.5;
 
 const styles = StyleSheet.create({
 
-	  container: {
+	container: {
 	    flex: 1,
-	  },
+	},
 
+	absoluteFill: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+	},
+
+	absoluteCenter: {
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
 
 	// LAYOUT
 	stripe: {
 		backgroundColor: 'white'
 	},
+
+	stripeCollection: {
+		backgroundColor: '#eee'
+	},
+
 	bounds: {
 		maxWidth: 1000,
 	},
@@ -27,6 +44,13 @@ const styles = StyleSheet.create({
 		paddingBottom: spaceSection - space,
 		borderTopWidth: 1,
 		borderTopColor: 'rgba(0,0,0,.1)',
+	},
+	sectionCard: {
+		marginHorizontal: 0,
+		padding: spaceSection,
+		marginBottom: spaceSection,
+		borderTopWidth: 0,
+		backgroundColor: 'white'
 	},
 	chunk: {
 		paddingBottom: space
@@ -46,9 +70,9 @@ const styles = StyleSheet.create({
 
 	},
 	'list-item': {
-		borderTopWidth: 1,
-		borderTopColor: '#ddd',
-		paddingTop: space
+		//borderTopWidth: 1,
+		//borderTopColor: '#ddd',
+		//paddingTop: space
 	},
 
 	// grid
@@ -77,6 +101,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		flexWrap: 'nowrap',
 		marginHorizontal: -1 * spaceSection,
+		marginBottom: space,
 		//overflowY: 'scroll',
 		//WebkitOverflowScrolling: 'touch',
 	},
@@ -90,12 +115,15 @@ const styles = StyleSheet.create({
 
 	// INPUT
 	input: {
-		backgroundColor: '#eeeeee',
-		padding: space * 1.5,
+		//backgroundColor: '#eeeeee',
+		//padding: space * 1.5,
+		paddingBottom: space,
 		borderRadius: 5,
 		borderWidth: 0,
 		color: swatches.textPrimary,
-		fontSize: base
+		fontSize: base,
+		borderBottomWidth: 1,
+		borderBottomColor: swatches.line,
 		//boxSizing: 'border-box',
 		//appearance: 'none'
 	},
@@ -152,6 +180,12 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		elevation: 3 // android
 		*/
+	},
+
+	cardSection: {
+		paddingTop: spaceSection,
+		paddingHorizontal: spaceSection,
+		paddingBottom: spaceSection - space
 	},
 
 	// TABS
@@ -246,7 +280,8 @@ const styles = StyleSheet.create({
 		color: swatches.textHint
 	},
 	textSmall: {
-		fontSize: base * 0.875,
+		fontSize: base * 0.825,
+		lineHeight: base * 0.825 * 1.4,
 	},
 	textStrong: {
 		fontWeight: '600',
@@ -257,7 +292,7 @@ const styles = StyleSheet.create({
 		fontWeight: '800'
 	},
 	textSectionHead: {
-		fontSize: base * 1.125,
+		fontSize: base * 1.2,
 		lineHeight: base * 1.125 * 1.4,
 		fontWeight: '700'
 	},
@@ -268,6 +303,7 @@ const styles = StyleSheet.create({
 	},
 	textKicker: {
 		fontSize: base * 0.75,
+		fontWeight: '500',
 		color: 'red'
 	}
 });

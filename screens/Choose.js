@@ -4,6 +4,7 @@ import { View, Text, Image, StyleSheet } from 'react-primitives';
 import styles from '../styles/styles';
 
 
+
 import {
 	DumbButton,
 	Stripe,
@@ -32,6 +33,7 @@ class Choose extends React.Component {
 
     return (
       <ScrollView style={styles.container}>
+
       	<Stripe>
       		<Bounds>
       			<Section>
