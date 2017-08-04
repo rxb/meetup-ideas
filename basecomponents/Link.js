@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Platform } from 'react-primitives';
+import { View, Platform } from 'react-native';
 import { TouchableNativeFeedback, TouchableOpacity } from 'react-native'; // move back to react primitives when v.16 is in
 import styles from '../styles/styles';
 

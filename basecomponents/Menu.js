@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-primitives';
+import { View, Touchable } from 'react-native';
 import styles from '../styles/styles';
 import Link from './Link';
 
@@ -11,7 +11,7 @@ const Menu = (props) => {
 	} = props;
 
 	return(
-		<Touchable
+		<Touchable>
 			{...other}
 			>
 			{children}

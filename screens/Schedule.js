@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, TextInput } from 'react-native';
-import { View, Text, Image, StyleSheet } from 'react-primitives';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styles from '../styles/styles';
 
@@ -37,6 +37,11 @@ const Option = (props) => {
 }
 
 class Schedule extends React.Component {
+
+ static navigationOptions = {
+    title: 'Schedule'
+  }
+
   render() {
 
     const { navigate } = this.props.navigation;
@@ -48,19 +53,21 @@ class Schedule extends React.Component {
         <Stripe style={styles.stripeCollection}>
           <Bounds>
 
-            <Section style={styles.sectionCard}>
+            <Section style={styles.sectionTable}>
               <Chunk>
                 <TextInput placeholder="Event title" style={[styles.input, styles.inputBig]}  />
               </Chunk>
             </Section>
 
-            <Section style={styles.sectionCard}>
+            <Section style={styles.sectionTable}>
               <Chunk>
                 <TextInput placeholder="What date?" style={[styles.input]} />
               </Chunk>
               <Chunk>
                 <TextInput placeholder="What time?" style={[styles.input]} />
               </Chunk>
+            </Section>
+            <Section style={styles.sectionTableFooter}>
               <List
                 variant='hscroll'
                 items={['idea 1', 'idea 2', 'idea 3', 'idea 4']}
@@ -68,7 +75,7 @@ class Schedule extends React.Component {
                 renderItem={(item, i)=>{
                   return(
                     <Option>
-                      <Text style={[styles.text]}>{item}</Text>
+                      <Text style={[styles.text, styles.textSmall]}>{item}</Text>
                     </Option>
                   );
                 }}
@@ -78,10 +85,12 @@ class Schedule extends React.Component {
               </Chunk>
             </Section>
 
-            <Section style={styles.sectionCard}>
+            <Section style={styles.sectionTable}>
               <Chunk>
                 <TextInput placeholder="How long will it be?" style={[styles.input]} />
               </Chunk>
+            </Section>
+            <Section style={styles.sectionTableFooter}>
               <List
                 variant='hscroll'
                 items={['idea 1', 'idea 2', 'idea 3', 'idea 4']}
@@ -89,7 +98,7 @@ class Schedule extends React.Component {
                 renderItem={(item, i)=>{
                   return(
                     <Option>
-                      <Text style={[styles.text]}>{item}</Text>
+                      <Text style={[styles.text, styles.textSmall]}>{item}</Text>
                     </Option>
                   );
                 }}
@@ -99,10 +108,12 @@ class Schedule extends React.Component {
               </Chunk>
             </Section>
 
-            <Section style={styles.sectionCard}>
+            <Section style={styles.sectionTable}>
               <Chunk>
                 <TextInput placeholder="Where?" style={[styles.input]} />
               </Chunk>
+            </Section>
+            <Section style={styles.sectionTableFooter}>
               <List
                 variant='hscroll'
                 items={['idea 1', 'idea 2', 'idea 3', 'idea 4']}
@@ -119,13 +130,12 @@ class Schedule extends React.Component {
                   );
                 }}
                 />
-
               <Chunk>
                 <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Most Kids Clothing Swap Meetups happen at library meeting rooms, parks, homes</Text>
               </Chunk>
             </Section>
 
-            <Section style={styles.sectionCard}>
+            <Section style={styles.sectionTable}>
               <Chunk>
                 <TextInput
                   placeholder="Event description"
@@ -133,6 +143,8 @@ class Schedule extends React.Component {
                   style={[styles.input]}
                   />
               </Chunk>
+            </Section>
+            <Section>
               <Chunk>
                 <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Share what you’ll do, what members should bring, and other important details they should know.</Text>
               </Chunk>

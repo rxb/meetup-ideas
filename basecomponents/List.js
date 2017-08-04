@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Platform } from 'react-primitives';
+import { View, Platform } from 'react-native';
 import { ScrollView } from 'react-native';
 import styles from '../styles/styles';
 

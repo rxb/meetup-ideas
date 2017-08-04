@@ -1,6 +1,6 @@
 import React from 'react';
 import { ART, ScrollView } from 'react-native';
-import { View, Text, Image, StyleSheet } from 'react-primitives';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import styles from '../styles/styles';
 
 import VenueCard from '../components/VenueCard';

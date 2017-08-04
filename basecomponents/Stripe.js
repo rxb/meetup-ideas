@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image } from 'react-primitives';
+import { View, Image } from 'react-native';
 import styles from '../styles/styles';
 
 const Stripe = (props) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Platform } from 'react-primitives';
+import { View, Image, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from '../styles/styles';
 

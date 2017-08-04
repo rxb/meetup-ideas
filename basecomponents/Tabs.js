@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-primitives';
+import { View, Text } from 'react-native';
 import styles from '../styles/styles';
 import Link from './Link';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, Linking } from 'react-native';
-import { View, Text, Image, StyleSheet } from 'react-primitives';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import styles from '../styles/styles';
 
 

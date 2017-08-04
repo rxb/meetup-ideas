@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Easing, View } from 'react-primitives';
+import { Animated, Easing, View } from 'react-native';
 import styles from '../styles/styles';
 
 const offsetY = 50;

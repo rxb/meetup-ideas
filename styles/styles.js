@@ -1,9 +1,9 @@
-import { StyleSheet } from 'react-primitives';
+import { StyleSheet } from 'react-native';
 import swatches from './swatches';
 import flexStyles from './flex';
 
 
-const base = 15;
+const base = 16;
 const space = base * .75;
 const spaceSection = base * 1.5;
 
@@ -45,13 +45,8 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		borderBottomColor: 'rgba(0,0,0,.1)',
 	},
-	sectionCard: {
-		marginHorizontal: 0,
-		padding: spaceSection,
-		marginBottom: spaceSection,
-		borderTopWidth: 0,
-		backgroundColor: 'white'
-	},
+
+
 	chunk: {
 		paddingBottom: space
 	},
@@ -61,6 +56,26 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		flexWrap: 'wrap'
 	},
+
+
+	// TABLE SECTION VARIANTS
+	sectionTable: {
+		marginHorizontal: 0,
+		padding: spaceSection,
+		marginTop: spaceSection,
+		marginBottom: 0,
+		borderBottomWidth: 0,
+		backgroundColor: 'white'
+	},
+	sectionTableFooter: {
+		marginHorizontal: 0,
+		paddingVertical: 0,
+		marginTop: 0,
+		paddingTop: space,
+		paddingHorizontal: spaceSection,
+		borderBottomWidth: 0,
+	},
+
 
 	// LISTS
 	// react-sketchapp lists other than default depend on yoga https://github.com/airbnb/react-sketchapp/issues/52
@@ -122,8 +137,8 @@ const styles = StyleSheet.create({
 		borderWidth: 0,
 		color: swatches.textPrimary,
 		fontSize: base,
-		borderBottomWidth: 1,
-		borderBottomColor: swatches.line,
+		//borderBottomWidth: 1,
+		//borderBottomColor: swatches.line,
 		//boxSizing: 'border-box',
 		//appearance: 'none'
 	},
@@ -171,7 +186,7 @@ const styles = StyleSheet.create({
 	// CARD
 	card: {
 		borderRadius: 5,
-		backgroundColor: '#f2f2f2',
+		backgroundColor: 'rgba(0,0,0,.075)',
 		overflow: 'hidden',
 		/*
 		shadowRadius: 4,

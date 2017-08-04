@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-primitives';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import styles from './styles/styles';
 
 import DumbButton from './basecomponents/DumbButton';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-primitives';
+import { View } from 'react-native';
 import styles from '../styles/styles';
 import Card from './Card';
 import Link from './Link';

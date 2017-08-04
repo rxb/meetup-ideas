@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-primitives';
+import { StyleSheet } from 'react-native';
 
 // CONSTANTS
 // move to file somewhere

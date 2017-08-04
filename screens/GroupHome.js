@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, InteractionManager} from 'react-native';
-import { Animated, Easing, View, Text, Image, StyleSheet } from 'react-primitives';
+import { Animated, Easing, View, Text, Image, StyleSheet } from 'react-native';
 import styles from '../styles/styles';
 
 import Confetti from 'react-native-confetti';
@@ -35,9 +35,8 @@ const groupImage = 'https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.
 class GroupHome extends React.Component {
 
 
- 	static navigationOptions = {
-
- 		headerTintColor: 'white',
+ static navigationOptions = {
+ 	headerTintColor: 'white',
     headerStyle: {
     	backgroundColor: 'transparent',
     	position: 'absolute',
@@ -67,12 +66,15 @@ class GroupHome extends React.Component {
 
 	componentDidMount() {
 
+			/*
 			// show loader
 			setTimeout(()=>{
 				this.setState({loaderVisible: true});
+			*/
 
 				// hide loader, continue
 				setTimeout(()=>{
+
 
 					this.setState({loaderVisible: false});
 
@@ -103,9 +105,11 @@ class GroupHome extends React.Component {
 						this.setState({welcomeVisible: true});
 					}, 1400);
 
-				}, 4000);
+				}, 1000);
 
+			/*
 			}, 400);
+			*/
 	}
 
 
@@ -160,7 +164,7 @@ class GroupHome extends React.Component {
 				<Stripe image={groupImage} style={{minHeight: 200, justifyContent: 'center', alignItems: 'center'}}>
 					<Bounds>
 						<Section>
-								<Text style={[styles.text, styles.textPageHead, {backgroundColor: 'transparent', color: 'white', }]}>Some group name</Text>
+								<Text style={[styles.text, styles.textPageHead, {backgroundColor: 'transparent', color: 'white', fontSize: 26}]}>Some group name</Text>
 						</Section>
 					</Bounds>
 				</Stripe>
@@ -168,13 +172,18 @@ class GroupHome extends React.Component {
 			 <Stripe>
 					<Bounds>
 						<Section>
-							<Chunk>
-								<Text style={[styles.text, styles.textSectionHead]}>Parenting Meetup ideas</Text>
-								<Text style={[styles.text, styles.textSmall]}>See what other groups have tried and loved</Text>
+							<Chunk style={{paddingBottom: 24}}>
+								<Text style={[styles.text, styles.textSectionHead]}>Ideas for your first Meetup</Text>
+								<Text style={[styles.text]}>See what other Hiking Meetup Groups have tried and loved</Text>
 							</Chunk>
+
 							<List
 								variant=''
-								items={['idea 1', 'idea 2', 'idea 3', 'idea 4', 'idea 1', 'idea 2', 'idea 3', 'idea 4']}
+								items={[
+									'Field trip to the Fire Station',
+									'Ice Cream Social',
+									'Movie Monday',
+									'idea 4', 'idea 1', 'idea 2', 'idea 3', 'idea 4']}
 								renderItem={(item, i)=>{
 									return(
 										<Link
@@ -182,17 +191,18 @@ class GroupHome extends React.Component {
 											onPress={()=>{
 												navigate('IdeaDetail')
 											}}>
-											<Card style={{marginVertical: 8}}>
+											<Card style={{marginBottom: 16}}>
 												<Flex align='center'>
 													<FlexItem growFactor={1}>
 														<Image
 															source={{uri: 'https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg'}}
-															style={{height: 100, resizeMode: 'cover'}}
+															style={{height: 120, resizeMode: 'cover'}}
 														 />
 													</FlexItem>
-													<FlexItem growFactor={2}>
-														<Text style={[styles.text, styles.textStrong]}>{item}</Text>
-														<Text style={[styles.text]}>15 groups have tried this</Text>
+													<FlexItem growFactor={2} style={{paddingRight: 16}}>
+														<Text style={[styles.text, styles.textKicker, {fontSize: 10, lineHeight: 18, color: 'rgba(0,0,0,.35)'}]}>MEETUP IDEA</Text>
+														<Text style={[styles.text, styles.textStrong]} numberOfLines={2}>{item}</Text>
+														<Text style={[styles.text, styles.textSmall]}>15 groups have tried this</Text>
 													</FlexItem>
 												</Flex>
 											</Card>
@@ -250,7 +260,7 @@ class GroupHome extends React.Component {
 
 						<View style={[styles.absoluteFill, styles.absoluteCenter, {paddingHorizontal: 24} ]}>
 							<Showable visible={this.state.welcomeVisible}>
-								<Card>
+								<Card style={{backgroundColor: 'white'}}>
 									<CardSection>
 										<Chunk>
 											<Text style={[styles.text, styles.textPageHead]}>Welcome to your new group!</Text>

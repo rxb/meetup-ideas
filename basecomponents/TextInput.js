@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-primitives';
+import { StyleSheet } from 'react-native';
 import { TextInput as TextInputWeb } from 'react-native-web';
 import styles from '../styles/styles';
 
