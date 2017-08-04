@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
 		paddingTop: spaceSection,
 		marginHorizontal: spaceSection,
 		paddingBottom: spaceSection - space,
-		borderTopWidth: 1,
-		borderTopColor: 'rgba(0,0,0,.1)',
+		borderBottomWidth: 1,
+		borderBottomColor: 'rgba(0,0,0,.1)',
 	},
 	sectionCard: {
 		marginHorizontal: 0,

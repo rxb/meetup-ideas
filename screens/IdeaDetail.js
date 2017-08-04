@@ -3,6 +3,8 @@ import { ART, ScrollView } from 'react-native';
 import { View, Text, Image, StyleSheet } from 'react-primitives';
 import styles from '../styles/styles';
 
+import VenueCard from '../components/VenueCard';
+
 
 import {
   DumbButton,
@@ -118,16 +120,16 @@ class IdeaDetail extends React.Component {
               <List
                 variant='hscroll'
                 items={['place 1', 'place 2', 'place 3', 'place 4']}
-                hscrollItemStyle={{width: 230, paddingLeft: 16}}
+                hscrollItemStyle={{width: 200, paddingLeft: 16}}
                 renderItem={(item, i)=>{
                   return(
-                    <Card style={{marginVertical: 6}}>
-                      <Image
-                        source={{uri: 'https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg'}}
-                        style={{height: 100, resizeMode: 'cover'}}
-                       />
-                      <Text style={[styles.text]}>{item}</Text>
-                    </Card>
+                    <Link
+                      key={i}
+                      onPress={()=>{
+                        navigate('VenueDetail')
+                      }}>
+                      <VenueCard venue={item} />
+                    </Link>
                   );
                 }}
                 />

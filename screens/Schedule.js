@@ -4,6 +4,8 @@ import { View, Text, Image, StyleSheet } from 'react-primitives';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styles from '../styles/styles';
 
+import VenueCard from '../components/VenueCard';
+
 
 import {
   DumbButton,
@@ -25,6 +27,14 @@ import {
   Toast,
 } from '../basecomponents';
 
+
+const Option = (props) => {
+  return(
+    <Card style={{padding: 12}}>
+      {props.children}
+    </Card>
+  );
+}
 
 class Schedule extends React.Component {
   render() {
@@ -57,9 +67,9 @@ class Schedule extends React.Component {
                 hscrollItemStyle={{width: 100, paddingLeft: 8}}
                 renderItem={(item, i)=>{
                   return(
-                    <Card style={{paddingVertical: 8, paddingHorizontal: 16}}>
+                    <Option>
                       <Text style={[styles.text]}>{item}</Text>
-                    </Card>
+                    </Option>
                   );
                 }}
                 />
@@ -78,9 +88,9 @@ class Schedule extends React.Component {
                 hscrollItemStyle={{width: 100, paddingLeft: 16}}
                 renderItem={(item, i)=>{
                   return(
-                    <Card>
+                    <Option>
                       <Text style={[styles.text]}>{item}</Text>
-                    </Card>
+                    </Option>
                   );
                 }}
                 />
@@ -96,12 +106,16 @@ class Schedule extends React.Component {
               <List
                 variant='hscroll'
                 items={['idea 1', 'idea 2', 'idea 3', 'idea 4']}
-                hscrollItemStyle={{width: 100, paddingLeft: 16}}
+                hscrollItemStyle={{width: 200, paddingLeft: 16}}
                 renderItem={(item, i)=>{
                   return(
-                    <Card>
-                      <Text style={[styles.text]}>{item}</Text>
-                    </Card>
+                    <Link
+                      key={i}
+                      onPress={()=>{
+                        navigate('VenueDetail')
+                      }}>
+                      <VenueCard venue={item} />
+                    </Link>
                   );
                 }}
                 />
@@ -125,16 +139,7 @@ class Schedule extends React.Component {
             </Section>
 
 
-            <Section style={styles.sectionCard}>
-              <Chunk>
-                <Link
-                  onPress={()=>{
-                    navigate('VenueDetail')
-                  }}>
-                  <DumbButton label="Test venue Detail" />
-                </Link>
-              </Chunk>
-            </Section>
+
           </Bounds>
         </Stripe>
       </KeyboardAwareScrollView>

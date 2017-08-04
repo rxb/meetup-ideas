@@ -38,13 +38,11 @@ class Choose extends React.Component {
       		<Bounds>
       			<Section>
       				<Chunk>
-			        	<Text style={[styles.text, styles.textPageHead]}>Choose your adventure</Text>
+			        	<Text style={[styles.text, styles.textPageHead]}>Let's pretend</Text>
 			        </Chunk>
 			        <Chunk>
-			        	<Text style={[styles.text, styles.textSecondary]}>Test out the experience of starting a new Meetup Group in...</Text>
+			        	<Text style={[styles.text, styles.textSecondary]}>Imagine you've just started a Meetup Group in one of these topics...</Text>
 			        </Chunk>
-			    </Section>
-			    <Section>
 			    	{(['Parents', 'Tech', 'Writing', 'Hiking', 'Running']).map((topic, i)=>{
 			    		return(
 							<Chunk key={i}>
@@ -52,12 +50,24 @@ class Choose extends React.Component {
 									onPress={()=>{
 										navigate('GroupHome')
 									}}>
-						        	<DumbButton label={topic} />
+						        	<DumbButton label={topic} style={{marginTop: 6}} />
 						        </Link>
 					        </Chunk>
 			    		);
 			    	})}
 
+			    </Section>
+			  </Bounds>
+		</Stripe>
+      	<Stripe style={[styles.stripeCollection]}>
+      		<Bounds>
+      			<Section>
+			    	 <Chunk>
+			        	<Text style={[styles.text, styles.textSectionHead]}>About this prototype</Text>
+			        </Chunk>
+			         <Chunk>
+			         	<Text style={[styles.text]}>This will be a description of what this project is all about.</Text>
+			         </Chunk>
 			    </Section>
 	        </Bounds>
        	</Stripe>

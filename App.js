@@ -17,5 +17,12 @@ export default App = StackNavigator({
   IdeaDetail: { screen: IdeaDetail },
   Schedule: { screen: Schedule },
   VenueDetail: { screen: VenueDetail },
+}, {
+  navigationOptions: {
+    headerTintColor: 'red',
+    headerStyle: {
+    	backgroundColor: 'white'
+    }
+  },
 });
 
