@@ -5,6 +5,7 @@ import styles from '../styles/styles';
 
 import VenueCard from '../components/VenueCard';
 
+import {data, store, getFoursquareVenues} from '../data';
 
 import {
   DumbButton,
@@ -28,9 +29,36 @@ import {
 
 
 class IdeaDetail extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      venues: [],
+      idea: {}
+    }
+  }
+
+  componentDidMount(){
+
+    const idea = store.idea
+    this.setState({idea: idea});
+
+    getFoursquareVenues(idea.where.categoryId)
+      .then((json) => {
+        if(json.response && json.response.venues){
+          this.setState({venues: json.response.venues});
+        }
+      });
+  }
+
   render() {
 
     const { navigate } = this.props.navigation;
+
+    const idea = this.state.idea;
+
+    if(!idea.title)
+      return false;
 
     return (
       <View style={styles.container}>
@@ -40,31 +68,31 @@ class IdeaDetail extends React.Component {
             <Section>
               <Chunk>
                 <Text style={[styles.text, styles.textKicker]}>MEETUP IDEA</Text>
-                <Text style={[styles.text, styles.textPageHead]}>Kids Clothing Swap</Text>
+                <Text style={[styles.text, styles.textPageHead]}>{idea.title}</Text>
               </Chunk>
               <Chunk>
-                <Text style={[styles.text, styles.textSecondary]}>At at a Kids’ Clothing Swap Meetup, parents bring clothes their kids have outgrown or no longer need to trade with other parents. It’s fun and free way to put those old clothes to good use.</Text>
+                <Text style={[styles.text, styles.textSecondary]}>{idea.description}</Text>
               </Chunk>
             </Section>
 
             <Section>
               <Chunk>
-                <Text style={[styles.text, styles.textSectionHead]}>43 groups have done this</Text>
+                <Text style={[styles.text, styles.textSectionHead]}>{idea.howManyGroups} groups have done this</Text>
               </Chunk>
               <List
                 variant='hscroll'
-                items={['example 1', 'example 2', 'example 3', 'example 4']}
-                hscrollItemStyle={{width: 200, paddingLeft: 16}}
+                items={idea.pastMeetups}
+                hscrollItemStyle={{width: 200, paddingRight: 8}}
                 renderItem={(item, i)=>{
                   return(
                       <View key={i}>
                         <Image
-                            source={{uri: 'https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg'}}
+                            source={{uri: item.photo}}
                             style={{height: 130, resizeMode: 'cover', borderRadius: 5, marginVertical: 6}}
                            />
-                          <Text style={[styles.text, styles.textSmall, styles.textStrong]}>Meetup Playdate</Text>
-                          <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Santa Monica Dads</Text>
-                          <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>14 attended</Text>
+                          <Text style={[styles.text, styles.textSmall, styles.textStrong]}>{item.title}</Text>
+                          <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>{item.groupName}</Text>
+                          <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>{item.attended} attended</Text>
                       </View>
                   );
                 }}
@@ -87,7 +115,7 @@ class IdeaDetail extends React.Component {
                   left: 8
                 }} />
 
-                {(['do this', 'do that', 'do the other thing', 'keep going', 'ok stop']).map((step, i)=>{
+                {(idea.agenda).map((step, i)=>{
                   return(
                     <Chunk key={i}>
 
@@ -96,10 +124,10 @@ class IdeaDetail extends React.Component {
                           <View style={{width: 17, height: 17, borderRadius: 17, borderWidth: 1, borderColor: '#ccc', backgroundColor: 'white', marginTop: 2}} />
                         </FlexItem>
                         <FlexItem>
-                          <Text style={[styles.text, styles.textStrong]} >{step}</Text>
+                          <Text style={[styles.text, styles.textStrong]} >{step.label}</Text>
                         </FlexItem>
                         <FlexItem shrink>
-                          <Text style={[styles.text, styles.textSecondary, {textAlign: 'right'}]}>10min</Text>
+                          <Text style={[styles.text, styles.textSecondary, {textAlign: 'right'}]}>{step.minutes} min</Text>
                         </FlexItem>
                       </Flex>
                     </Chunk>
@@ -113,19 +141,20 @@ class IdeaDetail extends React.Component {
                 <Text style={[styles.text, styles.textSectionHead]}>Where to host it</Text>
               </Chunk>
               <Chunk>
-                <Text style={[styles.text, styles.textSmall]}>Library meeting rooms, coffee shops, homes</Text>
-                <Text style={[styles.text, styles.textSmall]}>Here are some nearby possibilities:</Text>
+                <Text style={[styles.text, styles.textSmall]}>{idea.where.description}</Text>
+                <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Here are some nearby possibilities:</Text>
               </Chunk>
 
               <List
                 variant='hscroll'
-                items={['place 1', 'place 2', 'place 3', 'place 4']}
-                hscrollItemStyle={{width: 200, paddingLeft: 16}}
+                items={this.state.venues}
+                hscrollItemStyle={{width: 180+8, paddingRight: 8}}
                 renderItem={(item, i)=>{
                   return(
                     <Link
                       key={i}
                       onPress={()=>{
+                        store.venueId = item.id;
                         navigate('VenueDetail')
                       }}>
                       <VenueCard venue={item} />

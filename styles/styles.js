@@ -71,10 +71,12 @@ const styles = StyleSheet.create({
 		marginHorizontal: 0,
 		paddingVertical: 0,
 		marginTop: 0,
+		paddingBottom: 0,
 		paddingTop: space,
 		paddingHorizontal: spaceSection,
 		borderBottomWidth: 0,
 	},
+
 
 
 	// LISTS
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
 		//WebkitOverflowScrolling: 'touch',
 	},
 	'list-container--hscroll': {
-		paddingHorizontal: spaceSection - space
+		paddingHorizontal: spaceSection
 	},
 	'list-item--hscroll': {
 		flexBasis: 200
@@ -132,7 +134,6 @@ const styles = StyleSheet.create({
 	input: {
 		//backgroundColor: '#eeeeee',
 		//padding: space * 1.5,
-		paddingBottom: space,
 		borderRadius: 5,
 		borderWidth: 0,
 		color: swatches.textPrimary,
@@ -166,6 +167,12 @@ const styles = StyleSheet.create({
 	'button--edge': {
 		borderRadius: 0,
 	},
+	buttonSecondary:{
+		backgroundColor: 'rgba(0,0,0,.1)'
+	},
+	buttonTextSecondary: {
+		color: swatches.textPrimary
+	},
 
 	// CHIP
 	chip: {
@@ -186,7 +193,7 @@ const styles = StyleSheet.create({
 	// CARD
 	card: {
 		borderRadius: 5,
-		backgroundColor: 'rgba(0,0,0,.075)',
+		backgroundColor: 'rgba(0,0,0,.1)',
 		overflow: 'hidden',
 		/*
 		shadowRadius: 4,
@@ -320,7 +327,15 @@ const styles = StyleSheet.create({
 		fontSize: base * 0.75,
 		fontWeight: '500',
 		color: 'red'
+	},
+
+
+	// MISC
+
+	iconInput: {
+		width: 20, height: 20, resizeMode: 'contain', tintColor: 'rgba(0,0,0,.25)'
 	}
 });
+
 
 export default {...styles, ...flexStyles};

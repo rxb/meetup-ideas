@@ -9,6 +9,8 @@ import GroupHome from './screens/GroupHome';
 import IdeaDetail from './screens/IdeaDetail';
 import Schedule from './screens/Schedule';
 import VenueDetail from './screens/VenueDetail';
+import End from './screens/End';
+
 
 // navigator
 export default App = StackNavigator({
@@ -17,6 +19,7 @@ export default App = StackNavigator({
   IdeaDetail: { screen: IdeaDetail },
   Schedule: { screen: Schedule },
   VenueDetail: { screen: VenueDetail },
+  End: { screen: End },
 }, {
   navigationOptions: {
     tintColor: 'red',

@@ -9,15 +9,15 @@ class DumbButton extends React.Component {
 		const {
 			shape,
 			style = {},
+			type = 'primary',
 		} = this.props;
 
-
 		return(
-			<View style={[styles.button, style]}>
+			<View style={[styles.button, ((type == 'secondary') ? styles.buttonSecondary : {}), style]}>
 				{ shape &&
 					<Icon shape={shape} color="white" />
 				}
-				<Text style={[styles.text, styles.buttonText]}>{this.props.label}</Text>
+				<Text style={[styles.text, styles.buttonText, ((type == 'secondary') ? styles.buttonTextSecondary : {}),]}>{this.props.label}</Text>
 			</View>
 		);
 	}

@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import styles from '../styles/styles';
 
+import {data, store} from '../data';
 
 
 import {
@@ -32,46 +33,31 @@ class Choose extends React.Component {
   	const { navigate } = this.props.navigation;
 
     return (
-      <ScrollView style={styles.container}>
-
-      	<Stripe>
-      		<Bounds>
+      	<Stripe style={[styles.container, {flex: 1, justifyContent: 'center'}]}>
       			<Section>
       				<Chunk>
-			        	<Text style={[styles.text, styles.textPageHead]}>Let's pretend</Text>
-			        </Chunk>
+						<Text style={[styles.text, styles.textSectionHead, {textAlign: 'center'}]}>Prototype</Text>
+      				</Chunk>
 			        <Chunk>
-			        	<Text style={[styles.text, styles.textSecondary]}>Imagine you've just started a Meetup Group in one of these topics...</Text>
+			        	<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}>Imagine you've just started a Parenting Meetup Group...</Text>
 			        </Chunk>
-			    	{(['Parents', 'Tech', 'Writing', 'Hiking', 'Running']).map((topic, i)=>{
+			    </Section>
+			    <Section style={[{borderBottomWidth: 0}]}>
+			    	{(Object.keys(data)).map((topic, i)=>{
 			    		return(
 							<Chunk key={i}>
 								<Link
 									onPress={()=>{
-										navigate('GroupHome')
+										store.group = data[topic];
+										navigate('GroupHome');
 									}}>
-						        	<DumbButton label={topic} style={{marginTop: 6}} />
+						        	<DumbButton type='secondary' label={'Start'} style={[{marginTop: 6}]} />
 						        </Link>
 					        </Chunk>
 			    		);
 			    	})}
-
 			    </Section>
-			  </Bounds>
 		</Stripe>
-      	<Stripe style={[styles.stripeCollection]}>
-      		<Bounds>
-      			<Section>
-			    	 <Chunk>
-			        	<Text style={[styles.text, styles.textSectionHead]}>About this prototype</Text>
-			        </Chunk>
-			         <Chunk>
-			         	<Text style={[styles.text]}>This will be a description of what this project is all about.</Text>
-			         </Chunk>
-			    </Section>
-	        </Bounds>
-       	</Stripe>
-      </ScrollView>
     );
   }
 }

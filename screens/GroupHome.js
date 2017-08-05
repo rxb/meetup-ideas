@@ -29,8 +29,9 @@ import {
 	Toast,
 } from '../basecomponents';
 
+import {data, store} from '../data';
 
-const groupImage = 'https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg';
+
 
 class GroupHome extends React.Component {
 
@@ -59,13 +60,14 @@ class GroupHome extends React.Component {
 			loaderVisible: false,
 			hasWelcomeContainer: true,
 			hasLoadingContainer: true,
-			viewportLayout: {}
+			viewportLayout: {},
+			group: {},
 		}
 	}
 
 
 	componentDidMount() {
-
+			this.setState({group: store.group});
 			/*
 			// show loader
 			setTimeout(()=>{
@@ -74,7 +76,6 @@ class GroupHome extends React.Component {
 
 				// hide loader, continue
 				setTimeout(()=>{
-
 
 					this.setState({loaderVisible: false});
 
@@ -155,16 +156,17 @@ class GroupHome extends React.Component {
 	render() {
 
 		const { navigate } = this.props.navigation;
+		const group = this.state.group;
 
 		return (
 			<View style={styles.container}>
 
 			<ScrollView style={styles.container}>
 
-				<Stripe image={groupImage} style={{minHeight: 200, justifyContent: 'center', alignItems: 'center'}}>
+				<Stripe image={group.photo} style={{minHeight: 200, justifyContent: 'center', alignItems: 'center'}}>
 					<Bounds>
 						<Section>
-								<Text style={[styles.text, styles.textPageHead, {backgroundColor: 'transparent', color: 'white', fontSize: 26}]}>Some group name</Text>
+							<Text style={[styles.text, styles.textPageHead, {backgroundColor: 'transparent', color: 'white', fontSize: 26, textAlign: 'center', textShadowColor: 'rgba(0,0,0,.5)', textShadowRadius: 10, textShadowOffset: {width: 1, height: 1}}]}>{group.name}</Text>
 						</Section>
 					</Bounds>
 				</Stripe>
@@ -172,37 +174,42 @@ class GroupHome extends React.Component {
 			 <Stripe>
 					<Bounds>
 						<Section>
-							<Chunk style={{paddingBottom: 24}}>
-								<Text style={[styles.text, styles.textSectionHead]}>Ideas for your first Meetup</Text>
-								<Text style={[styles.text]}>See what other Hiking Meetup Groups have tried and loved</Text>
+							<Chunk style={{paddingBottom: 24,  alignItems: 'center'}}>
+
+									<Image
+										source={require('../img/icons/Calendar.png')}
+										style={{resizeMode: 'contain', height: 20, width: 20, tintColor: 'gray', marginVertical: 4}}
+										/>
+
+										<Text style={[styles.text, styles.textSectionHead, {textAlign: 'center', marginVertical: 7}]}>Ideas for your first Meetup</Text>
+										<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}>Check out some Meetup ideas other {group.label} groups have tried and loved.</Text>
+
+
 							</Chunk>
 
 							<List
 								variant=''
-								items={[
-									'Field trip to the Fire Station',
-									'Ice Cream Social',
-									'Movie Monday',
-									'idea 4', 'idea 1', 'idea 2', 'idea 3', 'idea 4']}
-								renderItem={(item, i)=>{
+								items={group.ideas}
+								renderItem={(idea, i)=>{
 									return(
 										<Link
 											key={i}
 											onPress={()=>{
+												store.idea = idea;
 												navigate('IdeaDetail')
 											}}>
 											<Card style={{marginBottom: 16}}>
 												<Flex align='center'>
-													<FlexItem growFactor={1}>
+													<FlexItem growFactor={2}>
 														<Image
-															source={{uri: 'https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg'}}
+															source={{uri: idea.pastMeetups[0].photo}}
 															style={{height: 120, resizeMode: 'cover'}}
 														 />
 													</FlexItem>
-													<FlexItem growFactor={2} style={{paddingRight: 16}}>
-														<Text style={[styles.text, styles.textKicker, {fontSize: 10, lineHeight: 18, color: 'rgba(0,0,0,.35)'}]}>MEETUP IDEA</Text>
-														<Text style={[styles.text, styles.textStrong]} numberOfLines={2}>{item}</Text>
-														<Text style={[styles.text, styles.textSmall]}>15 groups have tried this</Text>
+													<FlexItem growFactor={4} style={{paddingRight: 16}}>
+														<Text style={[styles.text, styles.textKicker, {fontSize: 11, lineHeight: 18, color: 'rgba(0,0,0,.35)'}]}>MEETUP IDEA</Text>
+														<Text style={[styles.text, styles.textStrong]} numberOfLines={2}>{idea.title}</Text>
+														<Text style={[styles.text, styles.textSmall]}>{idea.howManyGroups} groups have tried this</Text>
 													</FlexItem>
 												</Flex>
 											</Card>
@@ -241,7 +248,7 @@ class GroupHome extends React.Component {
 					>
 
 					<Animated.Image
-						source={{uri: groupImage}}
+						source={{uri: group.photo}}
 						style={[
 							styles.container,
 							styles.absoluteCenter,
@@ -263,12 +270,12 @@ class GroupHome extends React.Component {
 								<Card style={{backgroundColor: 'white'}}>
 									<CardSection>
 										<Chunk>
-											<Text style={[styles.text, styles.textPageHead]}>Welcome to your new group!</Text>
+											<Text style={[styles.text, styles.textPageHead]}>Welcome to your new {group.label} Meetup Group</Text>
 										</Chunk>
 										<Chunk>
-											<Text style={[styles.text]}>This is inspirational copy. You're a part of network of Hiking Meetups, 4,234 strong. Sharing, and helping each other and whatevs.</Text>
+											<Text style={[styles.text]}>This is the beginning of something big. You're a part of network of 4,234 Pareting Meetups around the world.</Text>
 										</Chunk>
-										<Chunk>
+										<Chunk style={{marginTop: 8}}>
 											<Link onPress={()=>{
 												this.setState({
 													hasLoadingContainer: false,
@@ -276,7 +283,7 @@ class GroupHome extends React.Component {
 												});
 												this.cleanUpWelcome();
 											}}>
-												<DumbButton label="ok let's do this" />
+												<DumbButton label="Let's go!" />
 											</Link>
 										</Chunk>
 									</CardSection>
