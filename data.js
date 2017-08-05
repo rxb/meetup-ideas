@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const foursquareClientId = 'Y1Y51NDFA2GCSXJB00OMXN2QBGGL4ASQLW1OM42BM54KZOKV';
 const foursquareClientSecret = 'XHARYWMWQQAHMUFT2UBJYPHFD3DVP44FCK2TWLEQX1F3BXVK';
 
@@ -16,12 +18,12 @@ const foursquareCategories = {
 
 export const store = {};
 
+
 export const getFoursquareVenue = (venueId = '40a55d80f964a52020f31ee3') => {
 
     return fetch(`https://api.foursquare.com/v2/venues/${venueId}?&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801`)
       	.then((response) => response.json());
 };
-
 
 export const getFoursquareVenues = (categoryId) => {
 
@@ -32,6 +34,19 @@ export const getFoursquareVenues = (categoryId) => {
       	.then((response) => response.json());
 };
 
+export const getSuggestedMoment = (day, hour, weeksOut) => {
+	return moment().startOf('week').add(weeksOut, 'w').add(day, 'd').hour(hour).minutes(0);
+}
+
+export const daysOfWeekPlural = [
+	'Sundays',
+	'Mondays',
+	'Tuesdays',
+	'Wednesdays',
+	'Thursdays',
+	'Fridays',
+	'Saturdays'
+]
 
 const parentIdeaBase = {
 	title: "Let's go to the beach",
@@ -66,9 +81,9 @@ const parentIdeaBase = {
 	},
 	when: {
 		options: [
-			"Tuesday at 10:00am",
-			"Thursday at 10:00am",
-			"Saturday at 3:00pm",
+			{day: 2, hour: 10},
+			{day: 4, hour: 10},
+			{day: 6, hour: 15},
 		],
 		description: "weekdays around 10:00am"
 	},
@@ -120,9 +135,9 @@ const hikingIdeaBase = {
 	},
 	when: {
 		options: [
-			"Tuesday at 10:00am",
-			"Thursday at 10:00am",
-			"Saturday at 3:00pm",
+			{day: 2, hour: 10},
+			{day: 4, hour: 10},
+			{day: 6, hour: 15},
 		],
 		description: "weekdays around 10:00am"
 	},

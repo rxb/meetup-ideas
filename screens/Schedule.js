@@ -2,10 +2,11 @@ import React from 'react';
 import { ScrollView, TextInput } from 'react-native';
 import { View, Text, Image, StyleSheet, Button } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import moment from 'moment';
 import styles from '../styles/styles';
 
 import VenueCard from '../components/VenueCard';
-import {data, getFoursquareVenues, store} from '../data';
+import {data, getFoursquareVenues, getSuggestedMoment, store} from '../data';
 
 
 import {
@@ -109,7 +110,12 @@ class Schedule extends React.Component {
 								</FlexItem>
 								<FlexItem>
 									<Chunk>
-										<TextInput placeholder="When?" style={[styles.input]} />
+										<TextInput
+											placeholder="When?"
+											style={[styles.input]}
+											value={this.state.when}
+											underlineColorAndroid="transparent"
+											/>
 									</Chunk>
 								</FlexItem>
 							</Flex>
@@ -118,13 +124,19 @@ class Schedule extends React.Component {
 							<List
 								variant='hscroll'
 								items={idea.when.options}
-								hscrollItemStyle={{width: 120, paddingRight: 8}}
+								hscrollItemStyle={{width: 140, paddingRight: 8}}
 								hscrollContainerStyle={hscrollContainerStyle}
 								renderItem={(item, i)=>{
+									const dateOption= getSuggestedMoment(item.day, item.hour, 2);
+									const dateOptionString = moment(dateOption).format('dddd, MMM D [at] LT');
 									return(
-										<Option>
-											<Text style={[styles.text, styles.textSmall]}>{item}</Text>
-										</Option>
+										<Link key={i} onPress={()=>{
+											this.setState({when: dateOptionString});
+										}}>
+											<Option>
+												<Text style={[styles.text, styles.textSmall]}>{dateOptionString}</Text>
+											</Option>
+										</Link>
 									);
 								}}
 								/>
@@ -143,7 +155,12 @@ class Schedule extends React.Component {
 								</FlexItem>
 								<FlexItem>
 									<Chunk>
-										<TextInput placeholder="How long will it be?" style={[styles.input]} underlineColorAndroid="transparent" />
+										<TextInput
+											placeholder="How long will it be?"
+											style={[styles.input]}
+											underlineColorAndroid="transparent"
+											value={this.state.duration}
+											/>
 									</Chunk>
 								</FlexItem>
 							</Flex>
@@ -156,9 +173,13 @@ class Schedule extends React.Component {
 								hscrollContainerStyle={hscrollContainerStyle}
 								renderItem={(item, i)=>{
 									return(
-										<Option>
-											<Text style={[styles.text, styles.textSmall]}>{item}</Text>
-										</Option>
+										<Link key={i} onPress={()=>{
+											this.setState({duration: item});
+										}}>
+											<Option>
+												<Text style={[styles.text, styles.textSmall]}>{item}</Text>
+											</Option>
+										</Link>
 									);
 								}}
 								/>
@@ -177,7 +198,12 @@ class Schedule extends React.Component {
 								</FlexItem>
 								<FlexItem>
 									<Chunk>
-										<TextInput placeholder="Where?" style={[styles.input]} underlineColorAndroid="transparent" />
+										<TextInput
+											placeholder="Where?"
+											style={[styles.input]}
+											underlineColorAndroid="transparent"
+											value={this.state.where}
+											/>
 									</Chunk>
 								</FlexItem>
 							</Flex>

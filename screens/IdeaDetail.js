@@ -2,10 +2,11 @@ import React from 'react';
 import { ART, ScrollView } from 'react-native';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import styles from '../styles/styles';
+import moment from 'moment';
 
 import VenueCard from '../components/VenueCard';
 
-import {data, store, getFoursquareVenues} from '../data';
+import {data, store, getFoursquareVenues, daysOfWeekPlural} from '../data';
 
 import {
   DumbButton,
@@ -169,11 +170,7 @@ class IdeaDetail extends React.Component {
                 <Text style={[styles.text, styles.textSectionHead]}>Popular days and times</Text>
               </Chunk>
 
-                {([
-                    'Tuesdays at 10am',
-                    'Thursdays at 10am',
-                    'Saturdays at 3pm'
-                  ]).map((step, i)=>{
+                {(idea.when.options).map((item, i)=>{
                   return(
                     <Chunk key={i}>
                       <Flex>
@@ -181,7 +178,7 @@ class IdeaDetail extends React.Component {
                           <View style={{width: 8, height: 8, borderRadius: 17, backgroundColor: 'black', marginTop: 7}} />
                         </FlexItem>
                         <FlexItem>
-                          <Text style={[styles.text]}>{step}</Text>
+                          <Text style={[styles.text]}>{daysOfWeekPlural[item.day]} at {(item.hour <= 12) ? item.hour : item.hour-12}{(item.hour < 12) ? 'am' : 'pm'}</Text>
                         </FlexItem>
                       </Flex>
                     </Chunk>
@@ -189,7 +186,7 @@ class IdeaDetail extends React.Component {
                 })}
 
               <Chunk>
-                <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Meetups scheduled 2 weeks out get the most attendees .</Text>
+                <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Meetups scheduled 2 weeks out get the most attendees.</Text>
               </Chunk>
 
             </Section>
