@@ -16,31 +16,39 @@ import Schedule from './screens/Schedule';
 import VenueDetail from './screens/VenueDetail';
 import End from './screens/End';
 
+const routeConfig = {
+	Choose: { screen: Choose },
+	GroupHome: { screen: GroupHome },
+	IdeaDetail: { screen: IdeaDetail },
+	Schedule: { screen: Schedule },
+	End: { screen: End },
+}
 
-// navigator
-const AppStackNavigator = StackNavigator({
-      Choose: { screen: Choose },
-      GroupHome: { screen: GroupHome },
-      IdeaDetail: { screen: IdeaDetail },
-      Schedule: { screen: Schedule },
-      VenueDetail: { screen: VenueDetail },
-      End: { screen: End },
-    }, {
-      navigationOptions: {
-        tintColor: 'red',
-        headerStyle: {
-        	backgroundColor: 'white'
-        },
-        titleStyle: {
-          color: 'black'
-        }
-      },
+const navigationOptions = {
+  tintColor: 'red',
+  headerStyle: {
+  	backgroundColor: 'white'
+  },
+  titleStyle: {
+    color: 'black'
+  }
+};
+
+
+// navigators
+const AppStackNavigator = StackNavigator(routeConfig, navigationOptions);
+const AppModalNavigator = StackNavigator({
+		AppStackNavigator: { screen: AppStackNavigator },
+    VenueDetail: { screen: VenueDetail }
+	}, {
+    mode: 'modal',
+    headerMode: 'none',
 });
 
 const App = () => {
   return(
     <Provider store={store}>
-      <AppStackNavigator />
+      <AppModalNavigator />
     </Provider>
   );
 };

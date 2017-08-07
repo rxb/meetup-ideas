@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, Linking } from 'react-native';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import styles from '../styles/styles';
-
+import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux';
 import {
   resetSchedule,
@@ -64,11 +64,12 @@ class VenueDetail extends React.Component {
               variant='hscroll'
               items={ (this.state.venue.photos) ? this.state.venue.photos.groups[0].items : ['']  }
               hscrollItemStyle={{width: 250, borderLeftWidth: 1, borderLeftColor: 'white'}}
+              hscrollContainerStyle={{backgroundColor: '#eee'}}
               renderItem={(item, i)=>{
                 return(
                     <Image
                       source={{uri: `${item.prefix}300x500${item.suffix}`}}
-                      style={{height: 160, resizeMode: 'cover', backgroundColor: '#eee'}}
+                      style={{height: 180, resizeMode: 'cover', backgroundColor: '#eee'}}
                      />
                 );
               }}
@@ -183,7 +184,8 @@ class VenueDetail extends React.Component {
           <Link
             onPress={()=>{
               this.props.setScheduleWhere(this.state.venue);
-              navigate('Schedule', {ideaIndex: this.props.ideaIndex})
+              //navigate('Schedule', {ideaIndex: this.props.ideaIndex})
+              this.props.navigation.dispatch(NavigationActions.back());
             }}>
             <DumbButton label="Pick this venue" style={[styles['button--edge']]} />
           </Link>

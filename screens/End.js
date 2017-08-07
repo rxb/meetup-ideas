@@ -54,12 +54,13 @@ class Choose extends React.Component {
 			        <Chunk>
 						<Link
 							onPress={()=>{
+								// key: 1 refers to the regular stacknavigator
 								const resetAction = NavigationActions.reset({
 						            index: 0,
 						            actions: [
 						                NavigationActions.navigate({ routeName: 'Choose' }),
 						            ],
-						            key: null
+						            key: 1
 						        });
 								this.props.navigation.dispatch(resetAction);
 							}}>
