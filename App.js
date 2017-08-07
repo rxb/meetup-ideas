@@ -2,6 +2,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import reducer from './reducers'
+
+const store = createStore(reducer);
 
 // screens
 import Choose from './screens/Choose';
@@ -13,22 +18,31 @@ import End from './screens/End';
 
 
 // navigator
-export default App = StackNavigator({
-  Choose: { screen: Choose },
-  GroupHome: { screen: GroupHome },
-  IdeaDetail: { screen: IdeaDetail },
-  Schedule: { screen: Schedule },
-  VenueDetail: { screen: VenueDetail },
-  End: { screen: End },
-}, {
-  navigationOptions: {
-    tintColor: 'red',
-    headerStyle: {
-    	backgroundColor: 'white'
-    },
-    titleStyle: {
-      color: 'black'
-    }
-  },
+const AppStackNavigator = StackNavigator({
+      Choose: { screen: Choose },
+      GroupHome: { screen: GroupHome },
+      IdeaDetail: { screen: IdeaDetail },
+      Schedule: { screen: Schedule },
+      VenueDetail: { screen: VenueDetail },
+      End: { screen: End },
+    }, {
+      navigationOptions: {
+        tintColor: 'red',
+        headerStyle: {
+        	backgroundColor: 'white'
+        },
+        titleStyle: {
+          color: 'black'
+        }
+      },
 });
 
+const App = () => {
+  return(
+    <Provider store={store}>
+      <AppStackNavigator />
+    </Provider>
+  );
+};
+
+export default App;

@@ -6,7 +6,8 @@ import moment from 'moment';
 
 import VenueCard from '../components/VenueCard';
 
-import {data, store, getFoursquareVenues, daysOfWeekPlural} from '../data';
+import { connect } from 'react-redux';
+import {data, getFoursquareVenues, daysOfWeekPlural} from '../data';
 
 import {
   DumbButton,
@@ -35,16 +36,11 @@ class IdeaDetail extends React.Component {
     super(props);
     this.state = {
       venues: [],
-      idea: {}
     }
   }
 
   componentDidMount(){
-
-    const idea = store.idea
-    this.setState({idea: idea});
-
-    getFoursquareVenues(idea.where.categoryId)
+    getFoursquareVenues(this.props.idea.where.categoryId)
       .then((json) => {
         if(json.response && json.response.venues){
           this.setState({venues: json.response.venues});
@@ -56,7 +52,7 @@ class IdeaDetail extends React.Component {
 
     const { navigate } = this.props.navigation;
 
-    const idea = this.state.idea;
+    const idea = this.props.idea;
 
     if(!idea.title)
       return false;
@@ -155,8 +151,7 @@ class IdeaDetail extends React.Component {
                     <Link
                       key={i}
                       onPress={()=>{
-                        store.venueId = item.id;
-                        navigate('VenueDetail')
+                        navigate('VenueDetail', {venueId: item.id, ideaIndex: this.props.ideaIndex});
                       }}>
                       <VenueCard venue={item} />
                     </Link>
@@ -199,7 +194,7 @@ class IdeaDetail extends React.Component {
       <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
           <Link
             onPress={()=>{
-              navigate('Schedule')
+              navigate('Schedule', {ideaIndex: this.props.ideaIndex})
             }}>
             <DumbButton label="Plan a Meetup like this" style={[styles['button--edge']]} />
           </Link>
@@ -211,4 +206,19 @@ class IdeaDetail extends React.Component {
 }
 
 
-export default IdeaDetail;
+const mapStateToProps = (state, ownProps) => {
+  const { params } = ownProps.navigation.state;
+  return ({
+    ideaIndex: params.ideaIndex,
+    idea: state.groups['parenting'].ideas[params.ideaIndex]
+  });
+}
+
+const mapDispatchToProps = {
+  // onTodoClick: toggleTodo
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(IdeaDetail);

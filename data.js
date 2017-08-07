@@ -16,7 +16,9 @@ const foursquareCategories = {
 	dogs: '4bf58dd8d48988d1e5941735'
 }
 
-export const store = {};
+export const store = {
+	newEvent: {}
+};
 
 
 export const getFoursquareVenue = (venueId = '40a55d80f964a52020f31ee3') => {

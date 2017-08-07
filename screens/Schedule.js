@@ -6,7 +6,15 @@ import moment from 'moment';
 import styles from '../styles/styles';
 
 import VenueCard from '../components/VenueCard';
-import {data, getFoursquareVenues, getSuggestedMoment, store} from '../data';
+
+import { connect } from 'react-redux';
+import {
+	resetSchedule,
+  setScheduleWhere,
+  setScheduleWhen,
+  setScheduleDuration
+} from '../actions';
+import {data, getFoursquareVenues, getSuggestedMoment} from '../data';
 
 
 import {
@@ -52,22 +60,12 @@ class Schedule extends React.Component {
     super(props);
     this.state = {
       venues: [],
-      idea: {
-      	title: '',
-      	agenda: [],
-      	when: {},
-      	where: {},
-      	duration: {}
-      }
     }
   }
 
   componentDidMount(){
 
-    const idea = store.idea
-    this.setState({idea: idea});
-
-    getFoursquareVenues(idea.where.categoryId)
+    getFoursquareVenues(this.props.idea.where.categoryId)
       .then((json) => {
         if(json.response && json.response.venues){
           this.setState({venues: json.response.venues});
@@ -81,7 +79,7 @@ class Schedule extends React.Component {
 
 		const { navigate } = this.props.navigation;
 
-		const idea = this.state.idea;
+		const idea = this.props.idea;
 		const agendaString = idea.agenda.map((step, i)=>{
 			return `• ${step.label} (${step.minutes} min) ${'\n'}`;
 		}).join('');
@@ -113,7 +111,7 @@ class Schedule extends React.Component {
 										<TextInput
 											placeholder="When?"
 											style={[styles.input]}
-											value={this.state.when}
+											value={this.props.schedule.when}
 											underlineColorAndroid="transparent"
 											/>
 									</Chunk>
@@ -131,7 +129,7 @@ class Schedule extends React.Component {
 									const dateOptionString = moment(dateOption).format('dddd, MMM D [at] LT');
 									return(
 										<Link key={i} onPress={()=>{
-											this.setState({when: dateOptionString});
+											this.props.setScheduleWhen(dateOptionString)
 										}}>
 											<Option>
 												<Text style={[styles.text, styles.textSmall]}>{dateOptionString}</Text>
@@ -159,7 +157,7 @@ class Schedule extends React.Component {
 											placeholder="How long will it be?"
 											style={[styles.input]}
 											underlineColorAndroid="transparent"
-											value={this.state.duration}
+											value={this.props.schedule.duration}
 											/>
 									</Chunk>
 								</FlexItem>
@@ -174,7 +172,7 @@ class Schedule extends React.Component {
 								renderItem={(item, i)=>{
 									return(
 										<Link key={i} onPress={()=>{
-											this.setState({duration: item});
+											this.props.setScheduleDuration(item)
 										}}>
 											<Option>
 												<Text style={[styles.text, styles.textSmall]}>{item}</Text>
@@ -198,12 +196,19 @@ class Schedule extends React.Component {
 								</FlexItem>
 								<FlexItem>
 									<Chunk>
-										<TextInput
-											placeholder="Where?"
-											style={[styles.input]}
-											underlineColorAndroid="transparent"
-											value={this.state.where}
-											/>
+										<View>
+											{ this.props.schedule.where &&
+												<View>
+													<Text style={[styles.text]}>{this.props.schedule.where.name}</Text>
+													{this.props.schedule.where.location &&
+														<Text style={[styles.text, styles.textSecondary, styles.textSmall]}>{this.props.schedule.where.location.address} • {this.props.schedule.where.location.city}</Text>
+													}
+												</View>
+											}
+											{ !this.props.schedule.where &&
+												<Text style={[styles.text, styles.textHint]}>Where?</Text>
+											}
+										</View>
 									</Chunk>
 								</FlexItem>
 							</Flex>
@@ -219,8 +224,8 @@ class Schedule extends React.Component {
 										<Link
 											key={i}
 											onPress={()=>{
-												store.venueId = item.id;
-												navigate('VenueDetail');
+												//this.props.setScheduleWhere(item.name);
+												navigate('VenueDetail', {venueId: item.id, ideaIndex: this.props.ideaIndex});
 											}}>
 											<VenueCard venue={item} />
 										</Link>
@@ -269,5 +274,24 @@ class Schedule extends React.Component {
 	}
 }
 
+const mapStateToProps = (state, ownProps) => {
+  const { params } = ownProps.navigation.state;
+  return ({
+    ideaIndex: params.ideaIndex,
+    idea: state.groups['parenting'].ideas[params.ideaIndex],
+    schedule: state.schedule
+  });
+}
 
-export default Schedule;
+const actionCreators = {
+	resetSchedule,
+	setScheduleWhere,
+	setScheduleWhen,
+	setScheduleDuration
+}
+
+export default connect(
+  mapStateToProps,
+  actionCreators
+)(Schedule);
+

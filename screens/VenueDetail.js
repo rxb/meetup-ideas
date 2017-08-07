@@ -3,8 +3,12 @@ import { ScrollView, Linking } from 'react-native';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import styles from '../styles/styles';
 
-
-import {data, store, getFoursquareVenue} from '../data';
+import { connect } from 'react-redux';
+import {
+  resetSchedule,
+  setScheduleWhere,
+} from '../actions';
+import {data, getFoursquareVenue} from '../data';
 
 
 import {
@@ -39,8 +43,7 @@ class VenueDetail extends React.Component {
 
 
  componentDidMount(){
-
-    getFoursquareVenue(store.venueId)
+    getFoursquareVenue(this.props.venueId)
       .then((json) => {
         if(json.response && json.response.venue){
           this.setState({venue: json.response.venue});
@@ -179,7 +182,8 @@ class VenueDetail extends React.Component {
       <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
           <Link
             onPress={()=>{
-              navigate('Schedule')
+              this.props.setScheduleWhere(this.state.venue);
+              navigate('Schedule', {ideaIndex: this.props.ideaIndex})
             }}>
             <DumbButton label="Pick this venue" style={[styles['button--edge']]} />
           </Link>
@@ -192,4 +196,20 @@ class VenueDetail extends React.Component {
 }
 
 
-export default VenueDetail;
+const mapStateToProps = (state, ownProps) => {
+  const { params } = ownProps.navigation.state;
+  return ({
+    ideaIndex: params.ideaIndex,
+    venueId: params.venueId
+  });
+}
+
+const actionCreators = {
+  resetSchedule,
+  setScheduleWhere,
+}
+
+export default connect(
+  mapStateToProps,
+  actionCreators
+)(VenueDetail);

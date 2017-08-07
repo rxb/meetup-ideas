@@ -1,12 +1,12 @@
 import React from 'react';
 import { ScrollView, InteractionManager} from 'react-native';
 import { Animated, Easing, View, Text, Image, StyleSheet } from 'react-native';
+import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
+import Showable from '../components/Showable';
 import styles from '../styles/styles';
 
-import Confetti from 'react-native-confetti';
-import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
-
-import Showable from '../components/Showable';
+import { connect } from 'react-redux';
+import { toggleTodo } from '../actions';
 
 import {
 	DumbButton,
@@ -36,16 +36,16 @@ import {data, store} from '../data';
 class GroupHome extends React.Component {
 
 
- static navigationOptions = {
- 	headerTintColor: 'white',
-    headerStyle: {
-    	backgroundColor: 'transparent',
-    	position: 'absolute',
-    	top: 0,
-    	left: 0,
-    	right: 0
-    }
-  }
+	static navigationOptions = {
+		headerTintColor: 'white',
+		headerStyle: {
+			backgroundColor: 'transparent',
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			right: 0
+		}
+	}
 
 
 
@@ -61,13 +61,12 @@ class GroupHome extends React.Component {
 			hasWelcomeContainer: true,
 			hasLoadingContainer: true,
 			viewportLayout: {},
-			group: {},
 		}
 	}
 
 
 	componentDidMount() {
-			this.setState({group: store.group});
+
 			/*
 			// show loader
 			setTimeout(()=>{
@@ -156,7 +155,7 @@ class GroupHome extends React.Component {
 	render() {
 
 		const { navigate } = this.props.navigation;
-		const group = this.state.group;
+		const group = this.props.groups['parenting'];
 
 		return (
 			<View style={styles.container}>
@@ -196,7 +195,7 @@ class GroupHome extends React.Component {
 											key={i}
 											onPress={()=>{
 												store.idea = idea;
-												navigate('IdeaDetail')
+												navigate('IdeaDetail', {ideaIndex: i})
 											}}>
 											<Card style={{marginBottom: 16}}>
 												<Flex align='center'>
@@ -299,4 +298,15 @@ class GroupHome extends React.Component {
 }
 
 
-export default GroupHome;
+const mapStateToProps = (state) => ({
+  groups: state.groups
+})
+
+const mapDispatchToProps = {
+  // onTodoClick: toggleTodo
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GroupHome);
