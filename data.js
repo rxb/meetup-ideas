@@ -29,8 +29,21 @@ export const getFoursquareVenue = (venueId = '40a55d80f964a52020f31ee3') => {
 
 export const getFoursquareVenues = (categoryId) => {
 
+	// minneapolis
     const lat = 44.9;
     const lon = -93.2;
+
+    // new hampshire
+	// const lat = 42.88;
+	// const lon = -71.32;
+
+	// clewiston
+	// const lat = 26.75;
+	// const lon = -80.93;
+
+	// los angeles
+	// const lat = 34.05;
+	// const lon = -118.24;
 
     return fetch(`https://api.foursquare.com/v2/venues/search?intent=browse&radius=8000&ll=${lat},${lon}&categoryId=${categoryId}&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801&limit=8`)
       	.then((response) => response.json());
@@ -50,54 +63,6 @@ export const daysOfWeekPlural = [
 	'Saturdays'
 ]
 
-const parentIdeaBase = {
-	title: "Let's go to the beach",
-	description: "At at a beach Meetup, parents bring clothes their kids have outgrown or no longer need to trade with other parents. It’s fun and free way to put those old clothes to good use.",
-	howManyGroups: 43,
-	pastMeetups: [
-		{
-			title: "Let's go to that beach",
-			groupName: "Los Angeles Dads",
-			attended: 21,
-			photo: "https://secure.meetupstatic.com/photos/event/d/c/a/a/event_460916490.jpeg"
-		},
-
-		{
-			title: "Let's go to this beach",
-			groupName: "Boston Dads",
-			attended: 23,
-			photo: "https://secure.meetupstatic.com/photos/event/8/5/a/1/event_462754209.jpeg"
-		},
-
-	],
-	agenda: [
-		{ label: 'Arrivals', minutes: 5},
-		{ label: 'Introductions', minutes: 10},
-		{ label: 'Storytime', minutes: 30},
-		{ label: 'Snacks', minutes: 30},
-		{ label: 'Goodbyes', minutes: 10},
-	],
-	where: {
-		categoryId: `${foursquareCategories.coffee},${foursquareCategories.library}`,
-		description: "Library meeting rooms, Coffee shops"
-	},
-	when: {
-		options: [
-			{day: 2, hour: 10},
-			{day: 4, hour: 10},
-			{day: 6, hour: 15},
-		],
-		description: "weekdays around 10:00am"
-	},
-	duration: {
-		options: [
-			"1 hour",
-			"2 hours",
-			"3 hours"
-		],
-		description: "2 hours"
-	}
-};
 
 const parentPastMeetup = {
 	title: "Weekly Kids Meetup",
@@ -106,52 +71,6 @@ const parentPastMeetup = {
 	photo: "https://secure.meetupstatic.com/photos/event/d/c/a/a/event_460916490.jpeg"
 };
 
-const hikingIdeaBase = {
-	title: "Let's go to the beach",
-	description: "This is a placeholder description. Parents bring clothes their kids have outgrown or no longer need to trade with other parents. It’s fun and free way to put those old clothes to good use.",
-	howManyGroups: 43,
-	pastMeetups: [
-		{
-			title: "Let's go to this beach",
-			groupName: "Boston Dads",
-			attended: 23,
-			photo: "https://secure.meetupstatic.com/photos/event/8/5/a/1/event_462754209.jpeg"
-		},
-		{
-			title: "Weekly Kids Meetup",
-			groupName: "Miami Cool Parents",
-			attended: 21,
-			photo: "https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg"
-		},
-	],
-	agenda: [
-		{ label: 'Meet at starting point', minutes: 10},
-		{ label: 'Hike to top', minutes: 60},
-		{ label: 'Snack break', minutes: 15},
-		{ label: 'Hike back down', minutes: 60},
-		{ label: 'Wrap up', minutes: 5},
-	],
-	where: {
-		categoryId: `${foursquareCategories.trail}`,
-		description: "Hiking trails, Parks"
-	},
-	when: {
-		options: [
-			{day: 2, hour: 10},
-			{day: 4, hour: 10},
-			{day: 6, hour: 15},
-		],
-		description: "weekdays around 10:00am"
-	},
-	duration: {
-		options: [
-			"1 hour",
-			"2 hours",
-			"3 hours"
-		],
-		description: "2 hours"
-	}
-}
 
 
 export const data = {
@@ -160,86 +79,216 @@ export const data = {
 
 	// ******************
 	// parenting
+
+	/*
+
+
+	2. Picnic
+	3. Park playdate
+	4. Potluck
+	5. Farm field trip
+	6. Nature Walk
+	7. Science Field Trip
+	8. Craft Making
+	9. Storytime
+	10. Kids Movie Party
+	1. Moms dinner
+	*/
+
+
 	parenting: {
 		name: 'Minneapolis Parents Collective',
 		label: 'Parenting',
 		photo: 'https://secure.meetupstatic.com/s/img/explore_page_photos/find-4.jpg',
 		ideas: [
 			{
-				...parentIdeaBase,
-				title: "Storytime at the Library",
+				title: "Ice Cream Party",
+				howManyGroups: 43,
 				pastMeetups: [
 					{
-						title: "Afternoon Library Stories",
-						groupName: "Boise Moms Meetup",
-						attended: 23,
-						photo: "https://secure.meetupstatic.com/photos/event/8/2/3/1/event_459753329.jpeg"
+						title: "Let's get some Ice Cream for Hunter's Birthday!",
+						groupName: "MOMS Club of Mount Olive",
+						attended: 18,
+						photo: "http://photos1.meetupstatic.com/photos/event/9/5/f/2/event_459338386.jpeg"
 					},
-					parentPastMeetup,
-					parentPastMeetup,
+					{
+						title: "Ice cream social and pool playdate",
+						groupName: "Huron Valley Moms' Club",
+						attended: 29,
+						photo: "https://secure.meetupstatic.com/photos/event/8/2/9/8/event_357993432.jpeg"
+					},
+					{
+						title: "Banana Splits!!!",
+						groupName: "Tiny Tots of Surprise",
+						attended: 12,
+						photo: "https://secure.meetupstatic.com/photos/event/d/9/c/0/event_460135744.jpeg"
+					},
+					{
+						title: "A Sweet Goodbye (an Ice Cream Party)",
+						groupName: "Positive Moms of Newport",
+						attended: 31,
+						photo: "http://photos1.meetupstatic.com/photos/event/b/5/6/event_328922902.jpeg"
+					},
+				],
+				description: "Get your summer ice cream fix. Kids can’t get enough of a toppings buffet and parents get a chance to slow down and soak in the last of summer rays. Ask your members to each bring a special topping for a deluxe variety—it’s a great conversation starter.",
+				agenda: [
+					{ label: 'Setup', minutes: 15},
+					{ label: 'Meet and greet', minutes: 5},
+					{ label: 'Ice cream time', minutes: 30},
+					{ label: 'Kids games', minutes: 30},
+					{ label: 'Clean up', minutes: 15},
 				],
 				where: {
-					categoryId: `${foursquareCategories.library}`,
-					description: "Libraries"
+					categoryId: `${foursquareCategories.park},${foursquareCategories.playground}`,
+					description: "Parks, Playgrounds, Backyards"
 				},
+				when: {
+					options: [
+						{day: 6, hour: 15},
+						{day: 1, hour: 15},
+						{day: 5, hour: 18},
+					],
+					description: "weekends around 3:00pm"
+				},
+				duration: {
+					options: [
+						"1 hour",
+						"2 hours",
+						"3 hours"
+					],
+					description: "2 hours"
+				}
 			},
 			{
-				...parentIdeaBase,
-				title: "Playdate",
+				title: "Park Playdate",
+				howManyGroups: 87,
 				pastMeetups: [
-					{
-						title: "Playdate at the Park",
-						groupName: "Los Angeles Dads",
-						attended: 23,
-						photo: "https://secure.meetupstatic.com/photos/event/9/6/9/3/event_448058547.jpeg"
-					},
-					parentPastMeetup,
-					parentPastMeetup,
-				]
-			},
-			{
-				...parentIdeaBase,
-				title: "Kids Clothing Exchange"
-			},
-
-			{
-				...parentIdeaBase,
-				title: "Fire Station Field Trip",
-				where: {
-					categoryId: `${foursquareCategories.fire}`,
-					description: "Fire stations"
+				{
+					title: "Dummy Event",
+					groupName: "Dummy Group",
+					attended: 0,
+					photo: "http://photos1.meetupstatic.com/photos/event/8/a/c/a/event_458135530.jpeg"
 				},
+				],
+				notFinished: true
 			},
 			{
-				...parentIdeaBase,
-				title: "Baking Cookies & Cookie Decorating"
-			},
-			{
-				...parentIdeaBase,
-				title: "Beach Day",
-				where: {
-					categoryId: `${foursquareCategories.beach}`,
-					description: "Beaches"
+				title: "Potluck",
+				howManyGroups: 32,
+				pastMeetups: [
+				{
+					title: "Dummy Event",
+					groupName: "Dummy Group",
+					attended: 0,
+					photo: "http://photos4.meetupstatic.com/photos/event/5/e/3/a/event_363564122.jpeg"
 				},
-			},
-
-			{
-				...parentIdeaBase,
-				title: "Ice Cream Social"
+				],
+				notFinished: true
 			},
 			{
-				...parentIdeaBase,
-				title: "Picnic"
+				title: "Farm Field Trip",
+				howManyGroups: 19,
+				pastMeetups: [
+				{
+					title: "Dummy Event",
+					groupName: "Dummy Group",
+					attended: 0,
+					photo: "https://a248.e.akamai.net/secure.meetupstatic.com/photos/event/d/a/9/event_458575960.jpeg"
+				},
+				],
+				notFinished: true
 			},
 			{
-				...parentIdeaBase,
-				title: "Kids' Gym Field Trip"
+				title: "Picnic",
+				howManyGroups: 64,
+				pastMeetups: [
+				{
+					title: "Dummy Event",
+					groupName: "Dummy Group",
+					attended: 0,
+					photo: "https://secure.meetupstatic.com/photos/event/4/f/e/e/event_388340462.jpeg"
+				},
+				],
+				notFinished: true
 			},
 			{
-				...parentIdeaBase,
-				title: "Moms-Only Coffee Date"
+				title: "Nature Walk",
+				howManyGroups: 46,
+				pastMeetups: [
+				{
+					title: "Dummy Event",
+					groupName: "Dummy Group",
+					attended: 0,
+					photo: "http://photos3.meetupstatic.com/photos/event/7/e/7/event_451802023.jpeg"
+				},
+				],
+				notFinished: true
 			},
-
+			{
+				title: "Moms Dinner",
+				howManyGroups: 52,
+				pastMeetups: [
+				{
+					title: "Dummy Event",
+					groupName: "Dummy Group",
+					attended: 0,
+					photo: "https://secure.meetupstatic.com/photos/event/1/5/b/9/event_443885561.jpeg"
+				},
+				],
+				notFinished: true
+			},
+			{
+				title: "Science Field Trip",
+				howManyGroups: 37,
+				pastMeetups: [
+				{
+					title: "Dummy Event",
+					groupName: "Dummy Group",
+					attended: 0,
+					photo: "https://secure.meetupstatic.com/photos/event/e/1/d/2/event_448857810.jpeg"
+				},
+				],
+				notFinished: true
+			},
+			{
+				title: "Craft Making",
+				howManyGroups: 68,
+				pastMeetups: [
+				{
+					title: "Dummy Event",
+					groupName: "Dummy Group",
+					attended: 0,
+					photo: "http://photos2.meetupstatic.com/photos/event/2/2/a/8/event_451028872.jpeg"
+				},
+				],
+				notFinished: true
+			},
+			{
+				title: "Storytime",
+				howManyGroups: 102,
+				pastMeetups: [
+				{
+					title: "Dummy Event",
+					groupName: "Dummy Group",
+					attended: 0,
+					photo: "http://photos3.meetupstatic.com/photos/event/6/6/2/7/event_459386151.jpeg"
+				},
+				],
+				notFinished: true
+			},
+			{
+				title: "Kids Movie Party",
+				howManyGroups: 8,
+				pastMeetups: [
+				{
+					title: "Dummy Event",
+					groupName: "Dummy Group",
+					attended: 0,
+					photo: "https://s-media-cache-ak0.pinimg.com/564x/8d/41/19/8d41197830c6a11c77d92eef80b132f0.jpg"
+				},
+				],
+				notFinished: true
+			},
 		]
 	},
 

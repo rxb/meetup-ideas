@@ -194,8 +194,8 @@ class GroupHome extends React.Component {
 										<Link
 											key={i}
 											onPress={()=>{
-												store.idea = idea;
-												navigate('IdeaDetail', {ideaIndex: i})
+												const ideaIndex = (idea.notFinished) ? 0 : i;
+												navigate('IdeaDetail', {ideaIndex})
 											}}>
 											<Card style={{marginBottom: 16}}>
 												<Flex align='center'>

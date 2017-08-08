@@ -47,6 +47,7 @@ class VenueDetail extends React.Component {
       .then((json) => {
         if(json.response && json.response.venue){
           this.setState({venue: json.response.venue});
+          console.log(json.response.venue);
         }
       });
   }
@@ -55,25 +56,63 @@ class VenueDetail extends React.Component {
 
     const { navigate } = this.props.navigation;
 
+    const venueImages = [];
+
+    // if not loaded yet, push some dummy images
+    if(!this.state.venue.name){
+      venueImages.push(['','','']);
+    }
+
+    // get foursquare images
+    if(this.state.venue.photos && this.state.venue.photos.groups.length > 0){
+      venueImages.push(...this.state.venue.photos.groups[0].items)
+    };
+
+    // get static map image
+    if(this.state.venue && this.state.venue.location){
+      const mapUri = `https://maps.googleapis.com/maps/api/staticmap?center=${this.state.venue.location.lat},${this.state.venue.location.lng}&markers=color:red|${this.state.venue.location.lat},${this.state.venue.location.lng}&zoom=13&size=250x180&maptype=terrain&scale=2&key=AIzaSyAibsbqDXjn8sl5f3h4G2GvmxheyGAbX3M`;
+      venueImages.push( {type: 'map', uri: mapUri});
+    }
+
     return (
       <View style={styles.container}>
-
+      <View style={[{height: 64, backgroundColor: '#EFEFF2', paddingTop: 34, paddingLeft: 14}]}>
+        <Link
+            onPress={()=>{
+              this.props.navigation.dispatch(NavigationActions.back());
+            }}>
+              <Image
+                source={require('../img/icons/Close.png')}
+                style={{height: 16, width: 16, resizeMode: 'contain', tintColor: '#0076FF'}}
+                />
+          </Link>
+      </View>
       <ScrollView style={styles.container}>
         <Stripe>
+          { venueImages.length > 1 &&
           <List
               variant='hscroll'
-              items={ (this.state.venue.photos) ? this.state.venue.photos.groups[0].items : ['']  }
-              hscrollItemStyle={{width: 250, borderLeftWidth: 1, borderLeftColor: 'white'}}
-              hscrollContainerStyle={{backgroundColor: '#eee'}}
+              items={ venueImages }
+              style={{backgroundColor: '#555'}}
+              hscrollItemStyle={[ {width: 250, borderLeftWidth: 1, borderLeftColor: 'white'}]}
               renderItem={(item, i)=>{
+                const uri = (item.type == 'map') ? item.uri : `${item.prefix}300x500${item.suffix}`;
                 return(
                     <Image
-                      source={{uri: `${item.prefix}300x500${item.suffix}`}}
-                      style={{height: 180, resizeMode: 'cover', backgroundColor: '#eee'}}
+                      source={{uri: uri}}
+                      style={{height: 180, resizeMode: 'cover'}}
                      />
                 );
               }}
               />
+          }
+
+          { venueImages.length == 1 &&
+              <Image
+                source={{uri: venueImages[0].uri}}
+                style={{height: 180, resizeMode: 'cover'}}
+               />
+          }
 
           <Bounds>
             <Section>
@@ -112,7 +151,7 @@ class VenueDetail extends React.Component {
                 <FlexItem growFactor={3}>
                   <Chunk>
                     <Text style={[styles.text]}>{this.state.venue.location.address}</Text>
-                    <Text style={[styles.text]}>{this.state.venue.location.city}</Text>
+                    <Text style={[styles.text]}>{this.state.venue.location.city}, {this.state.venue.location.state}</Text>
                   </Chunk>
                 </FlexItem>
               </Flex>
@@ -166,15 +205,17 @@ class VenueDetail extends React.Component {
                 </Flex>
               }
             </Section>
-            <Section>
-              <Chunk>
-                <Link onPress={()=>{
-                  Linking.openURL('tel: +13234450914');
-                  }}>
-                  <DumbButton type="secondary" label="Call venue" />
-                </Link>
-              </Chunk>
-            </Section>
+            {this.state.venue.contact && this.state.venue.contact.phone &&
+              <Section style={{borderBottomWidth: 0}}>
+                <Chunk>
+                  <Link onPress={()=>{
+                    Linking.openURL('tel: +13234450914');
+                    }}>
+                    <DumbButton type="secondary" label="Call venue" />
+                  </Link>
+                </Chunk>
+              </Section>
+            }
             <View style={{height: 80}}/>
           </Bounds>
         </Stripe>
