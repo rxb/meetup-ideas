@@ -185,7 +185,14 @@ class VenueDetail extends React.Component {
             onPress={()=>{
               this.props.setScheduleWhere(this.state.venue);
               //navigate('Schedule', {ideaIndex: this.props.ideaIndex})
-              this.props.navigation.dispatch(NavigationActions.back());
+              //this.props.navigation.dispatch(NavigationActions.back());
+
+              this.props.navigation.dispatch({
+                      type: 'Navigation/BACK',
+                      index: 0,
+                      actions: [{ type: 'Navigate', routeName: 'Schedule' }]
+              })
+
             }}>
             <DumbButton label="Pick this venue" style={[styles['button--edge']]} />
           </Link>
