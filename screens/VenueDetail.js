@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, Linking } from 'react-native';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Platform } from 'react-native';
 import styles from '../styles/styles';
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux';
@@ -69,9 +69,12 @@ class VenueDetail extends React.Component {
     };
 
     // get static map image
+    let mapLinking;
     if(this.state.venue && this.state.venue.location){
       const mapUri = `https://maps.googleapis.com/maps/api/staticmap?center=${this.state.venue.location.lat},${this.state.venue.location.lng}&markers=color:red|${this.state.venue.location.lat},${this.state.venue.location.lng}&zoom=13&size=250x180&maptype=terrain&scale=2&key=AIzaSyAibsbqDXjn8sl5f3h4G2GvmxheyGAbX3M`;
       venueImages.push( {type: 'map', uri: mapUri});
+
+      mapLinking = (Platform.OS == 'android') ? `geo:${this.state.venue.location.lat},${this.state.venue.location.lng}` : `http://maps.apple.com/?sll=${this.state.venue.location.lat},${this.state.venue.location.lng}&q=${this.state.venue.name}`;
     }
 
     return (
@@ -149,10 +152,14 @@ class VenueDetail extends React.Component {
                   </Chunk>
                 </FlexItem>
                 <FlexItem growFactor={3}>
-                  <Chunk>
-                    <Text style={[styles.text]}>{this.state.venue.location.address}</Text>
-                    <Text style={[styles.text]}>{this.state.venue.location.city}, {this.state.venue.location.state}</Text>
-                  </Chunk>
+                    <Link onPress={()=>{
+                      Linking.openURL(mapLinking);
+                      }}>
+                      <Chunk>
+                        <Text style={[styles.text]}>{this.state.venue.location.address}</Text>
+                        <Text style={[styles.text]}>{this.state.venue.location.city}, {this.state.venue.location.state}</Text>
+                      </Chunk>
+                    </Link>
                 </FlexItem>
               </Flex>
               }
