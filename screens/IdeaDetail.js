@@ -115,7 +115,6 @@ class IdeaDetail extends React.Component {
                 {(idea.agenda).map((step, i)=>{
                   return(
                     <Chunk key={i}>
-
                       <Flex>
                         <FlexItem shrink>
                           <View style={{width: 17, height: 17, borderRadius: 17, borderWidth: 1, borderColor: '#ccc', backgroundColor: 'white', marginTop: 2}} />
@@ -151,7 +150,11 @@ class IdeaDetail extends React.Component {
                     <Link
                       key={i}
                       onPress={()=>{
-                        navigate('VenueDetail', {venueId: item.id, ideaIndex: this.props.ideaIndex});
+                        navigate('VenueDetail', {
+                          venueId: item.id,
+                          ideaIndex: this.props.ideaIndex,
+                          notFromSchedule: true
+                        });
                       }}>
                       <VenueCard venue={item} />
                     </Link>
@@ -185,18 +188,44 @@ class IdeaDetail extends React.Component {
               </Chunk>
 
             </Section>
+            { idea.tips &&
+              <Section>
+                <Chunk>
+                  <Text style={[styles.text, styles.textSectionHead]}>Tips</Text>
+                </Chunk>
+                {idea.tips.map((tip, i)=>{
+                  return(
+                    <Chunk style={{paddingTop: 8}} key={i}>
+                      <Flex>
+                        <FlexItem shrink>
+                          <Image
+                            source={{uri: tip.authorPhoto}}
+                            style={{width: 40, height: 40, borderRadius: 20, resizeMode: 'cover'}}
+                            />
+                        </FlexItem>
+                        <FlexItem>
+                          <Text style={[styles.text]}>&ldquo;{tip.quote}&rdquo;</Text>
+                          <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>{tip.authorName} • {tip.authorGroupName}</Text>
+                        </FlexItem>
+                      </Flex>
+                    </Chunk>
+                  );
+                })}
+              </Section>
+            }
+
             <View style={{height: 80}}/>
           </Bounds>
         </Stripe>
       </ScrollView>
 
 
-      <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
+      <View style={{position: 'absolute', bottom: 0, left: 0, right: 0, padding: 6}} elevation={3}>
           <Link
             onPress={()=>{
               navigate('Schedule', {ideaIndex: this.props.ideaIndex})
             }}>
-            <DumbButton label="Plan a Meetup like this" style={[styles['button--edge']]} />
+            <DumbButton label="Plan a Meetup like this" style={styles.shadow}  />
           </Link>
       </View>
 

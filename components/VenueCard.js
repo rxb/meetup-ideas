@@ -45,7 +45,7 @@ const VenueCard = (props) => {
          */}
          <View style={{height: 70, alignItems: 'center', justifyContent: 'center'}}>
            <GoogleStaticMap
-              style={{height: 70, position: 'absolute'}}
+              style={{height: 70, position: 'absolute', borderTopLeftRadius: 5, borderTopRightRadius: 5,}}
               latitude={String(venue.location.lat)}
               longitude={String(venue.location.lng)}
               zoom={14}

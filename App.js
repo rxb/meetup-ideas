@@ -1,6 +1,6 @@
 // imports
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
@@ -43,6 +43,9 @@ const AppModalNavigator = StackNavigator({
 	}, {
     mode: 'modal',
     headerMode: 'none',
+		cardStyle: {
+      //paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+    }
 });
 
 const App = () => {

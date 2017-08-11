@@ -3,6 +3,8 @@ import moment from 'moment';
 const foursquareClientId = 'Y1Y51NDFA2GCSXJB00OMXN2QBGGL4ASQLW1OM42BM54KZOKV';
 const foursquareClientSecret = 'XHARYWMWQQAHMUFT2UBJYPHFD3DVP44FCK2TWLEQX1F3BXVK';
 
+const weatherUndergroundKey = '99c20c22192a68a5';
+
 const foursquareCategories = {
 	coffee: '4bf58dd8d48988d1e0931735',
 	park: '4bf58dd8d48988d163941735',
@@ -13,38 +15,52 @@ const foursquareCategories = {
 	waterfront: '56aa371be4b08b9a8d5734c3',
 	beach: '4bf58dd8d48988d1e2941735',
 	trail: '4bf58dd8d48988d159941735',
-	dogs: '4bf58dd8d48988d1e5941735'
+	dogs: '4bf58dd8d48988d1e5941735',
+	indoorPlayArea: '4bf58dd8d48988d15e941735'
 }
+
+
+// minneapolis
+const defaultLat = 44.9;
+const defaultLon = -93.2;
+
+// new hampshire
+// const defaultLat = 42.88;
+// const defaultLon = -71.32;
+
+// clewiston
+// const defaultLat = 26.75;
+// const defaultLon = -80.93;
+
+// los angeles
+// const defaultLat = 34.05;
+// const defaultLon = -118.24;
+
+
 
 export const store = {
 	newEvent: {}
 };
 
 
-export const getFoursquareVenue = (venueId = '40a55d80f964a52020f31ee3') => {
+export const getForecastsForLatLon = (lat = defaultLat, lon = defaultLon) =>{
+	return fetch(`http://api.wunderground.com/api/${weatherUndergroundKey}/hourly10day/q/${lat},${lon}.json`)
+      	.then((response) => response.json())
+      	.then((json) => json.hourly_forecast);
+}
 
+export const findTimeStampInForecasts = (timestamp, forecasts) =>{
+	return forecasts.find((forecast)=>{
+		return forecast.FCTTIME.epoch == timestamp;
+	});
+}
+
+export const getFoursquareVenue = (venueId = '40a55d80f964a52020f31ee3') => {
     return fetch(`https://api.foursquare.com/v2/venues/${venueId}?&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801`)
       	.then((response) => response.json());
 };
 
-export const getFoursquareVenues = (categoryId) => {
-
-	// minneapolis
-    const lat = 44.9;
-    const lon = -93.2;
-
-    // new hampshire
-	// const lat = 42.88;
-	// const lon = -71.32;
-
-	// clewiston
-	// const lat = 26.75;
-	// const lon = -80.93;
-
-	// los angeles
-	// const lat = 34.05;
-	// const lon = -118.24;
-
+export const getFoursquareVenues = (categoryId, lat = defaultLat, lon = defaultLon) => {
     return fetch(`https://api.foursquare.com/v2/venues/search?intent=browse&radius=8000&ll=${lat},${lon}&categoryId=${categoryId}&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801&limit=8`)
       	.then((response) => response.json());
 };
@@ -64,15 +80,6 @@ export const daysOfWeekPlural = [
 ]
 
 
-const parentPastMeetup = {
-	title: "Weekly Kids Meetup",
-	groupName: "Miami Cool Parents",
-	attended: 21,
-	photo: "https://secure.meetupstatic.com/photos/event/d/c/a/a/event_460916490.jpeg"
-};
-
-
-
 export const data = {
 
 
@@ -80,29 +87,13 @@ export const data = {
 	// ******************
 	// parenting
 
-	/*
-
-
-	2. Picnic
-	3. Park playdate
-	4. Potluck
-	5. Farm field trip
-	6. Nature Walk
-	7. Science Field Trip
-	8. Craft Making
-	9. Storytime
-	10. Kids Movie Party
-	1. Moms dinner
-	*/
-
-
 	parenting: {
 		name: 'Minneapolis Parents Collective',
 		label: 'Parenting',
 		photo: 'https://secure.meetupstatic.com/s/img/explore_page_photos/find-4.jpg',
 		ideas: [
 			{
-				title: "Ice Cream Party",
+				title: "Ice Cream Social",
 				howManyGroups: 43,
 				pastMeetups: [
 					{
@@ -132,11 +123,12 @@ export const data = {
 				],
 				description: "Get your summer ice cream fix. Kids can’t get enough of a toppings buffet and parents get a chance to slow down and soak in the last of summer rays. Ask your members to each bring a special topping for a deluxe variety—it’s a great conversation starter.",
 				agenda: [
-					{ label: 'Setup', minutes: 15},
+					{ label: 'Setup', minutes: 20},
 					{ label: 'Meet and greet', minutes: 5},
-					{ label: 'Ice cream time', minutes: 30},
+					{ label: 'Ice cream scooping', minutes: 10},
+					{ label: 'Toppings decorating', minutes: 20},
 					{ label: 'Kids games', minutes: 30},
-					{ label: 'Clean up', minutes: 15},
+					{ label: 'Free play and chat', minutes: 30},
 				],
 				where: {
 					categoryId: `${foursquareCategories.park},${foursquareCategories.playground}`,
@@ -145,7 +137,7 @@ export const data = {
 				when: {
 					options: [
 						{day: 6, hour: 15},
-						{day: 1, hour: 15},
+						{day: 0, hour: 15},
 						{day: 5, hour: 18},
 					],
 					description: "weekends around 3:00pm"
@@ -157,20 +149,118 @@ export const data = {
 						"3 hours"
 					],
 					description: "2 hours"
-				}
+				},
+				tips: [
+					{
+						authorName: 'Ming',
+						authorGroupName: 'Babies and Babes Raleigh',
+						quote: 'We gave ours a 50s costume theme and the turnout was hilarious',
+						authorPhoto: 'https://randomuser.me/api/portraits/women/1.jpg'
+					},
+					{
+						authorName: "Madeline",
+						authorGroupName: "Vegan Moms Chicago",
+						quote: "Sugar-free toppings and coconut ice cream was such a healthy way to reinvent this classic.",
+						authorPhoto: 'https://randomuser.me/api/portraits/women/2.jpg'
+					},
+					{
+						authorName: "Janet",
+						authorGroupName: "Parents Without Partners Manchester",
+						quote: "I massively underestimated how many people would bring chocolate syrup so next time I’d create a Google Doc to capture what everyone’s bringing beforehand.",
+						authorPhoto: 'https://randomuser.me/api/portraits/women/3.jpg'
+					},
+					{
+						authorName: "Matt",
+						authorGroupName: "Parents of Burnsville",
+						quote: "Don’t forget napkins!!",
+						authorPhoto: 'https://randomuser.me/api/portraits/men/4.jpg'
+					},
+					{
+						authorName: "Lisa",
+						authorGroupName: "Mommy & Me Montana",
+						quote: "Pre-scooping the ice cream can save a lot of time.",
+						authorPhoto: 'https://randomuser.me/api/portraits/women/5.jpg'
+					},
+				]
 			},
+
 			{
 				title: "Park Playdate",
 				howManyGroups: 87,
 				pastMeetups: [
-				{
-					title: "Dummy Event",
-					groupName: "Dummy Group",
-					attended: 0,
-					photo: "http://photos1.meetupstatic.com/photos/event/8/a/c/a/event_458135530.jpeg"
-				},
+					{
+						title: "All Ages Play Date",
+						groupName: "MOMS Club of Kansas City",
+						attended: 14,
+						photo: "http://photos1.meetupstatic.com/photos/event/8/a/c/a/event_458135530.jpeg"
+					},
+					{
+						title: "Colorful Playdate and Snacks",
+						groupName: "Menifee Mom's Group",
+						attended: 12,
+						photo: "https://secure.meetupstatic.com/photos/event/8/9/1/7/600_463355095.jpeg"
+					},
+					{
+						title: "Let's let the littles play!",
+						groupName: "Moms-n-Munchkins of Northwest Columbus",
+						attended: 13,
+						photo: "https://secure.meetupstatic.com/photos/event/4/d/9/9/600_1219865.jpeg"
+					},
+					{
+						title: "Mardi Gras play date",
+						groupName: "SouthWest Vegas Mommies and Kids",
+						attended: 17,
+						photo: "https://secure.meetupstatic.com/photos/event/4/a/a/8/event_253279112.jpeg"
+					},
 				],
-				notFinished: true
+				description: "Let the little ones unleash all that pent up energy at a park playdate, no matter their age. You get a dose of fresh air and Vitamin D while they get a break from the structure of home or school. Set up a game of tag, make a rock scavenger hunt, or have a free-for-all on the playground. Don't forget sunscreen.",
+				agenda: [
+					{ label: 'Meet and greet', minutes: 10},
+					{ label: 'Kids playtime', minutes: 30},
+					{ label: 'Snacks and chats', minutes: 20},
+					{ label: 'Kids playtime', minutes: 30},
+					{ label: 'Goodbyes', minutes: 10},
+				],
+				where: {
+					categoryId: `${foursquareCategories.playground}`,
+					description: "Parks with playgrounds"
+				},
+				when: {
+					options: [
+						{day: 2, hour: 16},
+						{day: 0, hour: 12},
+						{day: 6, hour: 9},
+					],
+					description: "weekend mornings and middays"
+				},
+				duration: {
+					options: [
+						"1 hour",
+						"2 hours",
+						"3 hours"
+					],
+					description: "2 hours"
+				},
+				tips: [
+					{
+						authorName: 'Sally',
+						authorGroupName: 'Bushwick Moms',
+						quote: 'We bring sidewalk chalk sometimes and they are just enthralled for hours.',
+						authorPhoto: 'https://randomuser.me/api/portraits/women/1.jpg'
+					},
+					{
+						authorName: "Peter",
+						authorGroupName: "Vegan Moms Chicago",
+						quote: "Fruit and trail mix are great snacks for the park that everyone can enjoy.",
+						authorPhoto: 'https://randomuser.me/api/portraits/men/2.jpg'
+					},
+					{
+						authorName: "Jan Quin",
+						authorGroupName: "SF Marina Mommies",
+						quote: "Try to end on a high note and leave while everyone is having fun. This way the kids remember it being an awesome time and will be excited to do it again.",
+						authorPhoto: 'https://randomuser.me/api/portraits/women/3.jpg'
+					}
+				]
 			},
 			{
 				title: "Potluck",
@@ -291,36 +381,5 @@ export const data = {
 			},
 		]
 	},
-
-
-	/*
-
-	// ******************
-	// hiking
-	hiking: {
-		name: 'South Minneapolis Hikers Meetu Group',
-		label: 'Hiking',
-		photo: 'https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg',
-		ideas: [
-			{
-				...hikingIdeaBase,
-				title: "Beginner hike"
-			},
-		]
-	},
-
-	hiking: {
-		name: 'South Minneapolis Hikers Meetu Group',
-		label: 'Hiking',
-		photo: 'https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg',
-		ideas: [
-			{
-				...hikingIdeaBase,
-				title: "Beginner hike"
-			},
-		]
-	},
-
-	*/
 
 }

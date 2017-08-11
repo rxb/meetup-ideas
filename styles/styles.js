@@ -191,6 +191,13 @@ const styles = StyleSheet.create({
 	},
 
 	// CARD
+	shadow: {
+		shadowRadius: 3,
+		shadowColor: 'rgba(0,0,0,.6)',
+		shadowOpacity: 1,
+		shadowOffset: {width: 0, height: 0}
+	},
+
 	card: {
 		borderRadius: 5,
 		backgroundColor: 'rgba(0,0,0,.1)',

@@ -36,7 +36,7 @@ class Choose extends React.Component {
       	<Stripe style={[styles.container, {flex: 1, justifyContent: 'center'}]}>
       			<Section>
       				<Chunk>
-						<Text style={[styles.text, styles.textSectionHead, {textAlign: 'center'}]}>Prototype</Text>
+						<Text style={[styles.text, styles.textSectionHead, {textAlign: 'center'}]}>Prototype!</Text>
       				</Chunk>
 			        <Chunk>
 			        	<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}>Imagine you've just started a Parenting Meetup Group...</Text>

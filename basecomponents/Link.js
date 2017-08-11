@@ -22,16 +22,19 @@ class Link extends React.Component {
 		if(Platform.OS == 'android')
 			return(
 				<TouchableNativeFeedback
+					useForeground={true}
+					background={TouchableNativeFeedback.Ripple('rgba(0,0,0,.2)')}
 					{...other}
 					>
-					<View>{children}</View>
+					<View style={[style]}>{children}</View>
 				</TouchableNativeFeedback>
 			);
 
 		if(Platform.OS == 'ios')
 			return(
-				<TouchableOpacity {...other} >
-					<View>{children}</View>
+				<TouchableOpacity
+					{...other} >
+					<View style={[style]}>{children}</View>
 				</TouchableOpacity>
 			);
 

@@ -34,6 +34,7 @@ import {
 
 class VenueDetail extends React.Component {
 
+
   constructor(props){
     super(props);
     this.state = {
@@ -47,7 +48,6 @@ class VenueDetail extends React.Component {
       .then((json) => {
         if(json.response && json.response.venue){
           this.setState({venue: json.response.venue});
-          console.log(json.response.venue);
         }
       });
   }
@@ -57,11 +57,6 @@ class VenueDetail extends React.Component {
     const { navigate } = this.props.navigation;
 
     const venueImages = [];
-
-    // if not loaded yet, push some dummy images
-    if(!this.state.venue.name){
-      venueImages.push(['','','']);
-    }
 
     // get foursquare images
     if(this.state.venue.photos && this.state.venue.photos.groups.length > 0){
@@ -77,26 +72,48 @@ class VenueDetail extends React.Component {
       mapLinking = (Platform.OS == 'android') ? `geo:${this.state.venue.location.lat},${this.state.venue.location.lng}` : `http://maps.apple.com/?sll=${this.state.venue.location.lat},${this.state.venue.location.lng}&q=${this.state.venue.name}`;
     }
 
+    // tips
+    let tips = [];
+    if(this.state.venue && this.state.venue.tips){
+      tips = this.state.venue.tips.groups.reduce((a,b)=>{
+        return [...a, ...b.items];
+      }, [])
+      .sort((a,b)=>{
+        return a.likes.count > b.likes.count;
+      }).slice(0,6);
+    }
+
+
     return (
-      <View style={styles.container}>
-      <View style={[{height: 64, backgroundColor: '#EFEFF2', paddingTop: 34, paddingLeft: 14}]}>
+    <View style={styles.container}>
+      <View elevation={4} style={[{ alignItems: 'flex-start'},
+        (Platform.OS == "ios" ?
+          {height: 44, marginTop:  20, backgroundColor: '#EFEFF2'} :
+          {height: 56, paddingTop:  6, backgroundColor: '#FFFFFF',}
+        )]}>
         <Link
+            style={{padding: 14}}
             onPress={()=>{
               this.props.navigation.dispatch(NavigationActions.back());
             }}>
               <Image
                 source={require('../img/icons/Close.png')}
-                style={{height: 16, width: 16, resizeMode: 'contain', tintColor: '#0076FF'}}
+                style={{height: 16, width: 16, resizeMode: 'contain', tintColor: Platform.OS == "ios" ? '#0076FF' : '#000'}}
                 />
           </Link>
       </View>
       <ScrollView style={styles.container}>
         <Stripe>
+
+          { venueImages.length == 0 &&
+            <View style={{height: 180, backgroundColor: '#ddd'}} />
+          }
+
           { venueImages.length > 1 &&
           <List
               variant='hscroll'
               items={ venueImages }
-              style={{backgroundColor: '#555'}}
+              style={{backgroundColor: '#ddd' }}
               hscrollItemStyle={[ {width: 250, borderLeftWidth: 1, borderLeftColor: 'white'}]}
               renderItem={(item, i)=>{
                 const uri = (item.type == 'map') ? item.uri : `${item.prefix}300x500${item.suffix}`;
@@ -117,13 +134,13 @@ class VenueDetail extends React.Component {
                />
           }
 
+
+          { this.state.venue.name &&
           <Bounds>
             <Section>
               <Chunk>
                 <Text style={[styles.text, styles.textKicker]}>VENUE IDEA</Text>
                 <Text style={[styles.text, styles.textPageHead]}>{this.state.venue.name}</Text>
-              </Chunk>
-              <Chunk>
                 <Text style={[styles.text, styles.textSmall]}>{
                   this.state.venue.categories && this.state.venue.categories.map((cat, i)=>{
                     return(
@@ -146,12 +163,12 @@ class VenueDetail extends React.Component {
 
               { this.state.venue.location &&
               <Flex>
-                <FlexItem growFactor={1}>
+                <FlexItem growFactor={2}>
                   <Chunk>
                     <Text style={[styles.text, styles.textSecondary]}>Address</Text>
                   </Chunk>
                 </FlexItem>
-                <FlexItem growFactor={3}>
+                <FlexItem growFactor={6}>
                     <Link onPress={()=>{
                       Linking.openURL(mapLinking);
                       }}>
@@ -161,17 +178,42 @@ class VenueDetail extends React.Component {
                       </Chunk>
                     </Link>
                 </FlexItem>
+
               </Flex>
               }
 
+
+
+              {this.state.venue.url &&
+                <Flex>
+                  <FlexItem growFactor={2} >
+                    <Chunk>
+                      <Text style={[styles.text, styles.textSecondary]}>Website</Text>
+                    </Chunk>
+                  </FlexItem>
+                  <FlexItem growFactor={6} >
+                    <Link onPress={()=>{
+                      Linking.openURL(this.state.venue.url);
+                      }}>
+                    <Chunk>
+                      <Text style={[styles.text]} numberOfLines={1}>{this.state.venue.url.split('/')[2]}</Text>
+                    </Chunk>
+                    </Link>
+                  </FlexItem>
+
+                </Flex>
+              }
+
+
+
               { this.state.venue.hours &&
               <Flex>
-                <FlexItem growFactor={1}>
+                <FlexItem growFactor={2}>
                   <Chunk>
                     <Text style={[styles.text, styles.textSecondary]}>Hours</Text>
                   </Chunk>
                 </FlexItem>
-                <FlexItem growFactor={3}>
+                <FlexItem growFactor={6}>
                   <Chunk>
                     {(this.state.venue.hours.timeframes).map((timeframe, i)=>{
                       return(
@@ -197,52 +239,93 @@ class VenueDetail extends React.Component {
               </Flex>
               }
 
+
               {this.state.venue.contact && this.state.venue.contact.phone &&
                 <Flex>
-                  <FlexItem growFactor={1}>
+                  <FlexItem growFactor={2}>
                     <Chunk>
                       <Text style={[styles.text, styles.textSecondary]}>Phone</Text>
                     </Chunk>
                   </FlexItem>
-                  <FlexItem growFactor={3}>
+                  <FlexItem growFactor={6}>
                     <Chunk>
                       <Text style={[styles.text]}>{this.state.venue.contact.formattedPhone}</Text>
-                    </Chunk>
+
+                     <Link onPress={()=>{
+                        Linking.openURL(`tel:${this.state.venue.contact.phone}`);
+                        }}>
+                        <View style={{marginTop: 8, borderRadius: 5, paddingVertical: 6, paddingHorizontal: 10, backgroundColor: '#eee', alignSelf: 'flex-start'}}>
+                        <Flex align='center'>
+                        <FlexItem shrink>
+                          <Image
+                            source={require('../img/icons/Phone.png')}
+                            style={[{width: 14, height: 14, tintColor: 'rgba(0,0,0,.55)', resizeMode: 'contain'}]}
+                            />
+                          </FlexItem>
+                          <FlexItem style={{paddingLeft: 8}} shrink>
+                            <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Call venue</Text>
+                          </FlexItem>
+                          </Flex>
+                        </View>
+                      </Link>
+                      </Chunk>
                   </FlexItem>
                 </Flex>
               }
             </Section>
-            {this.state.venue.contact && this.state.venue.contact.phone &&
-              <Section style={{borderBottomWidth: 0}}>
+             <Section>
+              <Chunk>
+                <Text style={[styles.text, styles.textSectionHead]}>People on Foursquare say</Text>
+              </Chunk>
+              {tips.map((tip, i)=>{
+                const uri = `${tip.user.photo.prefix}80x80${tip.user.photo.suffix}`
+                return(
+                    <Chunk style={{paddingTop: 8}} key={i}>
+                      <Flex>
+                        <FlexItem shrink>
+                          <Image
+                            source={{uri: uri}}
+                            style={{width: 40, height: 40, borderRadius: 20, resizeMode: 'cover'}}
+                            />
+                        </FlexItem>
+                        <FlexItem>
+                          <Text style={[styles.text]}>&ldquo;{tip.text}&rdquo;</Text>
+                          <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>{tip.user.firstName}</Text>
+                        </FlexItem>
+                      </Flex>
+                    </Chunk>
+                );
+              })}
+
                 <Chunk>
                   <Link onPress={()=>{
-                    Linking.openURL('tel: +13234450914');
+                    Linking.openURL(this.state.venue.canonicalUrl);
                     }}>
-                    <DumbButton type="secondary" label="Call venue" />
+                    <DumbButton type="secondary" label="More on Foursquare" />
                   </Link>
                 </Chunk>
-              </Section>
-            }
+
+             </Section>
+
             <View style={{height: 80}}/>
           </Bounds>
+          }
+
         </Stripe>
       </ScrollView>
 
-      <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
+      <View style={{position: 'absolute', bottom: 0, left: 0, right: 0, padding: 6}}>
           <Link
             onPress={()=>{
               this.props.setScheduleWhere(this.state.venue);
-              //navigate('Schedule', {ideaIndex: this.props.ideaIndex})
-              //this.props.navigation.dispatch(NavigationActions.back());
-
-              this.props.navigation.dispatch({
-                      type: 'Navigation/BACK',
-                      index: 0,
-                      actions: [{ type: 'Navigate', routeName: 'Schedule' }]
-              })
-
+              this.props.navigation.dispatch(NavigationActions.back());
+              if(this.props.notFromSchedule){
+                setTimeout(() => {
+                  navigate('Schedule', {ideaIndex: this.props.ideaIndex})
+                }, 600);
+              }
             }}>
-            <DumbButton label="Pick this venue" style={[styles['button--edge']]} />
+            <DumbButton label="Pick this venue" style={[styles.shadow]} />
           </Link>
       </View>
 
@@ -257,7 +340,8 @@ const mapStateToProps = (state, ownProps) => {
   const { params } = ownProps.navigation.state;
   return ({
     ideaIndex: params.ideaIndex,
-    venueId: params.venueId
+    venueId: params.venueId,
+    notFromSchedule: params.notFromSchedule
   });
 }
 

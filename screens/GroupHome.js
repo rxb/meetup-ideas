@@ -180,7 +180,7 @@ class GroupHome extends React.Component {
 										style={{resizeMode: 'contain', height: 20, width: 20, tintColor: 'gray', marginVertical: 4}}
 										/>
 
-										<Text style={[styles.text, styles.textSectionHead, {textAlign: 'center', marginVertical: 7}]}>Ideas for your first Meetup</Text>
+										<Text style={[styles.text, styles.textSectionHead, {textAlign: 'center', marginVertical: 7}]}>Ideas for your {group.label} Meetup</Text>
 										<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}>Check out some Meetup ideas other {group.label} groups have tried and loved.</Text>
 
 
@@ -199,13 +199,13 @@ class GroupHome extends React.Component {
 											}}>
 											<Card style={{marginBottom: 16}}>
 												<Flex align='center'>
-													<FlexItem growFactor={2}>
+													<FlexItem growFactor={3}>
 														<Image
 															source={{uri: idea.pastMeetups[0].photo}}
-															style={{height: 120, resizeMode: 'cover'}}
+															style={{height: 120, resizeMode: 'cover', borderBottomLeftRadius: 5, borderTopLeftRadius: 5,}}
 														 />
 													</FlexItem>
-													<FlexItem growFactor={4} style={{paddingRight: 16}}>
+													<FlexItem growFactor={5} style={{paddingRight: 16}}>
 														<Text style={[styles.text, styles.textKicker, {fontSize: 11, lineHeight: 18, color: 'rgba(0,0,0,.35)'}]}>MEETUP IDEA</Text>
 														<Text style={[styles.text, styles.textStrong]} numberOfLines={2}>{idea.title}</Text>
 														<Text style={[styles.text, styles.textSmall]}>{idea.howManyGroups} groups have tried this</Text>

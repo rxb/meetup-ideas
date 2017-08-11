@@ -14,7 +14,14 @@ import {
   setScheduleWhen,
   setScheduleDuration
 } from '../actions';
-import {data, getFoursquareVenues, getSuggestedMoment} from '../data';
+import {
+	data,
+	getFoursquareVenues,
+	getSuggestedMoment,
+	getForecastsForLatLon,
+	findTimeStampInForecasts
+
+} from '../data';
 
 
 import {
@@ -49,6 +56,45 @@ const Option = (props) => {
 	);
 }
 
+
+class AutoExpandingTextInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {text: props.defaultValue, height: 0};
+    this._checkHeight = this._checkHeight.bind(this);
+    this.appendText = this.appendText.bind(this);
+  }
+
+  _checkHeight(event) {
+    this.setState({
+      height: event.nativeEvent.contentSize.height + 8,
+    });
+  }
+
+  appendText(text = '') {
+  	this.setState({
+      text: this.state.text + "\n• "
+    });
+  }
+
+  render() {
+  	const {
+  		style,
+  		...other
+  	} = this.props;
+    return (
+      <TextInput
+        {...other}
+        multiline={true}
+        onChangeText={(text) => this.setState({text: text})}
+        onContentSizeChange={this._checkHeight}
+        style={[style, {height: Math.max(35, this.state.height)}]}
+        value={this.state.text}
+      />
+    );
+  }
+}
+
 class Schedule extends React.Component {
 
 	static navigationOptions = ({ navigation }) => ({
@@ -71,6 +117,15 @@ class Schedule extends React.Component {
           this.setState({venues: json.response.venues});
         }
       });
+
+
+
+    getForecastsForLatLon()
+    	.then((forecasts) => {
+    		//const timestamp = moment().startOf('hour').add(1, 'w').unix();
+    		//const forecast = findTimeStampInForecasts(timestamp, forecasts);
+    		this.setState({forecasts: forecasts});
+    	});
   }
 
 
@@ -79,16 +134,31 @@ class Schedule extends React.Component {
 
 		const { navigate } = this.props.navigation;
 
+		// turn agenda into plain text
 		const idea = this.props.idea;
 		const agendaString = idea.agenda.map((step, i)=>{
-			return `• ${step.label} (${step.minutes} min) ${'\n'}`;
+			return `${'\n'}• ${step.label} (${step.minutes} min)`;
 		}).join('');
-		const defaultDescription = `What we'll do: ${'\n\n'}${agendaString}`
+		const defaultDescription = `What we'll do: ${'\n'}${agendaString}`
+
+		// generate suggested dates
+		const generateWhenOptions = (options, weeksOut) =>{
+			return options.map((item, i)=>{
+				return getSuggestedMoment(item.day, item.hour, weeksOut);
+			}).sort((a,b) => {
+				return a.unix() - b.unix()
+			});
+		}
+		const whenOptions = [
+			...generateWhenOptions(idea.when.options, 1),
+			...generateWhenOptions(idea.when.options, 2)
+		];
 
 		return (
-			<View style={styles.container}>
 
-			<KeyboardAwareScrollView style={styles.stripeCollection}>
+			<KeyboardAwareScrollView
+				style={styles.stripeCollection}
+				>
 				<Stripe style={styles.stripeCollection}>
 					<Bounds>
 
@@ -121,25 +191,44 @@ class Schedule extends React.Component {
 						<Section style={styles.sectionTableFooter}>
 							<List
 								variant='hscroll'
-								items={idea.when.options}
+								items={whenOptions}
 								hscrollItemStyle={{width: 140, paddingRight: 8}}
 								hscrollContainerStyle={hscrollContainerStyle}
-								renderItem={(item, i)=>{
-									const dateOption= getSuggestedMoment(item.day, item.hour, 2);
+								renderItem={(dateOption, i)=>{
 									const dateOptionString = moment(dateOption).format('dddd, MMM D [at] LT');
+									let forecast;
+									if(this.state.forecasts){
+										forecast = findTimeStampInForecasts(dateOption.unix(), this.state.forecasts);
+									}
 									return(
 										<Link key={i} onPress={()=>{
 											this.props.setScheduleWhen(dateOptionString)
 										}}>
 											<Option>
 												<Text style={[styles.text, styles.textSmall]}>{dateOptionString}</Text>
+												{ forecast &&
+													<Flex noGutters={true}>
+														<FlexItem shrink style={{paddingTop: 8}}>
+															<Image
+																source={{uri: `https://icons.wxug.com/i/c/i/${forecast.icon}.gif`}}
+																style={{width: 16, height: 16, resizeMode: 'contain'}}
+																/>
+														</FlexItem>
+														<FlexItem style={{paddingLeft: 4, paddingTop: 8}}>
+															<Text style={[styles.text, styles.textSecondary, {fontSize: 11, lineHeight: 16}]}>{forecast.temp.english}° {/* {forecast.condition} */}</Text>
+													</FlexItem>
+													</Flex>
+												}
+												{ !forecast &&
+													<View style={{height: 24}} />
+												}
 											</Option>
 										</Link>
 									);
 								}}
 								/>
 							<Chunk style={hintStyle}>
-								<Text style={[styles.text, styles.textSmall, styles.textHint]}>Most <Text style={styles.textStrong}>{idea.title}</Text> Meetups happen Weekdays around 10:00am</Text>
+								<Text style={[styles.text, styles.textSmall, styles.textHint]}>Most <Text style={styles.textStrong}>{idea.title}</Text> Meetups happen {idea.when.description}</Text>
 							</Chunk>
 						</Section>
 
@@ -182,7 +271,7 @@ class Schedule extends React.Component {
 								}}
 								/>
 							<Chunk style={hintStyle}>
-								<Text style={[styles.text, styles.textSmall, styles.textHint]}>Most <Text style={[styles.textStrong]}>{idea.title}</Text> Meetups last 2 hours</Text>
+								<Text style={[styles.text, styles.textSmall, styles.textHint]}>Most <Text style={[styles.textStrong]}>{idea.title}</Text> Meetups last {idea.duration.description}</Text>
 							</Chunk>
 						</Section>
 
@@ -224,7 +313,6 @@ class Schedule extends React.Component {
 										<Link
 											key={i}
 											onPress={()=>{
-												//this.props.setScheduleWhere(item.name);
 												navigate('VenueDetail', {venueId: item.id, ideaIndex: this.props.ideaIndex});
 											}}>
 											<VenueCard venue={item} />
@@ -233,7 +321,7 @@ class Schedule extends React.Component {
 								}}
 								/>
 							<Chunk style={hintStyle}>
-								<Text style={[styles.text, styles.textSmall, styles.textHint]}>Most <Text style={styles.textStrong}>{idea.title}</Text> Meetups happen at library meeting rooms, parks, homes</Text>
+								<Text style={[styles.text, styles.textSmall, styles.textHint]}>Most <Text style={styles.textStrong}>{idea.title}</Text> Meetups happen at {idea.where.description}</Text>
 							</Chunk>
 						</Section>
 
@@ -247,12 +335,41 @@ class Schedule extends React.Component {
 								</FlexItem>
 								<FlexItem>
 									<Chunk>
-										<TextInput
-											placeholder="Event description"
-											multiline
+										<AutoExpandingTextInput
+											placeholder="Agenda"
 											underlineColorAndroid="transparent"
 											style={[styles.input]}
 											defaultValue={defaultDescription}
+											ref={instance => { this.agendaInput = instance; }}
+											/>
+									</Chunk>
+									{/*
+									<Link
+											onPress={()=>{
+												this.agendaInput.appendText('\n•');
+											}}>
+											<View style={{backgroundColor: '#f9f9f9', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 4, alignSelf: 'flex-start', marginVertical: 8}}>
+												<Text style={[styles.text, styles.textHint, styles.textSmall]}>add bulletpoint</Text>
+											</View>
+										</Link>
+										*/}
+								</FlexItem>
+							</Flex>
+						</Section>
+						<Section style={styles.sectionTable}>
+							<Flex>
+								<FlexItem shrink>
+									<Image
+										source={require('../img/icons/Chat-Bubble.png')}
+										style={styles.iconInput}
+										/>
+								</FlexItem>
+								<FlexItem>
+									<Chunk>
+										<AutoExpandingTextInput
+											placeholder="Message from the host"
+											underlineColorAndroid="transparent"
+											style={[styles.input]}
 											/>
 									</Chunk>
 								</FlexItem>
@@ -269,7 +386,6 @@ class Schedule extends React.Component {
 				</Stripe>
 			</KeyboardAwareScrollView>
 
-			</View>
 		);
 	}
 }
