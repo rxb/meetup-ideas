@@ -6,6 +6,12 @@ import moment from 'moment';
 
 import VenueCard from '../components/VenueCard';
 
+import {
+  resetSchedule,
+  setScheduleWhere,
+  setScheduleWhen,
+  setScheduleDuration
+} from '../actions';
 import { connect } from 'react-redux';
 import {data, getFoursquareVenues, daysOfWeekPlural} from '../data';
 
@@ -223,6 +229,7 @@ class IdeaDetail extends React.Component {
       <View style={{position: 'absolute', bottom: 0, left: 0, right: 0, padding: 6}} elevation={3}>
           <Link
             onPress={()=>{
+              this.props.resetSchedule();
               navigate('Schedule', {ideaIndex: this.props.ideaIndex})
             }}>
             <DumbButton label="Plan a Meetup like this" style={styles.shadow}  />
@@ -243,11 +250,9 @@ const mapStateToProps = (state, ownProps) => {
   });
 }
 
-const mapDispatchToProps = {
-  // onTodoClick: toggleTodo
-}
+
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  {resetSchedule}
 )(IdeaDetail);
