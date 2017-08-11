@@ -4,6 +4,13 @@ import { View, Text, Image, StyleSheet, Linking } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 import styles from '../styles/styles';
 
+import { connect } from 'react-redux';
+import {
+	resetSchedule,
+  setScheduleWhere,
+  setScheduleWhen,
+  setScheduleDuration
+} from '../actions';
 
 
 import {
@@ -54,6 +61,8 @@ class Choose extends React.Component {
 			        <Chunk>
 						<Link
 							onPress={()=>{
+								this.props.resetSchedule();
+
 								// key: 1 refers to the regular stacknavigator
 								const resetAction = NavigationActions.reset({
 						            index: 0,
@@ -73,5 +82,14 @@ class Choose extends React.Component {
   }
 }
 
+const mapStateToProps = (state, ownProps) => {
+  return ({
+  });
+}
 
-export default Choose;
+
+export default connect(
+  mapStateToProps,
+  {resetSchedule}
+)(Choose);
+
