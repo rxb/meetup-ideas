@@ -58,7 +58,8 @@ export const getFoursquareVenue = (venueId) => {
 };
 
 // FOURSQUARE GET VENUES
-// search api supports categoryIds, explore doesn't
+// "search" api supports categoryIds, "explore" doesn't
+// "intent=browse" seems to give the best results
 // most recommendations can probably use a default smaller radius, but field trips need larger (ie farm trip)
 // venue params come from the .where in each idea object
 export const getFoursquareVenues = (categoryId, radiusMeters = 8000, lat = defaultLat, lon = defaultLon) => {
