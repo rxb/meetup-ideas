@@ -63,13 +63,17 @@ class VenueDetail extends React.Component {
       venueImages.push(...this.state.venue.photos.groups[0].items)
     };
 
-    // get static map image
-    // append to image array
+
+    // location-related parsing
     let mapLinking;
     if(this.state.venue && this.state.venue.location){
+
+      // get static map image
+      // append to image array
       const mapUri = `https://maps.googleapis.com/maps/api/staticmap?center=${this.state.venue.location.lat},${this.state.venue.location.lng}&markers=color:red|${this.state.venue.location.lat},${this.state.venue.location.lng}&zoom=13&size=250x180&maptype=terrain&scale=2&key=AIzaSyAibsbqDXjn8sl5f3h4G2GvmxheyGAbX3M`;
       venueImages.push( {type: 'map', uri: mapUri});
 
+      // generate map intent for tapping on address and bouncing out to maps
       mapLinking = (Platform.OS == 'android') ? `geo:${this.state.venue.location.lat},${this.state.venue.location.lng}` : `http://maps.apple.com/?sll=${this.state.venue.location.lat},${this.state.venue.location.lng}&q=${this.state.venue.name}`;
     }
 
