@@ -52,7 +52,7 @@ export const findTimeStampInForecasts = (timestamp, forecasts) =>{
 }
 
 // FOURSQUARE GET VENUE
-export const getFoursquareVenue = (venueId = '40a55d80f964a52020f31ee3') => {
+export const getFoursquareVenue = (venueId) => {
     return fetch(`https://api.foursquare.com/v2/venues/${venueId}?&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801`)
       	.then((response) => response.json());
 };
