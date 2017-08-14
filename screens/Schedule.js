@@ -111,7 +111,7 @@ class Schedule extends React.Component {
 
   componentDidMount(){
 
-    getFoursquareVenues(this.props.idea.where.categoryId)
+    getFoursquareVenues(this.props.idea.where.categoryId, this.props.idea.where.radiusMeters)
       .then((json) => {
         if(json.response && json.response.venues){
           this.setState({venues: json.response.venues});
@@ -137,7 +137,11 @@ class Schedule extends React.Component {
 		// turn agenda into plain text
 		const idea = this.props.idea;
 		const agendaString = idea.agenda.map((step, i)=>{
-			return `${'\n'}• ${step.label} (${step.minutes} min)`;
+			let stepString = `${'\n'}- ${step.label}`;
+			if(step.minutes){
+				stepString += ` (${step.minutes} min)`;
+			}
+			return stepString;
 		}).join('');
 		const defaultDescription = `What we'll do: ${'\n'}${agendaString}`
 

@@ -58,12 +58,13 @@ class VenueDetail extends React.Component {
 
     const venueImages = [];
 
-    // get foursquare images
+    // flatten foursquare images
     if(this.state.venue.photos && this.state.venue.photos.groups.length > 0){
       venueImages.push(...this.state.venue.photos.groups[0].items)
     };
 
     // get static map image
+    // append to image array
     let mapLinking;
     if(this.state.venue && this.state.venue.location){
       const mapUri = `https://maps.googleapis.com/maps/api/staticmap?center=${this.state.venue.location.lat},${this.state.venue.location.lng}&markers=color:red|${this.state.venue.location.lat},${this.state.venue.location.lng}&zoom=13&size=250x180&maptype=terrain&scale=2&key=AIzaSyAibsbqDXjn8sl5f3h4G2GvmxheyGAbX3M`;
@@ -72,7 +73,7 @@ class VenueDetail extends React.Component {
       mapLinking = (Platform.OS == 'android') ? `geo:${this.state.venue.location.lat},${this.state.venue.location.lng}` : `http://maps.apple.com/?sll=${this.state.venue.location.lat},${this.state.venue.location.lng}&q=${this.state.venue.name}`;
     }
 
-    // tips
+    // flatten foursquare tips
     let tips = [];
     if(this.state.venue && this.state.venue.tips){
       tips = this.state.venue.tips.groups.reduce((a,b)=>{
@@ -86,6 +87,8 @@ class VenueDetail extends React.Component {
 
     return (
     <View style={styles.container}>
+
+      {/* MODAL HEADER */}
       <View elevation={4} style={[{ alignItems: 'flex-start'},
         (Platform.OS == "ios" ?
           {height: 44, marginTop:  20, backgroundColor: '#EFEFF2'} :
@@ -102,13 +105,19 @@ class VenueDetail extends React.Component {
                 />
           </Link>
       </View>
+
+
       <ScrollView style={styles.container}>
         <Stripe>
 
+
+          {/* IMAGES LOADING STATE GRAY BACKGROUND */}
           { venueImages.length == 0 &&
             <View style={{height: 180, backgroundColor: '#ddd'}} />
           }
 
+
+          {/* SIDE-SCROLLING, FOR MULTIPLE IMAGES */}
           { venueImages.length > 1 &&
           <List
               variant='hscroll'
@@ -127,6 +136,8 @@ class VenueDetail extends React.Component {
               />
           }
 
+
+          {/* FULL WIDTH IMAGE, FOR SINGLE IMAGE */}
           { venueImages.length == 1 &&
               <Image
                 source={{uri: venueImages[0].uri}}
@@ -135,6 +146,7 @@ class VenueDetail extends React.Component {
           }
 
 
+          {/* VENUE LOADED, SHOW STUFF */}
           { this.state.venue.name &&
           <Bounds>
             <Section>
@@ -142,6 +154,7 @@ class VenueDetail extends React.Component {
                 <Text style={[styles.text, styles.textKicker]}>VENUE IDEA</Text>
                 <Text style={[styles.text, styles.textPageHead]}>{this.state.venue.name}</Text>
                 <Text style={[styles.text, styles.textSmall]}>{
+                  /* concat venue category labels */
                   this.state.venue.categories && this.state.venue.categories.map((cat, i)=>{
                     return(
                       <Text key={i}>{cat.shortName}{(i<(this.state.venue.categories.length-1))? ', ' : ' '}</Text>
@@ -161,6 +174,8 @@ class VenueDetail extends React.Component {
 
             <Section>
 
+
+              {/* ADDRESS */}
               { this.state.venue.location &&
               <Flex>
                 <FlexItem growFactor={2}>
@@ -170,6 +185,7 @@ class VenueDetail extends React.Component {
                 </FlexItem>
                 <FlexItem growFactor={6}>
                     <Link onPress={()=>{
+                      // link address to geo: intent
                       Linking.openURL(mapLinking);
                       }}>
                       <Chunk>
@@ -183,7 +199,7 @@ class VenueDetail extends React.Component {
               }
 
 
-
+              {/* WEBSITE */}
               {this.state.venue.url &&
                 <Flex>
                   <FlexItem growFactor={2} >
@@ -206,6 +222,7 @@ class VenueDetail extends React.Component {
 
 
 
+              {/* HOURS */}
               { this.state.venue.hours &&
               <Flex>
                 <FlexItem growFactor={2}>
@@ -239,7 +256,7 @@ class VenueDetail extends React.Component {
               </Flex>
               }
 
-
+              {/* PHONE NUMBER */}
               {this.state.venue.contact && this.state.venue.contact.phone &&
                 <Flex>
                   <FlexItem growFactor={2}>
@@ -252,6 +269,7 @@ class VenueDetail extends React.Component {
                       <Text style={[styles.text]}>{this.state.venue.contact.formattedPhone}</Text>
 
                      <Link onPress={()=>{
+                        // phone call intent
                         Linking.openURL(`tel:${this.state.venue.contact.phone}`);
                         }}>
                         <View style={{marginTop: 8, borderRadius: 5, paddingVertical: 6, paddingHorizontal: 10, backgroundColor: '#eee', alignSelf: 'flex-start'}}>
@@ -273,7 +291,12 @@ class VenueDetail extends React.Component {
                 </Flex>
               }
             </Section>
-             <Section>
+
+
+
+            {/* FOURSQUARE TIPS */}
+            { tips && tips.length > 0 &&
+            <Section>
               <Chunk>
                 <Text style={[styles.text, styles.textSectionHead]}>People on Foursquare say</Text>
               </Chunk>
@@ -297,16 +320,20 @@ class VenueDetail extends React.Component {
                 );
               })}
 
-                <Chunk>
-                  <Link onPress={()=>{
-                    Linking.openURL(this.state.venue.canonicalUrl);
-                    }}>
-                    <DumbButton type="secondary" label="More on Foursquare" />
-                  </Link>
-                </Chunk>
+              <Chunk>
+                <Link onPress={()=>{
+                  // bounce to foursquare app/site
+                  Linking.openURL(this.state.venue.canonicalUrl);
+                  }}>
+                  <DumbButton type="secondary" label="More on Foursquare" />
+                </Link>
+              </Chunk>
 
              </Section>
+            }
 
+
+            {/* SPACER FOR BOTTOM BUTTON */}
             <View style={{height: 80}}/>
           </Bounds>
           }
@@ -314,10 +341,16 @@ class VenueDetail extends React.Component {
         </Stripe>
       </ScrollView>
 
+
+      {/* floating bottom button */}
       <View style={{position: 'absolute', bottom: 0, left: 0, right: 0, padding: 6}}>
           <Link
             onPress={()=>{
+              // select venue for schedule form
               this.props.setScheduleWhere(this.state.venue);
+
+              // close modal
+              // navigate to schedule form
               this.props.navigation.dispatch(NavigationActions.back());
               if(this.props.notFromSchedule){
                 setTimeout(() => {

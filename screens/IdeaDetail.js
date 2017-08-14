@@ -46,7 +46,7 @@ class IdeaDetail extends React.Component {
   }
 
   componentDidMount(){
-    getFoursquareVenues(this.props.idea.where.categoryId)
+    getFoursquareVenues(this.props.idea.where.categoryId, this.props.idea.where.radiusMeters)
       .then((json) => {
         if(json.response && json.response.venues){
           this.setState({venues: json.response.venues});
@@ -129,7 +129,9 @@ class IdeaDetail extends React.Component {
                           <Text style={[styles.text, styles.textStrong]} >{step.label}</Text>
                         </FlexItem>
                         <FlexItem shrink>
-                          <Text style={[styles.text, styles.textSecondary, {textAlign: 'right'}]}>{step.minutes} min</Text>
+                          { step.minutes > 0 &&
+                            <Text style={[styles.text, styles.textSecondary, {textAlign: 'right'}]}>{step.minutes} min</Text>
+                          }
                         </FlexItem>
                       </Flex>
                     </Chunk>

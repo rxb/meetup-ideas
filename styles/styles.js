@@ -173,6 +173,12 @@ const styles = StyleSheet.create({
 	buttonTextSecondary: {
 		color: swatches.textPrimary
 	},
+	buttonSmall:{
+		padding: space,
+	},
+	buttonTextSmall: {
+		fontSize: 13
+	},
 
 	// CHIP
 	chip: {

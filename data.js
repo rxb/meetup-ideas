@@ -16,7 +16,8 @@ const foursquareCategories = {
 	beach: '4bf58dd8d48988d1e2941735',
 	trail: '4bf58dd8d48988d159941735',
 	dogs: '4bf58dd8d48988d1e5941735',
-	indoorPlayArea: '4bf58dd8d48988d15e941735'
+	indoorPlayArea: '4bf58dd8d48988d15e941735',
+	farm: '4bf58dd8d48988d15b941735'
 }
 
 
@@ -38,11 +39,6 @@ const defaultLon = -93.2;
 
 
 
-export const store = {
-	newEvent: {}
-};
-
-
 export const getForecastsForLatLon = (lat = defaultLat, lon = defaultLon) =>{
 	return fetch(`http://api.wunderground.com/api/${weatherUndergroundKey}/hourly10day/q/${lat},${lon}.json`)
       	.then((response) => response.json())
@@ -55,15 +51,21 @@ export const findTimeStampInForecasts = (timestamp, forecasts) =>{
 	});
 }
 
+// FOURSQUARE GET VENUE
 export const getFoursquareVenue = (venueId = '40a55d80f964a52020f31ee3') => {
     return fetch(`https://api.foursquare.com/v2/venues/${venueId}?&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801`)
       	.then((response) => response.json());
 };
 
-export const getFoursquareVenues = (categoryId, lat = defaultLat, lon = defaultLon) => {
-    return fetch(`https://api.foursquare.com/v2/venues/search?intent=browse&radius=8000&ll=${lat},${lon}&categoryId=${categoryId}&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801&limit=8`)
+// FOURSQUARE GET VENUES
+// search api supports categoryIds, explore doesn't
+// most recommendations can probably use a default smaller radius, but field trips need larger (ie farm trip)
+// venue params come from the .where in each idea object
+export const getFoursquareVenues = (categoryId, radiusMeters = 8000, lat = defaultLat, lon = defaultLon) => {
+    return fetch(`https://api.foursquare.com/v2/venues/search?intent=browse&radius=${radiusMeters}&ll=${lat},${lon}&categoryId=${categoryId}&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801&limit=8`)
       	.then((response) => response.json());
 };
+
 
 export const getSuggestedMoment = (day, hour, weeksOut) => {
 	return moment().startOf('week').add(weeksOut, 'w').add(day, 'd').hour(hour).minutes(0);
@@ -262,6 +264,88 @@ export const data = {
 					}
 				]
 			},
+
+			{
+				title: "Farm Field Trip",
+				howManyGroups: 32,
+				pastMeetups: [
+					{
+						title: "All Ages Play Date",
+						groupName: "MOMS Club of Kansas City",
+						attended: 14,
+						photo: "https://a248.e.akamai.net/secure.meetupstatic.com/photos/event/d/a/9/event_458575960.jpeg"
+					},
+					{
+						title: "Colorful Playdate and Snacks",
+						groupName: "Menifee Mom's Group",
+						attended: 12,
+						photo: "https://secure.meetupstatic.com/photos/event/8/9/1/7/600_463355095.jpeg"
+					},
+					{
+						title: "Let's let the littles play!",
+						groupName: "Moms-n-Munchkins of Northwest Columbus",
+						attended: 13,
+						photo: "https://secure.meetupstatic.com/photos/event/4/d/9/9/600_1219865.jpeg"
+					},
+					{
+						title: "Mardi Gras play date",
+						groupName: "SouthWest Vegas Mommies and Kids",
+						attended: 17,
+						photo: "https://secure.meetupstatic.com/photos/event/4/a/a/8/event_253279112.jpeg"
+					},
+				],
+				description: "Take a field trip to see the local animals or plants at a nearby farm. Some pick fruits or vegetables at orchards or pumpkin patches, while others pet and feed the barn animals at local farms. No matter what you choose, don't forget to wear the appropriate shoes—it can get messy out there.",
+				agenda: [
+					{ label: 'Gather at meeting point', minutes: 10},
+					{ label: 'Carpool to farm', minutes: 0},
+					{ label: 'Arrivals', minutes: 10},
+					{ label: 'Explore the farm', minutes: 40},
+					{ label: 'Snacks and chat', minutes: 20},
+					{ label: 'Goodbyes', minutes: 10},
+					{ label: 'Carpool home', minutes: 0},
+				],
+				where: {
+					categoryId: `${foursquareCategories.farm}`,
+					description: "Farms, orchards and greenhouses",
+					radiusMeters: 120000
+				},
+				when: {
+					options: [
+						{day: 6, hour: 10},
+						{day: 0, hour: 11},
+						{day: 0, hour: 12},
+					],
+					description: "weekend middays"
+				},
+				duration: {
+					options: [
+						"1 hour",
+						"2 hours",
+						"3 hours"
+					],
+					description: "2 hours"
+				},
+				tips: [
+					{
+						authorName: 'Sally',
+						authorGroupName: 'Bushwick Moms',
+						quote: 'We bring sidewalk chalk sometimes and they are just enthralled for hours.',
+						authorPhoto: 'https://randomuser.me/api/portraits/women/1.jpg'
+					},
+					{
+						authorName: "Peter",
+						authorGroupName: "Vegan Moms Chicago",
+						quote: "Fruit and trail mix are great snacks for the park that everyone can enjoy.",
+						authorPhoto: 'https://randomuser.me/api/portraits/men/2.jpg'
+					},
+					{
+						authorName: "Jan Quin",
+						authorGroupName: "SF Marina Mommies",
+						quote: "Try to end on a high note and leave while everyone is having fun. This way the kids remember it being an awesome time and will be excited to do it again.",
+						authorPhoto: 'https://randomuser.me/api/portraits/women/3.jpg'
+					}
+				]
+			},
 			{
 				title: "Potluck",
 				howManyGroups: 32,
@@ -271,19 +355,6 @@ export const data = {
 					groupName: "Dummy Group",
 					attended: 0,
 					photo: "http://photos4.meetupstatic.com/photos/event/5/e/3/a/event_363564122.jpeg"
-				},
-				],
-				notFinished: true
-			},
-			{
-				title: "Farm Field Trip",
-				howManyGroups: 19,
-				pastMeetups: [
-				{
-					title: "Dummy Event",
-					groupName: "Dummy Group",
-					attended: 0,
-					photo: "https://a248.e.akamai.net/secure.meetupstatic.com/photos/event/d/a/9/event_458575960.jpeg"
 				},
 				],
 				notFinished: true
@@ -381,5 +452,10 @@ export const data = {
 			},
 		]
 	},
-
 }
+
+
+
+export const store = {
+	newEvent: {}
+};

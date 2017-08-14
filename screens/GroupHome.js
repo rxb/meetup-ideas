@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, InteractionManager} from 'react-native';
+import { ScrollView, InteractionManager, Linking} from 'react-native';
 import { Animated, Easing, View, Text, Image, StyleSheet } from 'react-native';
 import { Bubbles, DoubleBounce, Bars, Pulse } from 'react-native-loader';
 import Showable from '../components/Showable';
@@ -216,7 +216,28 @@ class GroupHome extends React.Component {
 									);
 								}}
 								/>
-						</Section>
+							</Section>
+
+							{/* suggest your own idea */}
+							<Section>
+								<Chunk>
+									<Flex>
+										<FlexItem>
+											<Text style={[styles.text, styles.textStrong]}>Have more ideas for {group.label} Meetups?</Text>
+										</FlexItem>
+										<FlexItem>
+											<Link
+												onPress={()=>{
+													const subject = `${group.label} Meetup idea to share`;
+													const body = `---------------------------------\nHave Meetup ideas to share with\n other ${group.label} groups?\n Let us know!\n---------------------------------\n\n`;
+													Linking.openURL(`mailto:ideas@meetup.com?subject=${subject}&body=${body}&cc=richard@meetup.com`);
+												}}>
+												<DumbButton type="secondary" size="small" label="Share ideas" />
+											</Link>
+										</FlexItem>
+									</Flex>
+								</Chunk>
+							</Section>
 
 					</Bounds>
 				</Stripe>
