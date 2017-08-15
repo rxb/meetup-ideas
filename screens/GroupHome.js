@@ -103,7 +103,7 @@ class GroupHome extends React.Component {
 					// show welcome modal
 					setTimeout(()=>{
 						this.setState({welcomeVisible: true});
-					}, 1400);
+					}, 2000);
 
 				}, 1000);
 
@@ -137,11 +137,12 @@ class GroupHome extends React.Component {
 					}
 				),
 			]),
+			Animated.delay(200),
 			Animated.timing(
 				this.imageOpacity,
 				{
 					toValue: 0,
-					duration: 500,
+					duration: 300,
 				}
 			),
 		]).start(()=>{
@@ -155,17 +156,17 @@ class GroupHome extends React.Component {
 	render() {
 
 		const { navigate } = this.props.navigation;
-		const group = this.props.groups['parenting'];
+		const {group, user} = this.props;
 
 		return (
 			<View style={styles.container}>
 
 			<ScrollView style={styles.container}>
 
-				<Stripe image={group.photo} style={{minHeight: 200, justifyContent: 'center', alignItems: 'center'}}>
+				<Stripe image={group.duotonePhoto} style={{minHeight: 200, justifyContent: 'center', alignItems: 'center'}}>
 					<Bounds>
 						<Section>
-							<Text style={[styles.text, styles.textPageHead, {backgroundColor: 'transparent', color: 'white', fontSize: 26, textAlign: 'center', textShadowColor: 'rgba(0,0,0,.5)', textShadowRadius: 10, textShadowOffset: {width: 1, height: 1}}]}>{group.name}</Text>
+							<Text style={[styles.text, styles.textPageHead, {backgroundColor: 'transparent', color: 'white', fontSize: 26, textAlign: 'center', textShadowColor: 'rgba(0,0,0,.5)', textShadowRadius: 10, textShadowOffset: {width: 1, height: 1}}]}>{group.getName(user.city)}</Text>
 						</Section>
 					</Bounds>
 				</Stripe>
@@ -293,7 +294,7 @@ class GroupHome extends React.Component {
 											<Text style={[styles.text, styles.textPageHead]}>Welcome to your new {group.label} Meetup Group</Text>
 										</Chunk>
 										<Chunk>
-											<Text style={[styles.text]}>This is the beginning of something big. You're a part of network of 4,234 Pareting Meetups around the world.</Text>
+											<Text style={[styles.text]}>This is the beginning of something big. You're part of a network of 4,234 Parenting Meetups around the world.</Text>
 										</Chunk>
 										<Chunk style={{marginTop: 8}}>
 											<Link onPress={()=>{
@@ -318,10 +319,13 @@ class GroupHome extends React.Component {
 	}
 }
 
-
-const mapStateToProps = (state) => ({
-  groups: state.groups
-})
+const mapStateToProps = (state, ownProps) => {
+	const { params } = ownProps.navigation.state;
+	return ({
+  		group: state.groups[params.topic],
+  		user: state.user
+  	});
+}
 
 const mapDispatchToProps = {
   // onTodoClick: toggleTodo

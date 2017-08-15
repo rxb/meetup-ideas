@@ -201,7 +201,8 @@ const styles = StyleSheet.create({
 		shadowRadius: 3,
 		shadowColor: 'rgba(0,0,0,.6)',
 		shadowOpacity: 1,
-		shadowOffset: {width: 0, height: 0}
+		shadowOffset: {width: 0, height: 0},
+		elevation: 3
 	},
 
 	card: {

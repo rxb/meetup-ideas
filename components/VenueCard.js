@@ -37,12 +37,6 @@ const VenueCard = (props) => {
 
 	return(
 		<Card style={{marginVertical: 6}}>
-          {/*
-          <Image
-            source={{uri: 'https://c2.staticflickr.com/6/5590/15229315615_95d06272ce_z.jpg'}}
-            style={{height: 100, resizeMode: 'cover'}}
-           />
-         */}
          <View style={{height: 70, alignItems: 'center', justifyContent: 'center'}}>
            <GoogleStaticMap
               style={{height: 70, position: 'absolute', borderTopLeftRadius: 5, borderTopRightRadius: 5,}}

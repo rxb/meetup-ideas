@@ -46,11 +46,9 @@ class IdeaDetail extends React.Component {
   }
 
   componentDidMount(){
-    getFoursquareVenues(this.props.idea.where.categoryId, this.props.idea.where.radiusMeters)
-      .then((json) => {
-        if(json.response && json.response.venues){
-          this.setState({venues: json.response.venues});
-        }
+    getFoursquareVenues(this.props.idea.where.categoryId, this.props.idea.where.radiusMeters, this.props.user.latitude, this.props.user.longitude)
+      .then((venues) => {
+          this.setState({venues: venues});
       });
   }
 
@@ -146,7 +144,9 @@ class IdeaDetail extends React.Component {
               </Chunk>
               <Chunk>
                 <Text style={[styles.text, styles.textSmall]}>{idea.where.description}</Text>
-                <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Here are some nearby possibilities:</Text>
+                {this.state.venues && this.state.venues.length > 0 &&
+                  <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Here are some nearby possibilities:</Text>
+                }
               </Chunk>
 
               <List
@@ -234,7 +234,7 @@ class IdeaDetail extends React.Component {
               this.props.resetSchedule();
               navigate('Schedule', {ideaIndex: this.props.ideaIndex})
             }}>
-            <DumbButton label="Plan a Meetup like this" style={styles.shadow}  />
+            <DumbButton label="Plan a Meetup like this" style={styles.shadow} elevation={3}  />
           </Link>
       </View>
 
@@ -248,7 +248,8 @@ const mapStateToProps = (state, ownProps) => {
   const { params } = ownProps.navigation.state;
   return ({
     ideaIndex: params.ideaIndex,
-    idea: state.groups['parenting'].ideas[params.ideaIndex]
+    idea: state.groups['parenting'].ideas[params.ideaIndex],
+    user: state.user
   });
 }
 

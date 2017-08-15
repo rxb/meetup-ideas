@@ -22,24 +22,27 @@ const foursquareCategories = {
 
 
 // minneapolis
-const defaultLat = 44.9;
-const defaultLon = -93.2;
+export const defaultLat = 44.9;
+export const defaultLon = -93.2;
+export const defaultCity = 'Minneapolis';
 
 // new hampshire
-// const defaultLat = 42.88;
-// const defaultLon = -71.32;
+// export const defaultLat = 42.88;
+// export const defaultLon = -71.32;
+// export const defaultCity = 'Southern New Hampshire';
 
 // clewiston
-// const defaultLat = 26.75;
-// const defaultLon = -80.93;
+// export const defaultLat = 26.75;
+// export const defaultLon = -80.93;
+// export const defaultCity = 'Clewiston';
 
 // los angeles
-// const defaultLat = 34.05;
-// const defaultLon = -118.24;
+// export const defaultLat = 34.05;
+// export const defaultLon = -118.24;
+// export const defaultCity = 'Los Angeles';
 
 
-
-export const getForecastsForLatLon = (lat = defaultLat, lon = defaultLon) =>{
+export const getForecastsForLatLon = (lat, lon) =>{
 	return fetch(`http://api.wunderground.com/api/${weatherUndergroundKey}/hourly10day/q/${lat},${lon}.json`)
       	.then((response) => response.json())
       	.then((json) => json.hourly_forecast);
@@ -62,9 +65,24 @@ export const getFoursquareVenue = (venueId) => {
 // "intent=browse" seems to give the best suggestion-type results
 // most recommendations can probably use a default smaller radius, but field trips need larger (ie farm trip)
 // venue params come from the .where in each idea object
-export const getFoursquareVenues = (categoryId, radiusMeters = 8000, lat = defaultLat, lon = defaultLon) => {
+// filtering out any venues with less than 3 unique checkins because those tend to be garbage (relevant to sparse locations)
+export const getFoursquareVenues = (categoryId, radiusMeters = 8000, lat, lon) => {
     return fetch(`https://api.foursquare.com/v2/venues/search?intent=browse&radius=${radiusMeters}&ll=${lat},${lon}&categoryId=${categoryId}&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801&limit=8`)
-      	.then((response) => response.json());
+      	.then((response) => {
+      		return response.json();
+      	})
+      	.then((json) => {
+      		if(json.response && json.response.venues){
+      			const venues = json.response.venues.filter((venue) => {
+      				// filter out very questionable venues
+      				return venue.stats.usersCount > 3;
+      			});
+      			return venues;
+      		}
+      		else{
+      			return [];
+      		}
+      	});
 };
 
 
@@ -91,9 +109,10 @@ export const data = {
 	// parenting
 
 	parenting: {
-		name: 'Minneapolis Parents Collective',
+		getName: (city) => (`${city} Parents Collective`),
 		label: 'Parenting',
-		photo: 'https://secure.meetupstatic.com/s/img/explore_page_photos/find-4.jpg',
+		photo: 'https://secure.meetupstatic.com/photos/event/8/9/4/8/highres_463715144.jpeg',
+		duotonePhoto: 'https://secure.meetupstatic.com/photos/event/8/a/9/9/highres_463715481.jpeg',
 		ideas: [
 			{
 				title: "Ice Cream Social",
@@ -345,7 +364,8 @@ export const data = {
 						quote: "Try to end on a high note and leave while everyone is having fun. This way the kids remember it being an awesome time and will be excited to do it again.",
 						authorPhoto: 'https://randomuser.me/api/portraits/women/3.jpg'
 					}
-				]
+				],
+				notFinished: true
 			},
 			{
 				title: "Potluck",

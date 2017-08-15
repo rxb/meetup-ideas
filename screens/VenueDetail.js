@@ -361,7 +361,7 @@ class VenueDetail extends React.Component {
 								}, 600);
 							}
 						}}>
-						<DumbButton label="Pick this venue" style={[styles.shadow]} />
+						<DumbButton label="Pick this venue" style={[styles.shadow]} elevation={3} />
 					</Link>
 			</View>
 

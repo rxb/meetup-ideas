@@ -1,18 +1,19 @@
 import React from 'react';
 import { ScrollView, TextInput } from 'react-native';
-import { View, Text, Image, StyleSheet, Button } from 'react-native';
+import { View, Text, Image, StyleSheet, Platform } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import moment from 'moment';
 import styles from '../styles/styles';
 
 import VenueCard from '../components/VenueCard';
+import DatePicker from 'react-native-datepicker'
 
 import { connect } from 'react-redux';
 import {
 	resetSchedule,
-  setScheduleWhere,
-  setScheduleWhen,
-  setScheduleDuration
+	setScheduleWhere,
+	setScheduleWhen,
+	setScheduleDuration
 } from '../actions';
 import {
 	data,
@@ -58,75 +59,77 @@ const Option = (props) => {
 
 
 class AutoExpandingTextInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {text: props.defaultValue, height: 0};
-    this._checkHeight = this._checkHeight.bind(this);
-    this.appendText = this.appendText.bind(this);
-  }
+	constructor(props) {
+		super(props);
+		this.state = {text: props.defaultValue, height: 0};
+		this._checkHeight = this._checkHeight.bind(this);
+		this.appendText = this.appendText.bind(this);
+	}
 
-  _checkHeight(event) {
-    this.setState({
-      height: event.nativeEvent.contentSize.height + 8,
-    });
-  }
+	_checkHeight(event) {
+		this.setState({
+			height: event.nativeEvent.contentSize.height + 8,
+		});
+	}
 
-  appendText(text = '') {
-  	this.setState({
-      text: this.state.text + "\n• "
-    });
-  }
+	appendText(text = '') {
+		this.setState({
+			text: this.state.text + "\n• "
+		});
+	}
 
-  render() {
-  	const {
-  		style,
-  		...other
-  	} = this.props;
-    return (
-      <TextInput
-        {...other}
-        multiline={true}
-        onChangeText={(text) => this.setState({text: text})}
-        onContentSizeChange={this._checkHeight}
-        style={[style, {height: Math.max(35, this.state.height)}]}
-        value={this.state.text}
-      />
-    );
-  }
+	render() {
+		const {
+			style,
+			...other
+		} = this.props;
+		return (
+			<TextInput
+				{...other}
+				multiline={true}
+				onChangeText={(text) => this.setState({text: text})}
+				onContentSizeChange={this._checkHeight}
+				style={[style, {height: Math.max(35, this.state.height)}]}
+				value={this.state.text}
+			/>
+		);
+	}
 }
 
 class Schedule extends React.Component {
 
 	static navigationOptions = ({ navigation }) => ({
 		title: 'Schedule',
-    headerRight: <Button title="Post" onPress={()=>{navigation.navigate('End')}} />
+		headerRight: (
+			<Link onPress={()=>{navigation.navigate('End')}}>
+				<Text style={[styles.text, styles.textStrong, {color: '#0076FF', paddingHorizontal: 16}]}>{(Platform.OS == 'android') ? 'POST' : 'Post'}</Text>
+			</Link>
+		)
 	});
 
-  constructor(props){
-    super(props);
-    this.state = {
-      venues: [],
-    }
-  }
+	constructor(props){
+		super(props);
+		this.state = {
+			venues: [],
+		}
+	}
 
-  componentDidMount(){
+	componentDidMount(){
 
-    getFoursquareVenues(this.props.idea.where.categoryId, this.props.idea.where.radiusMeters)
-      .then((json) => {
-        if(json.response && json.response.venues){
-          this.setState({venues: json.response.venues});
-        }
-      });
+		getFoursquareVenues(this.props.idea.where.categoryId, this.props.idea.where.radiusMeters, this.props.user.latitude, this.props.user.longitude)
+			.then((venues) => {
+					this.setState({venues: venues});
+			});
 
 
 
-    getForecastsForLatLon()
-    	.then((forecasts) => {
-    		//const timestamp = moment().startOf('hour').add(1, 'w').unix();
-    		//const forecast = findTimeStampInForecasts(timestamp, forecasts);
-    		this.setState({forecasts: forecasts});
-    	});
-  }
+		getForecastsForLatLon(this.props.user.latitude, this.props.user.longitude)
+			.then((forecasts) => {
+				//const timestamp = moment().startOf('hour').add(1, 'w').unix();
+				//const forecast = findTimeStampInForecasts(timestamp, forecasts);
+				this.setState({forecasts: forecasts});
+			});
+	}
 
 
 
@@ -158,6 +161,8 @@ class Schedule extends React.Component {
 			...generateWhenOptions(idea.when.options, 2)
 		];
 
+		const dateTimeFormat = 'dddd, MMM D LT';
+
 		return (
 
 			<KeyboardAwareScrollView
@@ -182,12 +187,37 @@ class Schedule extends React.Component {
 								</FlexItem>
 								<FlexItem>
 									<Chunk>
+
+										{/*
 										<TextInput
 											placeholder="When?"
 											style={[styles.input]}
 											value={this.props.schedule.when}
 											underlineColorAndroid="transparent"
 											/>
+										*/}
+
+										<DatePicker
+											style={{padding: 0, margin: 0, width: 'auto'}}
+											customStyles={{
+												dateInput: [styles.input, {height: 'auto', justifyContent: 'flex-start', alignItems: 'flex-start'} ],
+												dateTouchBody: {height: 'auto'},
+												placeholderText: {fontSize: 16},
+												dateText: {fontSize: 16},
+											}}
+											date={ (this.props.schedule.when) ? moment(this.props.schedule.when).format(dateTimeFormat) : ''}
+											mode="datetime"
+											format={dateTimeFormat}
+											placeholder="When?"
+											confirmBtnText="Confirm"
+											cancelBtnText="Cancel"
+											showIcon={false}
+											is24Hour={false}
+											onDateChange={(datetime) => {
+												this.props.setScheduleWhen( moment(datetime).format(dateTimeFormat) )
+											}}
+											/>
+
 									</Chunk>
 								</FlexItem>
 							</Flex>
@@ -206,7 +236,7 @@ class Schedule extends React.Component {
 									}
 									return(
 										<Link key={i} onPress={()=>{
-											this.props.setScheduleWhen(dateOptionString)
+											this.props.setScheduleWhen( moment(dateOption).format(dateTimeFormat) )
 										}}>
 											<Option>
 												<Text style={[styles.text, styles.textSmall]}>{dateOptionString}</Text>
@@ -234,6 +264,17 @@ class Schedule extends React.Component {
 							<Chunk style={hintStyle}>
 								<Text style={[styles.text, styles.textSmall, styles.textHint]}>Most <Text style={styles.textStrong}>{idea.title}</Text> Meetups happen {idea.when.description}</Text>
 							</Chunk>
+
+							{/*
+							<Chunk>
+								<Link onPress={()=>{
+									navigate('CalendarPicker');
+								}}>
+									<Text>Calendar picker</Text>
+								</Link>
+							</Chunk>
+							*/}
+
 						</Section>
 
 						<Section style={styles.sectionTable}>
@@ -395,12 +436,13 @@ class Schedule extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { params } = ownProps.navigation.state;
-  return ({
-    ideaIndex: params.ideaIndex,
-    idea: state.groups['parenting'].ideas[params.ideaIndex],
-    schedule: state.schedule
-  });
+	const { params } = ownProps.navigation.state;
+	return ({
+		ideaIndex: params.ideaIndex,
+		idea: state.groups['parenting'].ideas[params.ideaIndex],
+		schedule: state.schedule,
+		user: state.user
+	});
 }
 
 const actionCreators = {
@@ -411,7 +453,7 @@ const actionCreators = {
 }
 
 export default connect(
-  mapStateToProps,
-  actionCreators
+	mapStateToProps,
+	actionCreators
 )(Schedule);
 

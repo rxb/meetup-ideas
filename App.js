@@ -14,6 +14,7 @@ import GroupHome from './screens/GroupHome';
 import IdeaDetail from './screens/IdeaDetail';
 import Schedule from './screens/Schedule';
 import VenueDetail from './screens/VenueDetail';
+import CalendarPicker from './screens/CalendarPicker';
 import End from './screens/End';
 
 const routeConfig = {
@@ -39,7 +40,8 @@ const navigationOptions = {
 const AppStackNavigator = StackNavigator(routeConfig, navigationOptions);
 const AppModalNavigator = StackNavigator({
 		AppStackNavigator: { screen: AppStackNavigator },
-    VenueDetail: { screen: VenueDetail }
+    VenueDetail: { screen: VenueDetail },
+    CalendarPicker: { screen: CalendarPicker }
 	}, {
     mode: 'modal',
     headerMode: 'none',
