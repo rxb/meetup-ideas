@@ -15,6 +15,7 @@ import IdeaDetail from './screens/IdeaDetail';
 import Schedule from './screens/Schedule';
 import VenueDetail from './screens/VenueDetail';
 import CalendarPicker from './screens/CalendarPicker';
+import Locations from './screens/Locations';
 import End from './screens/End';
 
 const routeConfig = {
@@ -41,7 +42,8 @@ const AppStackNavigator = StackNavigator(routeConfig, navigationOptions);
 const AppModalNavigator = StackNavigator({
 		AppStackNavigator: { screen: AppStackNavigator },
     VenueDetail: { screen: VenueDetail },
-    CalendarPicker: { screen: CalendarPicker }
+    CalendarPicker: { screen: CalendarPicker },
+    Locations: { screen: Locations }
 	}, {
     mode: 'modal',
     headerMode: 'none',

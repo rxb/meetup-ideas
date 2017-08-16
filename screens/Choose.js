@@ -1,11 +1,11 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import styles from '../styles/styles';
 
 import { Location, Permissions } from 'expo';
 
-import { setUserLocation, setUserCity, setIsFinding } from '../actions';
+import { setUserLocation, setDeviceLocation, setIsFinding } from '../actions';
 import { connect } from 'react-redux';
 
 import {
@@ -48,15 +48,12 @@ class Choose extends React.Component {
 		getLocationAsync().then((position)=>{
 			// reverse geocode
 			Location.reverseGeocodeAsync(position.coords).then((locations)=>{
-
 				// only set if we can get a complete match
 				if(locations && locations.length && locations[0].city){
-					// set city
+					// set city, lat/lon
 					const city = locations[0].city;
-					this.props.setUserCity(city);
-
-					// set lat/lon
-					this.props.setUserLocation(position.coords.latitude, position.coords.longitude);
+					this.props.setDeviceLocation(position.coords.latitude, position.coords.longitude, city);
+					this.props.setUserLocation(position.coords.latitude, position.coords.longitude, city);
 				}
 				this.props.setIsFinding(false);
 			});
@@ -68,46 +65,66 @@ class Choose extends React.Component {
 		const { navigate } = this.props.navigation;
 		const {
 			user,
-			groups
+			groups,
+			locations
 		} = this.props;
 
-		return (
-			<Stripe style={[styles.container, {flex: 1, justifyContent: 'center'}]}>
-				<Section>
-					<Chunk>
-						<Text style={[styles.text, styles.textSectionHead, {textAlign: 'center'}]}>Prototype!</Text>
-					</Chunk>
-					<Chunk>
-						<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}>Imagine you've just started a Parenting Meetup Group...</Text>
-					</Chunk>
-				</Section>
-				<Section>
-					{(Object.keys(groups)).map((topic, i)=>{
-						return(
-							<Chunk key={i}>
-								<Link
-									onPress={()=>{
-										navigate('GroupHome', {topic: topic});
-									}}>
-									<DumbButton type='secondary' label={'Start'} />
-								</Link>
-							</Chunk>
-						);
-					})}
-				</Section>
-				<Section style={[{borderBottomWidth: 0}]}>
+		if(user.isFinding){
+			return(
+				<View style={[styles.absoluteFill, styles.absoluteCenter]}>
+					<View>
+						<Chunk>
+							<ActivityIndicator size="large" />
+						</Chunk>
+						<Chunk>
+							<Text>Finding location...</Text>
+						</Chunk>
+					</View>
+				</View>
+			);
+		}
 
-					<Chunk>
-						{!user.isFinding &&
-							<Text style={[styles.text, styles.textSmall, styles.textHint, {textAlign: 'center'}]}>Current location: {user.city}</Text>
-						}
-						{ user.isFinding &&
-							<Text style={[styles.text, styles.textSmall, styles.textHint, {textAlign: 'center'}]}>Finding current location...</Text>
-						}
-					</Chunk>
-				</Section>
-			</Stripe>
-		);
+		if(!user.isFinding){
+			return (
+				<Stripe style={[styles.container, {flex: 1, justifyContent: 'center'}]}>
+					<Section>
+						<Chunk>
+							<Text style={[styles.text, styles.textSectionHead, {textAlign: 'center'}]}>Prototype!</Text>
+						</Chunk>
+						<Chunk>
+							<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}>Imagine you've just started a Parenting Meetup Group...</Text>
+						</Chunk>
+					</Section>
+					<Section>
+						{(Object.keys(groups)).map((topic, i)=>{
+							return(
+								<Chunk key={i}>
+									<Link
+										onPress={()=>{
+											navigate('GroupHome', {topic: topic});
+										}}>
+										<DumbButton type='secondary' label={'Start'} />
+									</Link>
+								</Chunk>
+							);
+						})}
+					</Section>
+
+					<Section style={[{borderBottomWidth: 0}]}>
+						<Link
+							onPress={()=>{
+								navigate('Locations');
+							}}
+							>
+							<Chunk>
+								<Text style={[styles.text, styles.textSmall, styles.textSecondary, {textAlign: 'center'}]}> Location: <Text style={styles.textLink}>{user.city}</Text></Text>
+							</Chunk>
+						</Link>
+					</Section>
+
+				</Stripe>
+			);
+		}
   }
 }
 
@@ -115,13 +132,14 @@ const mapStateToProps = (state, ownProps) => {
   const { params } = ownProps.navigation.state;
   return ({
   	groups: state.groups,
-    user: state.user
+    user: state.user,
+    locations: state.locations
   });
 }
 
 export default connect(
   mapStateToProps,
-  { setUserLocation, setUserCity, setIsFinding }
+  { setUserLocation, setDeviceLocation, setIsFinding }
 )(Choose);
 
 

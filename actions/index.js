@@ -17,14 +17,17 @@ export const setScheduleDuration = (duration) => ({
   duration
 })
 
-export const setUserLocation = (latitude, longitude) => ({
+export const setUserLocation = (latitude, longitude, city) => ({
   type: 'SET_USER_LOCATION',
   latitude,
-  longitude
+  longitude,
+  city
 })
 
-export const setUserCity = (city) => ({
-  type: 'SET_USER_CITY',
+export const setDeviceLocation = (latitude, longitude, city) => ({
+  type: 'SET_DEVICE_LOCATION',
+  latitude,
+  longitude,
   city
 })
 

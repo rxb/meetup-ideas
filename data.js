@@ -21,25 +21,54 @@ const foursquareCategories = {
 }
 
 
-// minneapolis
-export const defaultLat = 44.9;
-export const defaultLon = -93.2;
-export const defaultCity = 'Minneapolis';
+export const defaultLocations = {
+	austin: {
+		latitude: 30.26,
+		longitude: -97.74,
+		city: 'Austin'
+	},
+	boise: {
+		latitude: 43.61,
+		longitude: -116.21,
+		city: 'Boise'
+	},
+	clewiston: {
+		latitude: 26.75,
+		longitude: -80.93,
+		city: 'Clewiston'
+	},
+	denver: {
+		latitude: 39.73,
+		longitude: -104.99,
+		city: 'Denver'
+	},
+	london: {
+		latitude: 51.50,
+		longitude: -0.127,
+		city: 'London'
+	},
+	losangeles: {
+		latitude: 34.05,
+		longitude: -118.24,
+		city: 'Los Angeles'
+	},
+	minneapolis: {
+		latitude: 44.9,
+		longitude: -93.2,
+		city: 'Minneapolis'
+	},
+	newyork: {
+		latitude: 40.71,
+		longitude: -74.005,
+		city: 'New York'
+	},
+	vancouver: {
+		latitude: 49.28,
+		longitude: -123.12,
+		city: 'Vancouver'
+	},
 
-// new hampshire
-// export const defaultLat = 42.88;
-// export const defaultLon = -71.32;
-// export const defaultCity = 'Southern New Hampshire';
-
-// clewiston
-// export const defaultLat = 26.75;
-// export const defaultLon = -80.93;
-// export const defaultCity = 'Clewiston';
-
-// los angeles
-// export const defaultLat = 34.05;
-// export const defaultLon = -118.24;
-// export const defaultCity = 'Los Angeles';
+}
 
 
 export const getForecastsForLatLon = (lat, lon) =>{
@@ -67,7 +96,7 @@ export const getFoursquareVenue = (venueId) => {
 // venue params come from the .where in each idea object
 // filtering out any venues with less than 3 unique checkins because those tend to be garbage (relevant to sparse locations)
 export const getFoursquareVenues = (categoryId, radiusMeters = 8000, lat, lon) => {
-    return fetch(`https://api.foursquare.com/v2/venues/search?intent=browse&radius=${radiusMeters}&ll=${lat},${lon}&categoryId=${categoryId}&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801&limit=8`)
+    return fetch(`https://api.foursquare.com/v2/venues/search?radius=${radiusMeters}&ll=${lat},${lon}&categoryId=${categoryId}&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801&limit=8`)
       	.then((response) => {
       		return response.json();
       	})
@@ -75,7 +104,12 @@ export const getFoursquareVenues = (categoryId, radiusMeters = 8000, lat, lon) =
       		if(json.response && json.response.venues){
       			const venues = json.response.venues.filter((venue) => {
       				// filter out very questionable venues
-      				return venue.stats.usersCount > 3;
+      				let keep = true;
+      				if (venue.stats.usersCount <= 3) // not enough checkins
+      					keep = false;
+      				if (!venue.location || !venue.location.address) // no usable address
+      					keep = false;
+      				return keep;
       			});
       			return venues;
       		}
@@ -290,28 +324,28 @@ export const data = {
 				howManyGroups: 32,
 				pastMeetups: [
 					{
-						title: "All Ages Play Date",
-						groupName: "MOMS Club of Kansas City",
+						title: "Field Trip to Green Acres Farm!",
+						groupName: "Huron Valley Moms' Club",
 						attended: 14,
 						photo: "https://a248.e.akamai.net/secure.meetupstatic.com/photos/event/d/a/9/event_458575960.jpeg"
 					},
 					{
-						title: "Colorful Playdate and Snacks",
-						groupName: "Menifee Mom's Group",
+						title: "Fulper Dairy Farm Tour",
+						groupName: "Best Friends Play Time",
 						attended: 12,
-						photo: "https://secure.meetupstatic.com/photos/event/8/9/1/7/600_463355095.jpeg"
+						photo: "https://secure.meetupstatic.com/photos/event/1/6/6/3/event_463565731.jpeg"
 					},
 					{
-						title: "Let's let the littles play!",
-						groupName: "Moms-n-Munchkins of Northwest Columbus",
+						title: "Let's Take a Tour of Tomalchoff Farms",
+						groupName: "Tiny Tots of Surprise",
 						attended: 13,
-						photo: "https://secure.meetupstatic.com/photos/event/4/d/9/9/600_1219865.jpeg"
+						photo: "https://secure.meetupstatic.com/photos/event/b/0/c/c/600_460005260.jpeg"
 					},
 					{
-						title: "Mardi Gras play date",
-						groupName: "SouthWest Vegas Mommies and Kids",
+						title: "Hemmer Hill Sheep Farm Tour",
+						groupName: "Louisville Mama & Me Playgroup",
 						attended: 17,
-						photo: "https://secure.meetupstatic.com/photos/event/4/a/a/8/event_253279112.jpeg"
+						photo: "https://secure.meetupstatic.com/photos/event/a/9/a/e/highres_461083438.jpeg"
 					},
 				],
 				description: "Take a field trip to see the local animals or plants at a nearby farm. Some pick fruits or vegetables at orchards or pumpkin patches, while others pet and feed the barn animals at local farms. No matter what you choose, don't forget to wear the appropriate shoes—it can get messy out there.",
@@ -343,29 +377,29 @@ export const data = {
 						"2 hours",
 						"3 hours"
 					],
-					description: "2 hours"
+					description: "3 hours"
 				},
 				tips: [
 					{
 						authorName: 'Sally',
-						authorGroupName: 'Bushwick Moms',
-						quote: 'We bring sidewalk chalk sometimes and they are just enthralled for hours.',
-						authorPhoto: 'https://randomuser.me/api/portraits/women/1.jpg'
+						authorGroupName: 'Madision North Moms',
+						quote: 'Wet wipes went along away for dirty hands and faces.',
+						authorPhoto: 'https://randomuser.me/api/portraits/women/8.jpg'
 					},
 					{
-						authorName: "Peter",
-						authorGroupName: "Vegan Moms Chicago",
-						quote: "Fruit and trail mix are great snacks for the park that everyone can enjoy.",
-						authorPhoto: 'https://randomuser.me/api/portraits/men/2.jpg'
+						authorName: "David",
+						authorGroupName: "Kansas City Kids",
+						quote: "Dress for the weather. Bring a hat, sunscreen, and water if the weather is warm; dress in layers if it’s cold.",
+						authorPhoto: 'https://randomuser.me/api/portraits/men/4.jpg'
 					},
 					{
-						authorName: "Jan Quin",
-						authorGroupName: "SF Marina Mommies",
-						quote: "Try to end on a high note and leave while everyone is having fun. This way the kids remember it being an awesome time and will be excited to do it again.",
-						authorPhoto: 'https://randomuser.me/api/portraits/women/3.jpg'
+						authorName: "Erica Martinez",
+						authorGroupName: "Not Your Average Stay-at-home Moms",
+						quote: "It was hard to keep track of personal items so we made sure everyone's name was on their bag just incase things got lost or left behind.",
+						authorPhoto: 'https://randomuser.me/api/portraits/women/9.jpg'
 					}
 				],
-				notFinished: true
+				notFinished: false
 			},
 			{
 				title: "Potluck",

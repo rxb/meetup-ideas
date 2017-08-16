@@ -315,6 +315,9 @@ const styles = StyleSheet.create({
 	textHint:{
 		color: swatches.textHint
 	},
+	textLink:{
+		color: "#1D7CF2"
+	},
 	textSmall: {
 		fontSize: base * 0.825,
 		lineHeight: base * 0.825 * 1.4,

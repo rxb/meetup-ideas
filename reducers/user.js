@@ -13,11 +13,7 @@ const user = (state = defaultUser, action) => {
       return {
         ...state,
         latitude: action.latitude,
-        longitude: action.longitude
-      }
-    case 'SET_USER_CITY':
-      return {
-        ...state,
+        longitude: action.longitude,
         city: action.city,
       }
     case 'SET_IS_FINDING':
