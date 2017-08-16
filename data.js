@@ -622,11 +622,50 @@ export const data = {
 	hiking: {
 		getName: (city) => (`${city} Hikers Meetup Group`),
 		label: 'Hiking',
-		photo: 'https://secure.meetupstatic.com/photos/event/8/9/4/8/highres_463715144.jpeg',
-		duotonePhoto: 'https://secure.meetupstatic.com/photos/event/8/a/9/9/highres_463715481.jpeg',
+		photo: 'https://secure.meetupstatic.com/photos/event/4/4/d/d/highres_463757629.jpeg',
+		duotonePhoto: 'https://secure.meetupstatic.com/photos/event/4/5/0/0/highres_463757664.jpeg',
 		ideas: [
+			{
+				title: "Some Hiking Meetup",
+				howManyGroups: 8,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "https://secure.meetupstatic.com/photos/event/8/4/2/b/event_461013835.jpeg"
+					},
+				],
+				notFinished: true
+			},
+			{
+				title: "Some Hiking Meetup",
+				howManyGroups: 8,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "https://secure.meetupstatic.com/photos/event/8/4/2/b/event_461013835.jpeg"
+					},
+				],
+				notFinished: true
+			},
+			{
+				title: "Some Hiking Meetup",
+				howManyGroups: 8,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "https://secure.meetupstatic.com/photos/event/8/4/2/b/event_461013835.jpeg"
+					},
+				],
+				notFinished: true
+			},
 		],
-		notFinished: true
+		notFinished: false
 	}
 }
 
