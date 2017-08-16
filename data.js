@@ -91,10 +91,11 @@ export const getFoursquareVenue = (venueId) => {
 
 // FOURSQUARE GET VENUES
 // "search" api supports categoryIds, "explore" doesn't
-// "intent=browse" seems to give the best suggestion-type results
 // most recommendations can probably use a default smaller radius, but field trips need larger (ie farm trip)
 // venue params come from the .where in each idea object
-// filtering out any venues with less than 3 unique checkins because those tend to be garbage (relevant to sparse locations)
+// filtering out garbage venues by:
+// no venues with less than 3 unique checkins
+// no venues without an explicit street address
 export const getFoursquareVenues = (categoryId, radiusMeters = 8000, lat, lon) => {
     return fetch(`https://api.foursquare.com/v2/venues/search?radius=${radiusMeters}&ll=${lat},${lon}&categoryId=${categoryId}&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801&limit=8`)
       	.then((response) => {
@@ -399,7 +400,6 @@ export const data = {
 						authorPhoto: 'https://randomuser.me/api/portraits/women/9.jpg'
 					}
 				],
-				notFinished: false
 			},
 			{
 				title: "Potluck",

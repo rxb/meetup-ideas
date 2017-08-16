@@ -202,26 +202,7 @@ class VenueDetail extends React.Component {
 							}
 
 
-							{/* WEBSITE */}
-							{this.state.venue.url &&
-								<Flex>
-									<FlexItem growFactor={2} >
-										<Chunk>
-											<Text style={[styles.text, styles.textSecondary]}>Website</Text>
-										</Chunk>
-									</FlexItem>
-									<FlexItem growFactor={6} >
-										<Link onPress={()=>{
-											Linking.openURL(this.state.venue.url);
-											}}>
-										<Chunk>
-											<Text style={[styles.text]} numberOfLines={1}>{this.state.venue.url.split('/')[2]}</Text>
-										</Chunk>
-										</Link>
-									</FlexItem>
 
-								</Flex>
-							}
 
 
 
@@ -259,6 +240,28 @@ class VenueDetail extends React.Component {
 							</Flex>
 							}
 
+
+							{/* WEBSITE */}
+							{this.state.venue.url &&
+								<Flex>
+									<FlexItem growFactor={2} >
+										<Chunk>
+											<Text style={[styles.text, styles.textSecondary]}>Website</Text>
+										</Chunk>
+									</FlexItem>
+									<FlexItem growFactor={6} >
+										<Link onPress={()=>{
+											Linking.openURL(this.state.venue.url);
+											}}>
+										<Chunk>
+											<Text style={[styles.text]} numberOfLines={1}>{this.state.venue.url.split('/')[2]}</Text>
+										</Chunk>
+										</Link>
+									</FlexItem>
+
+								</Flex>
+							}
+
 							{/* PHONE NUMBER */}
 							{this.state.venue.contact && this.state.venue.contact.phone &&
 								<Flex>
@@ -287,6 +290,33 @@ class VenueDetail extends React.Component {
 														<Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Call venue</Text>
 													</FlexItem>
 													</Flex>
+												</View>
+											</Link>
+											</Chunk>
+									</FlexItem>
+								</Flex>
+							}
+
+							{/* WHEN NO WEBSITE OR PHONE */}
+
+							{!this.state.venue.url && !(this.state.venue.contact && this.state.venue.contact.phone) &&
+
+								<Flex>
+									<FlexItem growFactor={2}>
+										<Chunk>
+											<Text style={[styles.text, styles.textSecondary]}></Text>
+										</Chunk>
+									</FlexItem>
+									<FlexItem growFactor={6}>
+										<Chunk>
+										 <Link onPress={()=>{
+												// phone call intent
+												Linking.openURL(`http://google.com/search?q=${this.state.venue.name}+${this.state.venue.location.address}+${this.state.venue.location.city}`);
+												}}>
+												<View style={{marginTop: 8, borderRadius: 5, paddingVertical: 6, paddingHorizontal: 10, backgroundColor: '#eee', alignSelf: 'flex-start'}}>
+
+													<Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Search web for contact info</Text>
+
 												</View>
 											</Link>
 											</Chunk>
