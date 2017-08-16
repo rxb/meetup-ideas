@@ -5,6 +5,8 @@ import styles from '../styles/styles';
 import moment from 'moment';
 
 import VenueCard from '../components/VenueCard';
+import TrailCard from '../components/TrailCard';
+
 
 import {
   resetSchedule,
@@ -13,7 +15,7 @@ import {
   setScheduleDuration
 } from '../actions';
 import { connect } from 'react-redux';
-import {data, getFoursquareVenues, daysOfWeekPlural} from '../data';
+import {data, getFoursquareVenues, daysOfWeekPlural, getHikingProjectTrails} from '../data';
 
 import {
   DumbButton,
@@ -42,6 +44,7 @@ class IdeaDetail extends React.Component {
     super(props);
     this.state = {
       venues: [],
+      trails: []
     }
   }
 
@@ -50,6 +53,14 @@ class IdeaDetail extends React.Component {
       .then((venues) => {
           this.setState({venues: venues});
       });
+
+    /*
+    // test hiking trails
+    getHikingProjectTrails(this.props.user.latitude, this.props.user.longitude)
+      .then((trails) => {
+          this.setState({trails: trails});
+      });
+    */
   }
 
   render() {
@@ -169,6 +180,32 @@ class IdeaDetail extends React.Component {
                   );
                 }}
                 />
+
+
+              {/* TESTING TRAIL API */}
+              { this.state.trails.length > 0 &&
+              <List
+                variant='hscroll'
+                items={this.state.trails}
+                hscrollItemStyle={{width: 180+8, paddingRight: 8}}
+                renderItem={(item, i)=>{
+                  return(
+                    <Link
+                      key={i}
+                      onPress={()=>{
+                        navigate('TrailDetail', {
+                          venueId: item.id,
+                          ideaIndex: this.props.ideaIndex,
+                          notFromSchedule: true
+                        });
+                      }}>
+                      <TrailCard trail={item} />
+                    </Link>
+                  );
+                }}
+                />
+              }
+
             </Section>
 
             <Section>

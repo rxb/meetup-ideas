@@ -92,18 +92,25 @@ class Choose extends React.Component {
 							<Text style={[styles.text, styles.textSectionHead, {textAlign: 'center'}]}>Prototype!</Text>
 						</Chunk>
 						<Chunk>
-							<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}>Imagine you've just started a Parenting Meetup Group...</Text>
+							<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}>Imagine you've just started a Meetup Group about...</Text>
 						</Chunk>
 					</Section>
 					<Section>
 						{(Object.keys(groups)).map((topic, i)=>{
+							const group = groups[topic];
+							const disabled = group.notFinished;
 							return(
 								<Chunk key={i}>
 									<Link
+										disabled={disabled}
 										onPress={()=>{
 											navigate('GroupHome', {topic: topic});
 										}}>
-										<DumbButton type='secondary' label={'Start'} />
+										<DumbButton
+											type='secondary'
+											label={group.label+((disabled)?' (coming soon)' : '')}
+											style={{opacity: (disabled) ? .35 : 1}}
+											/>
 									</Link>
 								</Chunk>
 							);
@@ -117,7 +124,7 @@ class Choose extends React.Component {
 							}}
 							>
 							<Chunk>
-								<Text style={[styles.text, styles.textSmall, styles.textSecondary, {textAlign: 'center'}]}> Location: <Text style={styles.textLink}>{user.city}</Text></Text>
+								<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}> Location: <Text style={styles.textLink}>{user.city}</Text></Text>
 							</Chunk>
 						</Link>
 					</Section>

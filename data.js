@@ -2,8 +2,8 @@ import moment from 'moment';
 
 const foursquareClientId = 'Y1Y51NDFA2GCSXJB00OMXN2QBGGL4ASQLW1OM42BM54KZOKV';
 const foursquareClientSecret = 'XHARYWMWQQAHMUFT2UBJYPHFD3DVP44FCK2TWLEQX1F3BXVK';
-
 const weatherUndergroundKey = '99c20c22192a68a5';
+const hikingProjectKey = '200121722-610ce10d0a15cbc8f35cc27e96f53bfb';
 
 const foursquareCategories = {
 	coffee: '4bf58dd8d48988d1e0931735',
@@ -17,7 +17,10 @@ const foursquareCategories = {
 	trail: '4bf58dd8d48988d159941735',
 	dogs: '4bf58dd8d48988d1e5941735',
 	indoorPlayArea: '4bf58dd8d48988d15e941735',
-	farm: '4bf58dd8d48988d15b941735'
+	farm: '4bf58dd8d48988d15b941735',
+	meetingRoom: '4bf58dd8d48988d100941735',
+	businessCenter: '56aa371be4b08b9a8d573517',
+	communityCollege: '4bf58dd8d48988d1a2941735',
 }
 
 
@@ -61,6 +64,11 @@ export const defaultLocations = {
 		latitude: 40.71,
 		longitude: -74.005,
 		city: 'New York'
+	},
+	sydney: {
+		latitude: -33.86,
+		longitude: 151.20,
+		city: 'Syndey'
 	},
 	vancouver: {
 		latitude: 49.28,
@@ -120,6 +128,20 @@ export const getFoursquareVenues = (categoryId, radiusMeters = 8000, lat, lon) =
       	});
 };
 
+export const getHikingProjectTrails = (lat, lon) => {
+	return fetch(`https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lon}&key=${hikingProjectKey}`)
+	.then((response)=>{
+		return response.json();
+	})
+	.then((json) => {
+		if(json.trails){
+			return json.trails;
+		}
+		else{
+			return [];
+		}
+	});
+};
 
 export const getSuggestedMoment = (day, hour, weeksOut) => {
 	return moment().startOf('week').add(weeksOut, 'w').add(day, 'd').hour(hour).minutes(0);
@@ -507,6 +529,31 @@ export const data = {
 			},
 		]
 	},
+
+	// TECH
+
+	tech: {
+		getName: (city) => (`${city} Tech Meetup`),
+		label: 'Tech',
+		photo: 'https://secure.meetupstatic.com/photos/event/8/9/4/8/highres_463715144.jpeg',
+		duotonePhoto: 'https://secure.meetupstatic.com/photos/event/8/a/9/9/highres_463715481.jpeg',
+		ideas: [
+		],
+		notFinished: true
+	},
+
+
+	// HIKING
+
+	hiking: {
+		getName: (city) => (`${city} Hikers Meetup Group`),
+		label: 'Hiking',
+		photo: 'https://secure.meetupstatic.com/photos/event/8/9/4/8/highres_463715144.jpeg',
+		duotonePhoto: 'https://secure.meetupstatic.com/photos/event/8/a/9/9/highres_463715481.jpeg',
+		ideas: [
+		],
+		notFinished: true
+	}
 }
 
 
