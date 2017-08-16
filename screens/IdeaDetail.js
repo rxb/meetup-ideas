@@ -127,7 +127,7 @@ class IdeaDetail extends React.Component {
                   left: 8
                 }} />
 
-                {(idea.agenda).map((step, i)=>{
+                { (idea.agenda).map((step, i)=>{
                   return(
                     <Chunk key={i}>
                       <Flex>
@@ -269,7 +269,7 @@ class IdeaDetail extends React.Component {
           <Link
             onPress={()=>{
               this.props.resetSchedule();
-              navigate('Schedule', {ideaIndex: this.props.ideaIndex})
+              navigate('Schedule', {ideaIndex: this.props.ideaIndex, topic: this.props.topic})
             }}>
             <DumbButton label="Plan a Meetup like this" style={styles.shadow} elevation={3}  />
           </Link>
@@ -285,7 +285,9 @@ const mapStateToProps = (state, ownProps) => {
   const { params } = ownProps.navigation.state;
   return ({
     ideaIndex: params.ideaIndex,
-    idea: state.groups['parenting'].ideas[params.ideaIndex],
+    topic: params.topic,
+    group: state.groups[params.topic],
+    idea: state.groups[params.topic].ideas[params.ideaIndex],
     user: state.user
   });
 }

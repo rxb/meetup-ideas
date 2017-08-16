@@ -21,6 +21,7 @@ const foursquareCategories = {
 	meetingRoom: '4bf58dd8d48988d100941735',
 	businessCenter: '56aa371be4b08b9a8d573517',
 	communityCollege: '4bf58dd8d48988d1a2941735',
+	coworkingSpace: '4bf58dd8d48988d174941735'
 }
 
 
@@ -105,7 +106,7 @@ export const getFoursquareVenue = (venueId) => {
 // no venues with less than 3 unique checkins
 // no venues without an explicit street address
 export const getFoursquareVenues = (categoryId, radiusMeters = 8000, lat, lon) => {
-    return fetch(`https://api.foursquare.com/v2/venues/search?radius=${radiusMeters}&ll=${lat},${lon}&categoryId=${categoryId}&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801&limit=8`)
+    return fetch(`https://api.foursquare.com/v2/venues/search?radius=${radiusMeters}&ll=${lat},${lon}&categoryId=${categoryId}&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801&limit=10`)
       	.then((response) => {
       		return response.json();
       	})
@@ -535,11 +536,84 @@ export const data = {
 	tech: {
 		getName: (city) => (`${city} Tech Meetup`),
 		label: 'Tech',
-		photo: 'https://secure.meetupstatic.com/photos/event/8/9/4/8/highres_463715144.jpeg',
-		duotonePhoto: 'https://secure.meetupstatic.com/photos/event/8/a/9/9/highres_463715481.jpeg',
+		photo: 'https://secure.meetupstatic.com/photos/event/4/1/1/d/highres_463756669.jpeg',
+		duotonePhoto: 'https://secure.meetupstatic.com/photos/event/4/1/2/9/highres_463756681.jpeg',
 		ideas: [
+			{
+				title: "Some Tech Meetup",
+				howManyGroups: 8,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "http://photos4.meetupstatic.com/photos/event/2/8/8/e/event_345730382.jpeg"
+					},
+				],
+				description: "Take a field trip to see the local animals or plants at a nearby farm. Some pick fruits or vegetables at orchards or pumpkin patches, while others pet and feed the barn animals at local farms. No matter what you choose, don't forget to wear the appropriate shoes—it can get messy out there.",
+				agenda: [
+					{ label: 'Gather at meeting point', minutes: 10},
+				],
+				where: {
+					categoryId: `${foursquareCategories.library},${foursquareCategories.communityCollege},${foursquareCategories.coworkingSpace}`,
+					description: "Library meeting rooms, Colleges, Coworking spaces",
+					radiusMeters: 120000
+				},
+				when: {
+					options: [
+						{day: 6, hour: 10},
+						{day: 0, hour: 11},
+						{day: 0, hour: 12},
+					],
+					description: "weekend middays"
+				},
+				duration: {
+					options: [
+						"1 hour",
+						"2 hours",
+						"3 hours"
+					],
+					description: "3 hours"
+				},
+				tips: [
+					{
+						authorName: 'Sally',
+						authorGroupName: 'Madision North Moms',
+						quote: 'Wet wipes went along away for dirty hands and faces.',
+						authorPhoto: 'https://randomuser.me/api/portraits/women/8.jpg'
+					},
+				],
+
+				notFinished: false
+			},
+			{
+				title: "Some Tech Meetup",
+				howManyGroups: 8,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "http://photos4.meetupstatic.com/photos/event/2/8/8/e/event_345730382.jpeg"
+					},
+				],
+				notFinished: true
+			},
+			{
+				title: "Some Tech Meetup",
+				howManyGroups: 8,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "http://photos4.meetupstatic.com/photos/event/2/8/8/e/event_345730382.jpeg"
+					},
+				],
+				notFinished: true
+			},
 		],
-		notFinished: true
+		notFinished: false
 	},
 
 

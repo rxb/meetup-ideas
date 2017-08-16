@@ -156,7 +156,7 @@ class GroupHome extends React.Component {
 	render() {
 
 		const { navigate } = this.props.navigation;
-		const {group, user} = this.props;
+		const {group, user, topic} = this.props;
 
 		return (
 			<View style={styles.container}>
@@ -196,7 +196,7 @@ class GroupHome extends React.Component {
 											key={i}
 											onPress={()=>{
 												const ideaIndex = (idea.notFinished) ? 0 : i;
-												navigate('IdeaDetail', {ideaIndex})
+												navigate('IdeaDetail', {ideaIndex, topic})
 											}}>
 											<Card style={{marginBottom: 16}}>
 												<Flex align='center'>
@@ -294,7 +294,7 @@ class GroupHome extends React.Component {
 											<Text style={[styles.text, styles.textPageHead]}>Welcome to your new {group.label} Meetup Group</Text>
 										</Chunk>
 										<Chunk>
-											<Text style={[styles.text]}>This is the beginning of something big. You're part of a network of 4,234 Parenting Meetups around the world.</Text>
+											<Text style={[styles.text]}>This is the beginning of something big. You're part of a network of 4,234 {group.label} Meetups around the world.</Text>
 										</Chunk>
 										<Chunk style={{marginTop: 8}}>
 											<Link onPress={()=>{
@@ -323,6 +323,7 @@ const mapStateToProps = (state, ownProps) => {
 	const { params } = ownProps.navigation.state;
 	return ({
   		group: state.groups[params.topic],
+  		topic: params.topic,
   		user: state.user
   	});
 }
