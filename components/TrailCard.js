@@ -43,7 +43,7 @@ const TrailCard = (props) => {
 	} = props
 
 	return(
-		<Card style={{marginVertical: 6}}>
+		  <Card style={{marginVertical: 6}}>
          <View style={{height: 70, alignItems: 'center', justifyContent: 'center'}}>
            <GoogleStaticMap
               style={{height: 70, position: 'absolute', borderTopLeftRadius: 5, borderTopRightRadius: 5,}}
@@ -59,7 +59,7 @@ const TrailCard = (props) => {
           </View>
            <View style={{padding: 12}}>
               <Text style={[styles.text, styles.textSmall, styles.textStrong]} numberOfLines={1}>{trail.name}</Text>
-              <Text style={[styles.text, styles.textSmall]} numberOfLines={1}>{trail.location}</Text>
+              <Text style={[styles.text, styles.textSmall, {marginBottom: 4}]} numberOfLines={1}>{trail.location}</Text>
               <Flex align="center">
                 <FlexItem shrink >
                   <Image

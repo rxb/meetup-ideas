@@ -144,6 +144,7 @@ export const getHikingProjectTrails = (lat, lon) => {
 	});
 };
 
+
 export const getSuggestedMoment = (day, hour, weeksOut) => {
 	return moment().startOf('week').add(weeksOut, 'w').add(day, 'd').hour(hour).minutes(0);
 }
@@ -533,14 +534,14 @@ export const data = {
 
 	// TECH
 
-	tech: {
-		getName: (city) => (`${city} Tech Meetup`),
-		label: 'Tech',
+	vrprogramming: {
+		getName: (city) => (`${city} VR Programming Meetup`),
+		label: 'VR Programming',
 		photo: 'https://secure.meetupstatic.com/photos/event/4/1/1/d/highres_463756669.jpeg',
 		duotonePhoto: 'https://secure.meetupstatic.com/photos/event/4/1/2/9/highres_463756681.jpeg',
 		ideas: [
 			{
-				title: "Some Tech Meetup",
+				title: "Some VR Meetup",
 				howManyGroups: 8,
 				pastMeetups: [
 					{
@@ -550,7 +551,7 @@ export const data = {
 						photo: "http://photos4.meetupstatic.com/photos/event/2/8/8/e/event_345730382.jpeg"
 					},
 				],
-				description: "Take a field trip to see the local animals or plants at a nearby farm. Some pick fruits or vegetables at orchards or pumpkin patches, while others pet and feed the barn animals at local farms. No matter what you choose, don't forget to wear the appropriate shoes—it can get messy out there.",
+				description: "Description goes here.",
 				agenda: [
 					{ label: 'Gather at meeting point', minutes: 10},
 				],
@@ -636,7 +637,42 @@ export const data = {
 						photo: "https://secure.meetupstatic.com/photos/event/8/4/2/b/event_461013835.jpeg"
 					},
 				],
-				notFinished: true
+				description: "Description goes here.",
+				agenda: [
+					{ label: 'Gather at meeting point', minutes: 10},
+				],
+				where: {
+					dataProvider: 'hikingproject',
+					categoryId: `${foursquareCategories.library},${foursquareCategories.communityCollege},${foursquareCategories.coworkingSpace}`,
+					description: "Library meeting rooms, Colleges, Coworking spaces",
+					radiusMeters: 120000
+				},
+				when: {
+					options: [
+						{day: 6, hour: 10},
+						{day: 0, hour: 11},
+						{day: 0, hour: 12},
+					],
+					description: "weekend middays"
+				},
+				duration: {
+					options: [
+						"1 hour",
+						"2 hours",
+						"3 hours"
+					],
+					description: "3 hours"
+				},
+				tips: [
+					{
+						authorName: 'Sally',
+						authorGroupName: 'Madision North Moms',
+						quote: 'Wet wipes went along away for dirty hands and faces.',
+						authorPhoto: 'https://randomuser.me/api/portraits/women/8.jpg'
+					},
+				],
+
+				notFinished: false
 			},
 			{
 				title: "Some Hiking Meetup",

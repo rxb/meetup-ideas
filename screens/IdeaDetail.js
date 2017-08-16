@@ -44,23 +44,26 @@ class IdeaDetail extends React.Component {
     super(props);
     this.state = {
       venues: [],
-      trails: []
+
     }
   }
 
   componentDidMount(){
-    getFoursquareVenues(this.props.idea.where.categoryId, this.props.idea.where.radiusMeters, this.props.user.latitude, this.props.user.longitude)
-      .then((venues) => {
-          this.setState({venues: venues});
-      });
 
-    /*
-    // test hiking trails
-    getHikingProjectTrails(this.props.user.latitude, this.props.user.longitude)
-      .then((trails) => {
-          this.setState({trails: trails});
-      });
-    */
+    if(this.props.idea.where.dataProvider == 'hikingproject'){
+      // test hiking trails
+      getHikingProjectTrails(this.props.user.latitude, this.props.user.longitude)
+        .then((trails) => {
+            this.setState({venues: trails});
+        });
+    }
+    else{
+      getFoursquareVenues(this.props.idea.where.categoryId, this.props.idea.where.radiusMeters, this.props.user.latitude, this.props.user.longitude)
+        .then((venues) => {
+            this.setState({venues: venues});
+        });
+    }
+
   }
 
   render() {
@@ -160,51 +163,54 @@ class IdeaDetail extends React.Component {
                 }
               </Chunk>
 
-              <List
-                variant='hscroll'
-                items={this.state.venues}
-                hscrollItemStyle={{width: 180+8, paddingRight: 8}}
-                renderItem={(item, i)=>{
-                  return(
-                    <Link
-                      key={i}
-                      onPress={()=>{
-                        navigate('VenueDetail', {
-                          venueId: item.id,
-                          ideaIndex: this.props.ideaIndex,
-                          notFromSchedule: true
-                        });
-                      }}>
-                      <VenueCard venue={item} />
-                    </Link>
-                  );
-                }}
-                />
+
+              { (this.props.idea.where.dataProvider != 'hikingproject') &&
+                <List
+                  variant='hscroll'
+                  items={this.state.venues}
+                  hscrollItemStyle={{width: 180+8, paddingRight: 8}}
+                  renderItem={(item, i)=>{
+                    return(
+                      <Link
+                        key={i}
+                        onPress={()=>{
+                          navigate('VenueDetail', {
+                            venueId: item.id,
+                            ideaIndex: this.props.ideaIndex,
+                            notFromSchedule: true
+                          });
+                        }}>
+                        <VenueCard venue={item} />
+                      </Link>
+                    );
+                  }}
+                  />
+                }
 
 
-              {/* TESTING TRAIL API */}
-              { this.state.trails.length > 0 &&
-              <List
-                variant='hscroll'
-                items={this.state.trails}
-                hscrollItemStyle={{width: 180+8, paddingRight: 8}}
-                renderItem={(item, i)=>{
-                  return(
-                    <Link
-                      key={i}
-                      onPress={()=>{
-                        navigate('TrailDetail', {
-                          venueId: item.id,
-                          ideaIndex: this.props.ideaIndex,
-                          notFromSchedule: true
-                        });
-                      }}>
-                      <TrailCard trail={item} />
-                    </Link>
-                  );
-                }}
-                />
+              { (this.props.idea.where.dataProvider == 'hikingproject') &&
+                <List
+                  variant='hscroll'
+                  items={this.state.venues}
+                  hscrollItemStyle={{width: 180+8, paddingRight: 8}}
+                  renderItem={(item, i)=>{
+                    return(
+                      <Link
+                        key={i}
+                        onPress={()=>{
+                          navigate('TrailDetail', {
+                            venueId: item.id,
+                            ideaIndex: this.props.ideaIndex,
+                            notFromSchedule: true
+                          });
+                        }}>
+                        <TrailCard trail={item} />
+                      </Link>
+                    );
+                  }}
+                  />
               }
+
 
             </Section>
 
