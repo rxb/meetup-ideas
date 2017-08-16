@@ -254,7 +254,7 @@ class VenueDetail extends React.Component {
 											Linking.openURL(this.state.venue.url);
 											}}>
 										<Chunk>
-											<Text style={[styles.text]} numberOfLines={1}>{this.state.venue.url.split('/')[2]}</Text>
+											<Text style={[styles.text]} numberOfLines={1}>{this.state.venue.url.split('/').slice(2,this.state.venue.url.split('/').length).join('/')}</Text>
 										</Chunk>
 										</Link>
 									</FlexItem>
