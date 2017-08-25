@@ -35,3 +35,8 @@ export const setIsFinding = (isFinding) => ({
   type: 'SET_IS_FINDING',
   isFinding
 })
+
+export const setUserName = (name) => ({
+  type: 'SET_USER_NAME',
+  name
+})

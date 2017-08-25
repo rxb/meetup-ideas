@@ -3,6 +3,7 @@ import { ART, ScrollView } from 'react-native';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import styles from '../styles/styles';
 import moment from 'moment';
+import Hyperlink from 'react-native-hyperlink';
 
 import VenueCard from '../components/VenueCard';
 import TrailCard from '../components/TrailCard';
@@ -52,7 +53,7 @@ class IdeaDetail extends React.Component {
 
     if(this.props.idea.where.dataProvider == 'hikingproject'){
       // test hiking trails
-      getHikingProjectTrails(this.props.user.latitude, this.props.user.longitude)
+      getHikingProjectTrails(this.props.user.latitude, this.props.user.longitude, this.props.idea.where.filterFn)
         .then((trails) => {
             this.setState({venues: trails});
         });
@@ -70,7 +71,7 @@ class IdeaDetail extends React.Component {
 
     const { navigate } = this.props.navigation;
 
-    const idea = this.props.idea;
+    const {idea, topic, ideaIndex} = this.props;
 
     if(!idea.title)
       return false;
@@ -86,7 +87,12 @@ class IdeaDetail extends React.Component {
                 <Text style={[styles.text, styles.textPageHead]}>{idea.title}</Text>
               </Chunk>
               <Chunk>
-                <Text style={[styles.text, styles.textSecondary]}>{idea.description}</Text>
+                <Hyperlink
+                  linkStyle={styles.textLink}
+                  linkDefault={ true }
+                  >
+                  <Text style={[styles.text, styles.textSecondary]}>{idea.description}</Text>
+                </Hyperlink>
               </Chunk>
             </Section>
 
@@ -101,13 +107,18 @@ class IdeaDetail extends React.Component {
                 renderItem={(item, i)=>{
                   return(
                       <View key={i}>
-                        <Image
-                            source={{uri: item.photo}}
-                            style={{height: 130, resizeMode: 'cover', borderRadius: 5, marginVertical: 6}}
-                           />
-                          <Text style={[styles.text, styles.textSmall, styles.textStrong]}>{item.title}</Text>
-                          <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>{item.groupName}</Text>
-                          <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>{item.attended} attended</Text>
+                        <Link
+                          onPress={()=>{
+                            navigate('ExampleDetail', {exampleIndex: i, topic, ideaIndex})
+                          }}>
+                          <Image
+                              source={{uri: item.photo}}
+                              style={{height: 130, resizeMode: 'cover', borderRadius: 5, marginVertical: 6}}
+                             />
+                            <Text style={[styles.text, styles.textSmall, styles.textStrong]}>{item.title}</Text>
+                            <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>{item.groupName}</Text>
+                            <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>{item.attended} attended</Text>
+                        </Link>
                       </View>
                   );
                 }}
@@ -159,7 +170,7 @@ class IdeaDetail extends React.Component {
               <Chunk>
                 <Text style={[styles.text, styles.textSmall]}>{idea.where.description}</Text>
                 {this.state.venues && this.state.venues.length > 0 &&
-                  <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Here are some nearby possibilities:</Text>
+                  <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Here are some nearby possibilities</Text>
                 }
               </Chunk>
 
@@ -177,6 +188,7 @@ class IdeaDetail extends React.Component {
                           navigate('VenueDetail', {
                             venueId: item.id,
                             ideaIndex: this.props.ideaIndex,
+                            topic: this.props.topic,
                             notFromSchedule: true
                           });
                         }}>
@@ -198,9 +210,10 @@ class IdeaDetail extends React.Component {
                       <Link
                         key={i}
                         onPress={()=>{
-                          navigate('TrailDetail', {
-                            venueId: item.id,
+                          navigate('VenueWebview', {
+                            url: item.url,
                             ideaIndex: this.props.ideaIndex,
+                            topic: this.props.topic,
                             notFromSchedule: true
                           });
                         }}>
@@ -255,7 +268,12 @@ class IdeaDetail extends React.Component {
                             />
                         </FlexItem>
                         <FlexItem>
-                          <Text style={[styles.text]}>&ldquo;{tip.quote}&rdquo;</Text>
+                          <Hyperlink
+                            linkStyle={styles.textLink}
+                            linkDefault={ true }
+                            >
+                            <Text style={[styles.text]}>&ldquo;{tip.quote}&rdquo;</Text>
+                          </Hyperlink>
                           <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>{tip.authorName} • {tip.authorGroupName}</Text>
                         </FlexItem>
                       </Flex>

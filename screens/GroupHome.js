@@ -182,7 +182,7 @@ class GroupHome extends React.Component {
 										/>
 
 										<Text style={[styles.text, styles.textSectionHead, {textAlign: 'center', marginVertical: 7}]}>Ideas for your {group.label} Meetup</Text>
-										<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}>Check out some Meetup ideas other {group.label} groups have tried and loved.</Text>
+										<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}>Quickly schedule Meetup ideas other {group.label} groups have tried and loved.</Text>
 
 
 							</Chunk>
@@ -209,7 +209,7 @@ class GroupHome extends React.Component {
 													<FlexItem growFactor={5} style={{paddingRight: 16}}>
 														<Text style={[styles.text, styles.textKicker, {fontSize: 11, lineHeight: 18, color: 'rgba(0,0,0,.35)'}]}>MEETUP IDEA</Text>
 														<Text style={[styles.text, styles.textStrong]} numberOfLines={2}>{idea.title}</Text>
-														<Text style={[styles.text, styles.textSmall]}>{idea.howManyGroups} groups have tried this</Text>
+														<Text style={[styles.text, styles.textSmall]}>{idea.howManyGroups} groups have done this</Text>
 													</FlexItem>
 												</Flex>
 											</Card>

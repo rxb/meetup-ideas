@@ -129,14 +129,14 @@ export const getFoursquareVenues = (categoryId, radiusMeters = 8000, lat, lon) =
       	});
 };
 
-export const getHikingProjectTrails = (lat, lon) => {
-	return fetch(`https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lon}&key=${hikingProjectKey}`)
+export const getHikingProjectTrails = (lat, lon, filterFn = (item)=>item ) => {
+	return fetch(`https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lon}&maxDistance=75&maxResults=50&key=${hikingProjectKey}`)
 	.then((response)=>{
 		return response.json();
 	})
 	.then((json) => {
 		if(json.trails){
-			return json.trails;
+			return json.trails.filter(filterFn);
 		}
 		else{
 			return [];
@@ -158,6 +158,57 @@ export const daysOfWeekPlural = [
 	'Fridays',
 	'Saturdays'
 ]
+
+
+const hikingIdeaBase = {
+				title: "Some Hiking Meetup",
+				howManyGroups: 8,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "https://secure.meetupstatic.com/photos/event/8/4/2/b/event_461013835.jpeg"
+					},
+				],
+				description: "Description goes here.",
+				agenda: [
+					{ label: 'Gather at meeting point', minutes: 10},
+				],
+				where: {
+					dataProvider: 'hikingproject',
+					description: "Easy hikes",
+					filterFn: (item) => {
+						return item.difficulty == 'green'
+					}
+				},
+				when: {
+					options: [
+						{day: 6, hour: 10},
+						{day: 0, hour: 11},
+						{day: 0, hour: 12},
+					],
+					description: "weekend middays"
+				},
+				duration: {
+					options: [
+						"1 hour",
+						"2 hours",
+						"3 hours"
+					],
+					description: "3 hours"
+				},
+				tips: [
+					{
+						authorName: 'Sally',
+						authorGroupName: 'Madision North Moms',
+						quote: 'Wet wipes went along away for dirty hands and faces.',
+						authorPhoto: 'https://randomuser.me/api/portraits/women/8.jpg'
+					},
+				],
+
+				notFinished: false
+			};
 
 
 export const data = {
@@ -534,39 +585,60 @@ export const data = {
 
 	// TECH
 
-	vrprogramming: {
-		getName: (city) => (`${city} VR Programming Meetup`),
-		label: 'VR Programming',
+	tech: {
+		getName: (city) => (`${city} Tech Meetup Group`),
+		label: 'Tech',
 		photo: 'https://secure.meetupstatic.com/photos/event/4/1/1/d/highres_463756669.jpeg',
 		duotonePhoto: 'https://secure.meetupstatic.com/photos/event/4/1/2/9/highres_463756681.jpeg',
 		ideas: [
 			{
-				title: "Some VR Meetup",
-				howManyGroups: 8,
+				title: "Hack && Tell",
+				howManyGroups: 13,
 				pastMeetups: [
 					{
-						title: "Dummy Event",
-						groupName: "Dummy Group",
-						attended: 0,
-						photo: "http://photos4.meetupstatic.com/photos/event/2/8/8/e/event_345730382.jpeg"
+						title: "Berlin Hack & Tell #53 - The Hackening",
+						groupName: "Hack && Tell Berlin",
+						attended: 90,
+						photo: "http://i.imgur.com/BRP3Chp.jpg"
+					},
+					{
+						title: "Hack && Tell #15: Ribbit",
+						groupName: "Hack && Tell NYC",
+						attended: 96,
+						photo: "https://secure.meetupstatic.com/photos/event/1/7/f/4/event_97806132.jpeg"
+					},
+					{
+						title: "Round 45: Bayesian Combat",
+						groupName: "Hack && Tell DC",
+						attended: 90,
+						photo: "https://secure.meetupstatic.com/photos/event/8/d/6/event_367922262.jpeg"
+					},
+					{
+						title: "London Hack & Tell #4 - Summer edition!",
+						groupName: "London Hack&&Tell",
+						attended: 53,
+						photo: "https://secure.meetupstatic.com/photos/event/6/f/a/1/event_439528577.jpeg"
 					},
 				],
-				description: "Description goes here.",
+				description: "Like show & tell, but for hackers. Around 8–10 people give a five-minute presentation on something they built and then host a Q&A session for another five minutes. This isn't a time to share something from work or pitch a startup—it's about seeing what people do in their spare time for fun or utility. Props to hackandtell.org for creating this awesome Meetup series and inspiring the entire tech community.",
 				agenda: [
-					{ label: 'Gather at meeting point', minutes: 10},
+					{ label: 'Introductions', minutes: 10},
+					{ label: 'First set of hackers', minutes: 40},
+					{ label: 'Bio break', minutes: 10},
+					{ label: 'Second set of hackers', minutes: 40},
+					{ label: 'Wrap up', minutes: 10},
 				],
 				where: {
-					categoryId: `${foursquareCategories.library},${foursquareCategories.communityCollege},${foursquareCategories.coworkingSpace}`,
-					description: "Library meeting rooms, Colleges, Coworking spaces",
-					radiusMeters: 120000
+					categoryId: `${foursquareCategories.library},${foursquareCategories.communityCollege}`,
+					description: "Library meeting rooms, Colleges, Coworking spaces"
 				},
 				when: {
 					options: [
-						{day: 6, hour: 10},
-						{day: 0, hour: 11},
-						{day: 0, hour: 12},
+						{day: 2, hour: 19},
+						{day: 3, hour: 19},
+						{day: 4, hour: 19},
 					],
-					description: "weekend middays"
+					description: "weeknights at 7pm"
 				},
 				duration: {
 					options: [
@@ -574,45 +646,198 @@ export const data = {
 						"2 hours",
 						"3 hours"
 					],
-					description: "3 hours"
+					description: "2 hours"
 				},
 				tips: [
 					{
-						authorName: 'Sally',
-						authorGroupName: 'Madision North Moms',
-						quote: 'Wet wipes went along away for dirty hands and faces.',
+						authorName: 'Emily',
+						authorGroupName: 'Hack && Tell London',
+						quote: "Have each presenter share links to their hacks in the comments before or after the event so everyone can tinker with them.",
 						authorPhoto: 'https://randomuser.me/api/portraits/women/8.jpg'
+					},
+					{
+						authorName: 'Mark',
+						authorGroupName: 'Hack && Tell New York',
+						quote: "Ask a co-working space to host and sponsor your Meetup so you can accommodate more people.",
+						authorPhoto: 'https://randomuser.me/api/portraits/men/8.jpg'
+					},
+					{
+						authorName: 'Keith',
+						authorGroupName: 'Hack && Tell Berlin',
+						quote: "Food always keeps people happy. We suggest pizza because it's cheap and portable.",
+						authorPhoto: 'https://randomuser.me/api/portraits/men/9.jpg'
+					},
+					{
+						authorName: 'Natalia',
+						authorGroupName: 'Hack && Tell DC',
+						quote: "Check out the Hack && Tell Code of Conduct (http://hackandtell.org/) to avoid any issues during the Q&A.",
+						authorPhoto: 'https://randomuser.me/api/portraits/women/9.jpg'
 					},
 				],
 
 				notFinished: false
 			},
 			{
-				title: "Some Tech Meetup",
+				title: "Work Session",
 				howManyGroups: 8,
 				pastMeetups: [
 					{
 						title: "Dummy Event",
 						groupName: "Dummy Group",
 						attended: 0,
-						photo: "http://photos4.meetupstatic.com/photos/event/2/8/8/e/event_345730382.jpeg"
+						photo: "https://a248.e.akamai.net/secure.meetupstatic.com/photos/event/6/c/b/e/event_458667838.jpeg"
+					},
+				],
+				notFinished: true
+			},
+
+
+			{
+				title: "Peer Review",
+				howManyGroups: 27,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "https://secure.meetupstatic.com/photos/event/e/0/e/8/event_455037576.jpeg"
 					},
 				],
 				notFinished: true
 			},
 			{
-				title: "Some Tech Meetup",
+				title: "Lean Coffee",
+				howManyGroups: 27,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "https://secure.meetupstatic.com/photos/event/6/e/e/0/event_460888384.jpeg"
+					},
+				],
+				notFinished: true
+			},
+
+			{
+				title: "Hackathon",
+				howManyGroups: 27,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "https://secure.meetupstatic.com/photos/event/b/9/6/0/event_460127456.jpeg"
+					},
+				],
+				notFinished: true
+			},
+			{
+				title: "Group Discussion",
+				howManyGroups: 27,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "https://a248.e.akamai.net/secure.meetupstatic.com/photos/event/8/0/f/1/event_455193009.jpeg"
+					},
+				],
+				notFinished: true
+			},
+			{
+				title: "Game Night",
+				howManyGroups: 27,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "https://a248.e.akamai.net/secure.meetupstatic.com/photos/event/d/8/c/event_448863468.jpeg"
+					},
+				],
+				notFinished: true
+			},
+			{
+				title: "Workshop",
+				howManyGroups: 27,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "https://secure.meetupstatic.com/photos/event/9/a/b/6/event_449079606.jpeg"
+					},
+				],
+				notFinished: true
+			},
+			{
+				title: "Hack for Purpose",
+				howManyGroups: 27,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "http://i.imgur.com/gWNraUUm.jpg"
+					},
+				],
+				notFinished: true
+			},
+			{
+				title: "Bytes & Brews",
 				howManyGroups: 8,
 				pastMeetups: [
 					{
 						title: "Dummy Event",
 						groupName: "Dummy Group",
 						attended: 0,
-						photo: "http://photos4.meetupstatic.com/photos/event/2/8/8/e/event_345730382.jpeg"
+						photo: "http://i.imgur.com/BpzjdAw.jpg"
 					},
 				],
 				notFinished: true
 			},
+			{
+				title: "Ask an Expert",
+				howManyGroups: 27,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "https://cdn-images-1.medium.com/max/800/0*S8x912Fk4_qXFYNT."
+					},
+				],
+				notFinished: true
+			},
+
+			{
+				title: "N00b Welcome Drinks",
+				howManyGroups: 27,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "http://photos1.meetupstatic.com/photos/event/2/3/4/e/event_444129038.jpeg"
+					},
+				],
+				notFinished: true
+			},
+			{
+				title: "Networking Event",
+				howManyGroups: 27,
+				pastMeetups: [
+					{
+						title: "Dummy Event",
+						groupName: "Dummy Group",
+						attended: 0,
+						photo: "http://i.imgur.com/apF1wCsm.jpg"
+					},
+				],
+				notFinished: true
+			},
+
 		],
 		notFinished: false
 	},
@@ -627,68 +852,40 @@ export const data = {
 		duotonePhoto: 'https://secure.meetupstatic.com/photos/event/4/5/0/0/highres_463757664.jpeg',
 		ideas: [
 			{
-				title: "Some Hiking Meetup",
-				howManyGroups: 8,
-				pastMeetups: [
-					{
-						title: "Dummy Event",
-						groupName: "Dummy Group",
-						attended: 0,
-						photo: "https://secure.meetupstatic.com/photos/event/8/4/2/b/event_461013835.jpeg"
-					},
-				],
-				description: "Description goes here.",
-				agenda: [
-					{ label: 'Gather at meeting point', minutes: 10},
-				],
+				...hikingIdeaBase,
+				title: "Beginner Level Hike",
 				where: {
 					dataProvider: 'hikingproject',
-					categoryId: `${foursquareCategories.library},${foursquareCategories.communityCollege},${foursquareCategories.coworkingSpace}`,
-					description: "Library meeting rooms, Colleges, Coworking spaces",
-					radiusMeters: 120000
+					description: "Beginner hikes",
+					filterFn: (item) => {
+						return item.difficulty == 'green' || item.difficulty == 'greenBlue'
+					}
 				},
-				when: {
-					options: [
-						{day: 6, hour: 10},
-						{day: 0, hour: 11},
-						{day: 0, hour: 12},
-					],
-					description: "weekend middays"
-				},
-				duration: {
-					options: [
-						"1 hour",
-						"2 hours",
-						"3 hours"
-					],
-					description: "3 hours"
-				},
-				tips: [
-					{
-						authorName: 'Sally',
-						authorGroupName: 'Madision North Moms',
-						quote: 'Wet wipes went along away for dirty hands and faces.',
-						authorPhoto: 'https://randomuser.me/api/portraits/women/8.jpg'
-					},
-				],
-
-				notFinished: false
 			},
 			{
-				title: "Some Hiking Meetup",
-				howManyGroups: 8,
-				pastMeetups: [
-					{
-						title: "Dummy Event",
-						groupName: "Dummy Group",
-						attended: 0,
-						photo: "https://secure.meetupstatic.com/photos/event/8/4/2/b/event_461013835.jpeg"
-					},
-				],
-				notFinished: true
+				...hikingIdeaBase,
+				title: "Medium Level Hike",
+				where: {
+					dataProvider: 'hikingproject',
+					description: "Medium hikes",
+					filterFn: (item) => {
+						return item.difficulty == 'blue'
+					}
+				},
 			},
 			{
-				title: "Some Hiking Meetup",
+				...hikingIdeaBase,
+				title: "Advanced Level Hike",
+				where: {
+					dataProvider: 'hikingproject',
+					description: "Advanced hikes",
+					filterFn: (item) => {
+						return item.difficulty == 'black' || item.difficulty == 'blueBlack'
+					}
+				},
+			},
+			{
+				title: "Some Other Hiking Idea",
 				howManyGroups: 8,
 				pastMeetups: [
 					{
@@ -701,7 +898,7 @@ export const data = {
 				notFinished: true
 			},
 		],
-		notFinished: false
+		notFinished: true
 	}
 }
 

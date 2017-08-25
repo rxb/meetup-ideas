@@ -45,17 +45,24 @@ const TrailCard = (props) => {
 	return(
 		  <Card style={{marginVertical: 6}}>
          <View style={{height: 70, alignItems: 'center', justifyContent: 'center'}}>
-           <GoogleStaticMap
-              style={{height: 70, position: 'absolute', borderTopLeftRadius: 5, borderTopRightRadius: 5,}}
-              latitude={String(trail.latitude)}
-              longitude={String(trail.longitude)}
-              zoom={14}
-              mapType='terrain'
-              hasCenterMarker={false}
-              size={{width: 180, height: 70 }}
-              key={googleStaticMapApiKey}
-            />
-            <View style={{backgroundColor: 'red', width: 12, height: 12, borderRadius: 6}} />
+              {/*
+             <GoogleStaticMap
+                style={{height: 70, position: 'absolute', borderTopLeftRadius: 5, borderTopRightRadius: 5,}}
+                latitude={String(trail.latitude)}
+                longitude={String(trail.longitude)}
+                zoom={14}
+                mapType='terrain'
+                hasCenterMarker={false}
+                size={{width: 180, height: 70 }}
+                key={googleStaticMapApiKey}
+              />
+              <View style={{backgroundColor: 'red', width: 12, height: 12, borderRadius: 6}} />
+              */}
+            <Image
+              source={(trail.imgMedium) ? {uri: trail.imgMedium} : {}}
+              style={{width: 180, height: 70, resizeMode: 'cover', backgroundColor: '#ccc'}}
+              />
+
           </View>
            <View style={{padding: 12}}>
               <Text style={[styles.text, styles.textSmall, styles.textStrong]} numberOfLines={1}>{trail.name}</Text>

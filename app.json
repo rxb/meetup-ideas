@@ -4,6 +4,6 @@
      "androidStatusBar": {
 	  "backgroundColor": "#eeeeee",
 	},
-	"androidStatusBarColor": "#ffffff"
+	"androidStatusBarColor": "#ffffff",
   }
 }

@@ -11,9 +11,11 @@ const store = createStore(reducer);
 // screens
 import Choose from './screens/Choose';
 import GroupHome from './screens/GroupHome';
+import ExampleDetail from './screens/ExampleDetail';
 import IdeaDetail from './screens/IdeaDetail';
 import Schedule from './screens/Schedule';
 import VenueDetail from './screens/VenueDetail';
+import VenueWebview from './screens/VenueWebview';
 import CalendarPicker from './screens/CalendarPicker';
 import Locations from './screens/Locations';
 import End from './screens/End';
@@ -43,7 +45,9 @@ const AppModalNavigator = StackNavigator({
 		AppStackNavigator: { screen: AppStackNavigator },
     VenueDetail: { screen: VenueDetail },
     CalendarPicker: { screen: CalendarPicker },
-    Locations: { screen: Locations }
+    Locations: { screen: Locations },
+    VenueWebview: { screen: VenueWebview },
+    ExampleDetail: { screen: ExampleDetail }
 	}, {
     mode: 'modal',
     headerMode: 'none',

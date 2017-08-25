@@ -439,7 +439,8 @@ const mapStateToProps = (state, ownProps) => {
 	const { params } = ownProps.navigation.state;
 	return ({
 		ideaIndex: params.ideaIndex,
-		idea: state.groups['parenting'].ideas[params.ideaIndex],
+		topic: params.topic,
+		idea: state.groups[params.topic].ideas[params.ideaIndex],
 		schedule: state.schedule,
 		user: state.user
 	});

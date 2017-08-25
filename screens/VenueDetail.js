@@ -1,6 +1,8 @@
 import React from 'react';
 import { ScrollView, Linking } from 'react-native';
 import { View, Text, Image, StyleSheet, Platform } from 'react-native';
+import ModalHeader from '../components/ModalHeader';
+
 import styles from '../styles/styles';
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux';
@@ -42,7 +44,7 @@ class VenueDetail extends React.Component {
 	}
 
 
- componentDidMount(){
+ 	componentDidMount(){
 		getFoursquareVenue(this.props.venueId)
 			.then((json) => {
 				if(json.response && json.response.venue){
@@ -92,23 +94,7 @@ class VenueDetail extends React.Component {
 		<View style={styles.container}>
 
 			{/* MODAL HEADER */}
-			<View elevation={4} style={[{ alignItems: 'flex-start'},
-				(Platform.OS == "ios" ?
-					{height: 44, marginTop:  20, backgroundColor: '#EFEFF2'} :
-					{height: 56, paddingTop:  6, backgroundColor: '#FFFFFF',}
-				)]}>
-				<Link
-						style={{padding: 14}}
-						onPress={()=>{
-							this.props.navigation.dispatch(NavigationActions.back());
-						}}>
-							<Image
-								source={require('../img/icons/Close.png')}
-								style={{height: 16, width: 16, resizeMode: 'contain', tintColor: Platform.OS == "ios" ? '#0076FF' : '#000'}}
-								/>
-					</Link>
-			</View>
-
+			<ModalHeader navigation={this.props.navigation} NavigationActions={NavigationActions} />
 
 			<ScrollView style={styles.container}>
 				<Stripe>
@@ -200,10 +186,6 @@ class VenueDetail extends React.Component {
 
 							</Flex>
 							}
-
-
-
-
 
 
 							{/* HOURS */}
@@ -326,7 +308,6 @@ class VenueDetail extends React.Component {
 						</Section>
 
 
-
 						{/* FOURSQUARE TIPS */}
 						{ tips && tips.length > 0 &&
 						<Section>
@@ -387,7 +368,7 @@ class VenueDetail extends React.Component {
 							this.props.navigation.dispatch(NavigationActions.back());
 							if(this.props.notFromSchedule){
 								setTimeout(() => {
-									navigate('Schedule', {ideaIndex: this.props.ideaIndex})
+									navigate('Schedule', {ideaIndex: this.props.ideaIndex, topic: this.props.topic})
 								}, 600);
 							}
 						}}>
@@ -406,6 +387,7 @@ const mapStateToProps = (state, ownProps) => {
 	const { params } = ownProps.navigation.state;
 	return ({
 		ideaIndex: params.ideaIndex,
+		topic: params.topic,
 		venueId: params.venueId,
 		notFromSchedule: params.notFromSchedule
 	});

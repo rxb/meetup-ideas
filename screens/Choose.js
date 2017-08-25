@@ -1,11 +1,11 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import styles from '../styles/styles';
 
-import { Location, Permissions } from 'expo';
+import { Location, Permissions, Notifications, Facebook } from 'expo';
 
-import { setUserLocation, setDeviceLocation, setIsFinding } from '../actions';
+import { setUserLocation, setDeviceLocation, setIsFinding, setUserName } from '../actions';
 import { connect } from 'react-redux';
 
 import {
@@ -28,6 +28,25 @@ import {
 	Toast,
 } from '../basecomponents';
 
+
+// FACEBOOK LOG IN
+async function logIn() {
+	const {
+	  type,
+	  token
+	} = await Expo.Facebook.logInWithReadPermissionsAsync("123539831626913", {
+	  permissions: ["public_profile", "email"]
+	});
+	if (type === "success") {
+	  // Get the user's name using Facebook's Graph API
+	  const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+	  return await response;
+	}
+}
+
+
+
+// LOCATION
 async function getLocationAsync() {
 
 	const { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -38,6 +57,8 @@ async function getLocationAsync() {
 	}
 }
 
+
+// SCREEN
 class Choose extends React.Component {
 
 	componentDidMount() {
@@ -63,6 +84,7 @@ class Choose extends React.Component {
 	render() {
 
 		const { navigate } = this.props.navigation;
+
 		const {
 			user,
 			groups,
@@ -99,13 +121,16 @@ class Choose extends React.Component {
 						{(Object.keys(groups)).map((topic, i)=>{
 							const group = groups[topic];
 							const disabled = group.notFinished;
+							const navigateIdea = ()=>{
+								navigate('GroupHome', {topic: topic});
+							}
 							return(
 								<Chunk key={i}>
 									<Link
-										disabled={disabled}
-										onPress={()=>{
-											navigate('GroupHome', {topic: topic});
-										}}>
+										onPress={(!disabled) ? navigateIdea : null}
+										onLongPress={navigateIdea}
+										delayLongPress={2000}
+										>
 										<DumbButton
 											type='secondary'
 											label={group.label+((disabled)?' (coming soon)' : '')}
@@ -127,6 +152,24 @@ class Choose extends React.Component {
 								<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}> Location: <Text style={styles.textLink}>{user.city}</Text></Text>
 							</Chunk>
 						</Link>
+
+						{/* facebook log in test */}
+						<Link
+							onPress={()=>{
+								logIn()
+									.then( (response) => response.json() )
+									.then( (json) => {
+										this.props.setUserName(json.name);
+									});
+							}}
+							>
+							<Chunk>
+								<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}>
+									{ (user.name) ? `Hey ${user.name}` : 'Test Facebook Login' }
+								</Text>
+							</Chunk>
+						</Link>
+
 					</Section>
 
 				</Stripe>
@@ -140,13 +183,13 @@ const mapStateToProps = (state, ownProps) => {
   return ({
   	groups: state.groups,
     user: state.user,
-    locations: state.locations
+    locations: state.locations,
   });
 }
 
 export default connect(
   mapStateToProps,
-  { setUserLocation, setDeviceLocation, setIsFinding }
+  { setUserLocation, setDeviceLocation, setIsFinding, setUserName }
 )(Choose);
 
 

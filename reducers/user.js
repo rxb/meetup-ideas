@@ -4,11 +4,16 @@ const defaultUser = {
   latitude: defaultLat,
   longitude: defaultLon,
   city: defaultCity,
-  isFinding: false
+  isFinding: false,
 };
 
 const user = (state = defaultUser, action) => {
   switch (action.type) {
+    case 'SET_USER_NAME':
+      return {
+        ...state,
+        name: action.name
+      }
     case 'SET_USER_LOCATION':
       return {
         ...state,
