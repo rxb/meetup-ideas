@@ -1,11 +1,12 @@
-import moment from 'moment';
+require('isomorphic-fetch');
+const moment = require('moment');
 
 const foursquareClientId = 'Y1Y51NDFA2GCSXJB00OMXN2QBGGL4ASQLW1OM42BM54KZOKV';
 const foursquareClientSecret = 'XHARYWMWQQAHMUFT2UBJYPHFD3DVP44FCK2TWLEQX1F3BXVK';
 const weatherUndergroundKey = '99c20c22192a68a5';
 const hikingProjectKey = '200121722-610ce10d0a15cbc8f35cc27e96f53bfb';
 
-const foursquareCategories = {
+export const foursquareCategories = {
 	coffee: '4bf58dd8d48988d1e0931735',
 	park: '4bf58dd8d48988d163941735',
 	playground: '4bf58dd8d48988d1e7941735',
@@ -16,7 +17,7 @@ const foursquareCategories = {
 	beach: '4bf58dd8d48988d1e2941735',
 	trail: '4bf58dd8d48988d159941735',
 	dogs: '4bf58dd8d48988d1e5941735',
-	indoorPlayArea: '4bf58dd8d48988d15e941735',
+	indoorPlayArea: '5744ccdfe4b0c0459246b4b5',
 	farm: '4bf58dd8d48988d15b941735',
 	meetingRoom: '4bf58dd8d48988d100941735',
 	businessCenter: '56aa371be4b08b9a8d573517',
@@ -66,11 +67,6 @@ export const defaultLocations = {
 		longitude: -74.005,
 		city: 'New York'
 	},
-	sydney: {
-		latitude: -33.86,
-		longitude: 151.20,
-		city: 'Syndey'
-	},
 	vancouver: {
 		latitude: 49.28,
 		longitude: -123.12,
@@ -106,7 +102,7 @@ export const getFoursquareVenue = (venueId) => {
 // no venues with less than 3 unique checkins
 // no venues without an explicit street address
 export const getFoursquareVenues = (categoryId, radiusMeters = 8000, lat, lon) => {
-    return fetch(`https://api.foursquare.com/v2/venues/search?radius=${radiusMeters}&ll=${lat},${lon}&categoryId=${categoryId}&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801&limit=10`)
+    return fetch(`https://api.foursquare.com/v2/venues/search?radius=${radiusMeters}&ll=${lat},${lon}&categoryId=${categoryId}&client_id=${foursquareClientId}&client_secret=${foursquareClientSecret}&v=20170801&limit=16`)
       	.then((response) => {
       		return response.json();
       	})
@@ -114,10 +110,18 @@ export const getFoursquareVenues = (categoryId, radiusMeters = 8000, lat, lon) =
       		if(json.response && json.response.venues){
       			const venues = json.response.venues.filter((venue) => {
       				// filter out very questionable venues
+      				const nonPublicCategoryNames = [
+      					'Office',
+      					'Tech Startup',
+      					'Building',
+      					'Bank'
+      				];
       				let keep = true;
       				if (venue.stats.usersCount <= 3) // not enough checkins
       					keep = false;
       				if (!venue.location || !venue.location.address) // no usable address
+      					keep = false;
+      				if ( nonPublicCategoryNames.indexOf(venue.categories[0].name) != -1 )
       					keep = false;
       				return keep;
       			});
@@ -592,35 +596,35 @@ export const data = {
 		duotonePhoto: 'https://secure.meetupstatic.com/photos/event/4/1/2/9/highres_463756681.jpeg',
 		ideas: [
 			{
-				title: "Hack && Tell",
+				title: "Lightning Demos",
 				howManyGroups: 13,
 				pastMeetups: [
 					{
-						title: "Berlin Hack & Tell #53 - The Hackening",
-						groupName: "Hack && Tell Berlin",
+						title: "Side Project Lightning Demos",
+						groupName: "Portland VR Meetup",
 						attended: 90,
 						photo: "http://i.imgur.com/BRP3Chp.jpg"
 					},
 					{
-						title: "Hack && Tell #15: Ribbit",
-						groupName: "Hack && Tell NYC",
+						title: "Demo Night - The Hackening",
+						groupName: "NYC Side Project Club",
 						attended: 96,
 						photo: "https://secure.meetupstatic.com/photos/event/1/7/f/4/event_97806132.jpeg"
 					},
 					{
-						title: "Round 45: Bayesian Combat",
-						groupName: "Hack && Tell DC",
+						title: "Lighning Demo Time",
+						groupName: "Hack && Tell Berlin",
 						attended: 90,
 						photo: "https://secure.meetupstatic.com/photos/event/8/d/6/event_367922262.jpeg"
 					},
 					{
-						title: "London Hack & Tell #4 - Summer edition!",
+						title: "Hack & Tell #4 - Summer edition!",
 						groupName: "London Hack&&Tell",
 						attended: 53,
 						photo: "https://secure.meetupstatic.com/photos/event/6/f/a/1/event_439528577.jpeg"
 					},
 				],
-				description: "Like show & tell, but for hackers. Around 8–10 people give a five-minute presentation on something they built and then host a Q&A session for another five minutes. This isn't a time to share something from work or pitch a startup—it's about seeing what people do in their spare time for fun or utility. Props to hackandtell.org for creating this awesome Meetup series and inspiring the entire tech community.",
+				description: "Like show & tell, but for hackers. Around 8–10 people give a five-minute presentation on something they built and then host a Q&A session for another five minutes. This isn't a time to share something from work or pitch a startup—it's about seeing what people do in their spare time for fun or utility.",
 				agenda: [
 					{ label: 'Introductions', minutes: 10},
 					{ label: 'First set of hackers', minutes: 40},
@@ -629,8 +633,8 @@ export const data = {
 					{ label: 'Wrap up', minutes: 10},
 				],
 				where: {
-					categoryId: `${foursquareCategories.library},${foursquareCategories.communityCollege}`,
-					description: "Library meeting rooms, Colleges, Coworking spaces"
+					categoryId: `${foursquareCategories.coworkingSpace},${foursquareCategories.library},${foursquareCategories.communityCollege}`,
+					description: "your office, library meeting rooms, coworking spaces, community colleges"
 				},
 				when: {
 					options: [
@@ -678,17 +682,65 @@ export const data = {
 				notFinished: false
 			},
 			{
-				title: "Work Session",
-				howManyGroups: 8,
+				title: "Side Project Workshop",
+				howManyGroups: 17,
 				pastMeetups: [
 					{
-						title: "Dummy Event",
-						groupName: "Dummy Group",
-						attended: 0,
-						photo: "https://a248.e.akamai.net/secure.meetupstatic.com/photos/event/6/c/b/e/event_458667838.jpeg"
+						title: "Project Hack Night",
+						groupName: "Portland VR Meetup",
+						attended: 90,
+						photo: "https://secure.meetupstatic.com/photos/event/9/a/b/6/event_449079606.jpeg"
+					},
+					{
+						title: "Get it Done Workshop",
+						groupName: "NYC Side Project Club",
+						attended: 96,
+						photo: "https://secure.meetupstatic.com/photos/event/1/7/f/4/event_97806132.jpeg"
+					},
+					{
+						title: "Coders' Block",
+						groupName: "Berlin iOS Side Projects",
+						attended: 90,
+						photo: "https://secure.meetupstatic.com/photos/event/8/d/6/event_367922262.jpeg"
+					},
+					{
+						title: "Collaborative Work Session",
+						groupName: "London JS Hackers",
+						attended: 53,
+						photo: "https://secure.meetupstatic.com/photos/event/6/f/a/1/event_439528577.jpeg"
 					},
 				],
-				notFinished: true
+				description: "Get your members together to tackle their side projects. It's not guaranteed that someone knows the exact answer to each problem that comes up, but trying to solve it together will help everyone learn. If you give the side project workshop a specific language or topic - it will help focus the Meetup and build momentum for your next one. Don't forget to make sure your venue has wifi!",
+				agenda: [
+					{ label: 'Introductions', minutes: 10},
+					{ label: 'Pair working session', minutes: 20},
+					{ label: 'Bio break', minutes: 10},
+					{ label: 'Group Q&A', minutes: 20},
+					{ label: 'Pair working session', minutes: 20},
+					{ label: 'Wrap up', minutes: 10},
+				],
+				where: {
+					categoryId: `,${foursquareCategories.coffee},${foursquareCategories.coworkingSpace},${foursquareCategories.library}`,
+					description: "your office, coffee shops, library meeting rooms, coworking spaces"
+				},
+				when: {
+					options: [
+						{day: 2, hour: 19},
+						{day: 3, hour: 19},
+						{day: 4, hour: 19},
+					],
+					description: "weeknights at 7pm"
+				},
+				duration: {
+					options: [
+						"1 hour",
+						"2 hours",
+						"3 hours"
+					],
+					description: "2 hours"
+				},
+
+				notFinished: false
 			},
 
 
@@ -851,8 +903,7 @@ export const data = {
 		photo: 'https://secure.meetupstatic.com/photos/event/4/4/d/d/highres_463757629.jpeg',
 		duotonePhoto: 'https://secure.meetupstatic.com/photos/event/4/5/0/0/highres_463757664.jpeg',
 		ideas: [
-			{
-				...hikingIdeaBase,
+			Object.assign({}, hikingIdeaBase, {
 				title: "Beginner Level Hike",
 				where: {
 					dataProvider: 'hikingproject',
@@ -861,9 +912,8 @@ export const data = {
 						return item.difficulty == 'green' || item.difficulty == 'greenBlue'
 					}
 				},
-			},
-			{
-				...hikingIdeaBase,
+			}),
+			Object.assign({}, hikingIdeaBase, {
 				title: "Medium Level Hike",
 				where: {
 					dataProvider: 'hikingproject',
@@ -872,9 +922,8 @@ export const data = {
 						return item.difficulty == 'blue'
 					}
 				},
-			},
-			{
-				...hikingIdeaBase,
+			}),
+			Object.assign({}, hikingIdeaBase, {
 				title: "Advanced Level Hike",
 				where: {
 					dataProvider: 'hikingproject',
@@ -883,7 +932,7 @@ export const data = {
 						return item.difficulty == 'black' || item.difficulty == 'blueBlack'
 					}
 				},
-			},
+			}),
 			{
 				title: "Some Other Hiking Idea",
 				howManyGroups: 8,

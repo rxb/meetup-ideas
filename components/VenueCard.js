@@ -53,8 +53,19 @@ const VenueCard = (props) => {
            <View style={{padding: 12}}>
 
               <Text style={[styles.text, styles.textSmall, styles.textStrong]} numberOfLines={1}>{venue.name}</Text>
-              <Text style={[styles.text, styles.textSmall]} numberOfLines={1}>{venue.location && venue.location.address}</Text>
-              <Text style={[styles.text, styles.textSmall, styles.textHint]}>{venue.categories && venue.categories[0].name}</Text>
+
+              <Flex align="bottom">
+                <FlexItem>
+                  <Text style={[styles.text, styles.textSmall]} numberOfLines={1}>{venue.location && venue.location.address}</Text>
+                  <Text style={[styles.text, styles.textSmall, styles.textHint]}>{venue.categories && venue.categories[0].name}</Text>
+                </FlexItem>
+                <FlexItem shrink>
+                  <Image
+                    source={require('../img/icons/basic_info.png')}
+                    style={{width: 18, height: 18, resizeMode:'contain', tintColor: '#999'}}
+                    />
+                </FlexItem>
+              </Flex>
           </View>
         </Card>
 	);

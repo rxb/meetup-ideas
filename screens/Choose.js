@@ -29,6 +29,8 @@ import {
 } from '../basecomponents';
 
 
+
+
 // FACEBOOK LOG IN
 async function logIn() {
 	const {
@@ -153,7 +155,7 @@ class Choose extends React.Component {
 							</Chunk>
 						</Link>
 
-						{/* facebook log in test */}
+						{/* facebook log in test
 						<Link
 							onPress={()=>{
 								logIn()
@@ -169,6 +171,7 @@ class Choose extends React.Component {
 								</Text>
 							</Chunk>
 						</Link>
+						*/}
 
 					</Section>
 

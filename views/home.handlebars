@@ -1,0 +1,37 @@
+<div>
+<div class="stripe" style="background-color: blue; position: -webkit-sticky; top: 0;">
+	<div class="section" style="border: none;">
+		<select id="ideaSelect" class="bigSelect">
+				{{#each ideas}}
+					<option value="{{@index}}" {{selected ../ideaIndex @index}}>
+						{{this.idea}}
+					</option>
+				{{/each}}
+		</select>
+		<p style="color: #fff;">{{description}}</p>
+		<p style="color: #fff;">{{categories}}</p>
+	</div>
+</div>
+<div class="stripe">
+	{{#locations}}
+		<div class="section">
+			<h3>{{name}}</h3>
+			{{#venues}}
+				<div style="padding: 0 0 24px;">
+					<div><a href="https://foursquare.com/v/{{id}}" target="_blank" style="font-weight: 500; text-decoration: none;">{{name}}</a></div>
+					<div style="color: #666; font-size: 14px;">{{categories.0.name}}</div>
+				</div>
+			{{/venues}}
+		</div>
+	{{/locations}}
+</div>
+</div>
+
+<script type="text/javascript">
+    window.onload = function() {
+        var ideaSelect = document.getElementById('ideaSelect');
+        ideaSelect.onchange = function() {
+        	window.location.assign('/?ideaIndex='+ideaSelect.selectedIndex);
+        }
+    }
+</script>

@@ -34,6 +34,17 @@ import {
 } from '../basecomponents';
 
 
+const SmallButton = (props) => {
+	const {label} = props;
+	return(
+		<View style={{marginTop: 4, borderRadius: 5, paddingVertical: 16, paddingHorizontal: 16, backgroundColor: '#eee',}}>
+
+			<Text style={[styles.text, styles.textSmall, styles.textSecondary, styles.textStrong, {textAlign: 'center'}]}>{label}</Text>
+		</View>
+	)
+}
+
+
 class VenueDetail extends React.Component {
 
 	constructor(props){
@@ -89,12 +100,58 @@ class VenueDetail extends React.Component {
 			}).slice(0,6);
 		}
 
+		let contactButtons = [];
+		let contactable = false;
+		if (this.state.venue.contact && this.state.venue.contact.phone){
+			contactable = true;
+			contactButtons.push(<FlexItem key={1}>
+									<Link onPress={()=>{
+										Linking.openURL(`tel:${this.state.venue.contact.phone}`);
+										}}>
+										<SmallButton label="Call venue" />
+									</Link>
+								</FlexItem>);
+		}
+		if (this.state.venue.url){
+			contactable = true;
+			contactButtons.push(<FlexItem key={2}>
+									<Link onPress={()=>{
+										Linking.openURL(this.state.venue.url);
+										}}>
+										<SmallButton label="Visit website" />
+									</Link>
+								</FlexItem>);
+		}
+		if (!contactable){
+			contactButtons.push(<FlexItem key={3}>
+								<Link onPress={()=>{
+									Linking.openURL(`http://google.com/search?q=${this.state.venue.name}+${this.state.venue.location.address}+${this.state.venue.location.city}`);
+									}}>
+									<SmallButton label={(contactable) ? 'Search Google' :'Search Google for contact info'} />
+								</Link>
+							</FlexItem>);
+		}
+
 
 		return (
 		<View style={styles.container}>
 
 			{/* MODAL HEADER */}
-			<ModalHeader navigation={this.props.navigation} NavigationActions={NavigationActions} />
+			<ModalHeader
+				navigation={this.props.navigation}
+				NavigationActions={NavigationActions}
+				rightComponent={(
+					<Link
+						onPress={()=>{
+							// fdfsd
+						}}
+						>
+						<Text style={[styles.text, styles.textHint, styles.textSmall, {fontSize: 12}]}>
+							venue data by <Text>Foursquare</Text>
+						</Text>
+					</Link>
+				)}
+				/>
 
 			<ScrollView style={styles.container}>
 				<Stripe>
@@ -142,7 +199,7 @@ class VenueDetail extends React.Component {
 							<Chunk>
 								<Text style={[styles.text, styles.textKicker]}>VENUE IDEA</Text>
 								<Text style={[styles.text, styles.textPageHead]}>{this.state.venue.name}</Text>
-								<Text style={[styles.text, styles.textSmall]}>{
+								<Text style={[styles.text, styles.textSmall, styles.textSecondary, {marginTop: 7}]}>{
 									/* concat venue category labels */
 									this.state.venue.categories && this.state.venue.categories.map((cat, i)=>{
 										return(
@@ -152,17 +209,30 @@ class VenueDetail extends React.Component {
 								}</Text>
 							</Chunk>
 						</Section>
-						{ this.state.venue.description &&
+						{ (this.state.venue.description || this.state.venue.attributes.groups.length > 0 ) &&
 							<Section>
-								<Chunk>
-									<Text style={[styles.text, styles.textSmall]}>{this.state.venue.description}</Text>
-								</Chunk>
+
+								{ this.state.venue.description &&
+									<Chunk>
+										<Text style={[styles.text]}>{this.state.venue.description}</Text>
+									</Chunk>
+								}
+
+								{ this.state.venue.attributes.groups.length > 0 &&
+									<Chunk>
+										<Text style={[styles.text, styles.textSecondary, styles.textSmall]}>Good to know:
+										{ this.state.venue.attributes.groups.map((g, i) => {
+											return(
+												<Text style={[styles.text, styles.textSecondary, styles.textSmall]} key={i}> {g.summary}{(i<(this.state.venue.attributes.groups.length-1))? ',' : ''}</Text>
+												);
+										})}
+										</Text>
+									</Chunk>
+								}
 							</Section>
 						}
 
-
 						<Section>
-
 
 							{/* ADDRESS */}
 							{ this.state.venue.location &&
@@ -254,13 +324,15 @@ class VenueDetail extends React.Component {
 									</FlexItem>
 									<FlexItem growFactor={6}>
 										<Chunk>
-											<Text style={[styles.text]}>{this.state.venue.contact.formattedPhone}</Text>
-
-										 <Link onPress={()=>{
+											<Link onPress={()=>{
 												// phone call intent
 												Linking.openURL(`tel:${this.state.venue.contact.phone}`);
 												}}>
+											<Text style={[styles.text]}>{this.state.venue.contact.formattedPhone}</Text>
+
+												{/*
 												<View style={{marginTop: 8, borderRadius: 5, paddingVertical: 6, paddingHorizontal: 10, backgroundColor: '#eee', alignSelf: 'flex-start'}}>
+
 												<Flex align='center'>
 												<FlexItem shrink>
 													<Image
@@ -272,14 +344,16 @@ class VenueDetail extends React.Component {
 														<Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Call venue</Text>
 													</FlexItem>
 													</Flex>
+
 												</View>
+												*/}
 											</Link>
 											</Chunk>
 									</FlexItem>
 								</Flex>
 							}
 
-							{/* WHEN NO WEBSITE OR PHONE */}
+							{/* WHEN NO WEBSITE OR PHONE
 
 							{!this.state.venue.url && !(this.state.venue.contact && this.state.venue.contact.phone) &&
 
@@ -305,17 +379,27 @@ class VenueDetail extends React.Component {
 									</FlexItem>
 								</Flex>
 							}
-						</Section>
 
+							*/}
+
+							<Chunk style={{marginTop: 6}}>
+								<Flex>
+									{contactButtons}
+								</Flex>
+							</Chunk>
+							<Chunk>
+								<Text style={[styles.text, styles.textSmall, styles.textHint, {textAlign: 'center'}]}>Contact the venue to get more information or confirm availability</Text>
+							</Chunk>
+						</Section>
 
 						{/* FOURSQUARE TIPS */}
 						{ tips && tips.length > 0 &&
 						<Section>
-							<Chunk>
-								<Text style={[styles.text, styles.textSectionHead]}>People on Foursquare say</Text>
-							</Chunk>
+
 							{tips.map((tip, i)=>{
-								const uri = `${tip.user.photo.prefix}80x80${tip.user.photo.suffix}`
+								if(! (tip.user && tip.user.photo))
+									return false;
+								const uri =`${tip.user.photo.prefix}80x80${tip.user.photo.suffix}`;
 								return(
 										<Chunk style={{paddingTop: 8}} key={i}>
 											<Flex>
@@ -334,6 +418,7 @@ class VenueDetail extends React.Component {
 								);
 							})}
 
+							{/*
 							<Chunk>
 								<Link onPress={()=>{
 									// bounce to foursquare app/site
@@ -342,6 +427,7 @@ class VenueDetail extends React.Component {
 									<DumbButton type="secondary" label="More on Foursquare" />
 								</Link>
 							</Chunk>
+							*/}
 
 						 </Section>
 						}

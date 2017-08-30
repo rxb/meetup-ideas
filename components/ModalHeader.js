@@ -29,16 +29,23 @@ export default (props) => {
 				{height: 44, marginTop:  20, backgroundColor: '#EFEFF2'} :
 				{height: 56, paddingTop:  6, backgroundColor: '#FFFFFF',}
 			)]}>
-			<Link
-					style={{padding: 14}}
-					onPress={()=>{
-						props.navigation.dispatch(props.NavigationActions.back());
-					}}>
-						<Image
-							source={require('../img/icons/Close.png')}
-							style={{height: 16, width: 16, resizeMode: 'contain', tintColor: Platform.OS == "ios" ? '#0076FF' : '#000'}}
-							/>
-				</Link>
+			<Flex align='center'>
+				<FlexItem shrink>
+					<Link
+						style={{padding: 14}}
+						onPress={()=>{
+							props.navigation.dispatch(props.NavigationActions.back());
+						}}>
+							<Image
+								source={require('../img/icons/Close.png')}
+								style={{height: 16, width: 16, resizeMode: 'contain', tintColor: Platform.OS == "ios" ? '#0076FF' : '#000'}}
+								/>
+					</Link>
+				</FlexItem>
+				<FlexItem style={{alignItems: 'flex-end', paddingRight: 14}}>
+					{props.rightComponent}
+				</FlexItem>
+			</Flex>
 		</View>
 	)
 }

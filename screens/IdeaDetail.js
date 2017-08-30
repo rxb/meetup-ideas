@@ -169,10 +169,13 @@ class IdeaDetail extends React.Component {
               </Chunk>
               <Chunk>
                 <Text style={[styles.text, styles.textSmall]}>{idea.where.description}</Text>
-                {this.state.venues && this.state.venues.length > 0 &&
-                  <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Here are some nearby possibilities</Text>
-                }
               </Chunk>
+
+                {this.state.venues && this.state.venues.length > 0 &&
+                  <Chunk>
+                    <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Here are some nearby possibilities</Text>
+                  </Chunk>
+                }
 
 
               { (this.props.idea.where.dataProvider != 'hikingproject') &&
@@ -252,7 +255,7 @@ class IdeaDetail extends React.Component {
               </Chunk>
 
             </Section>
-            { idea.tips &&
+            {/* idea.tips &&
               <Section>
                 <Chunk>
                   <Text style={[styles.text, styles.textSectionHead]}>Tips</Text>
@@ -281,7 +284,7 @@ class IdeaDetail extends React.Component {
                   );
                 })}
               </Section>
-            }
+            */}
 
             <View style={{height: 80}}/>
           </Bounds>
