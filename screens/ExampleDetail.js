@@ -159,6 +159,14 @@ class VenueDetail extends React.Component {
 								</FlexItem>
 							</Flex>
 						</Section>
+						<Section>
+							<Chunk>
+								<Text style={[styles.text, styles.textSectionHead]}>Description</Text>
+							</Chunk>
+							<Chunk>
+								<Text style={[styles.text]}>{idea.description}</Text>
+							</Chunk>
+						</Section>
 
 					</Bounds>
 					}

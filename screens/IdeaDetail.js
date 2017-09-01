@@ -1,5 +1,5 @@
 import React from 'react';
-import { ART, ScrollView } from 'react-native';
+import { ART, ScrollView, Linking } from 'react-native';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import styles from '../styles/styles';
 import moment from 'moment';
@@ -7,6 +7,7 @@ import Hyperlink from 'react-native-hyperlink';
 
 import VenueCard from '../components/VenueCard';
 import TrailCard from '../components/TrailCard';
+import AskCard from '../components/AskCard';
 
 
 import {
@@ -61,7 +62,7 @@ class IdeaDetail extends React.Component {
     else{
       getFoursquareVenues(this.props.idea.where.categoryId, this.props.idea.where.radiusMeters, this.props.user.latitude, this.props.user.longitude)
         .then((venues) => {
-            this.setState({venues: venues});
+            this.setState({venues: [...venues, {type: 'ask'}] });
         });
     }
 
@@ -184,20 +185,35 @@ class IdeaDetail extends React.Component {
                   items={this.state.venues}
                   hscrollItemStyle={{width: 180+8, paddingRight: 8}}
                   renderItem={(item, i)=>{
-                    return(
-                      <Link
-                        key={i}
-                        onPress={()=>{
-                          navigate('VenueDetail', {
-                            venueId: item.id,
-                            ideaIndex: this.props.ideaIndex,
-                            topic: this.props.topic,
-                            notFromSchedule: true
-                          });
-                        }}>
-                        <VenueCard venue={item} />
-                      </Link>
-                    );
+                    if(item.type == 'ask'){
+                      const subject = "Call for venues";
+                      const body = "Hi all,\n Looking for possible places to hold Meetups in the future.  ";
+                      return(
+                        <Link
+                            key={i}
+                            onPress={()=>{
+                              Linking.openURL(`mailto:group-announce@meetup.com?subject=${subject}&body=${body}`);
+                            }}>
+                            <AskCard />
+                        </Link>
+                      );
+                    }
+                    else{
+                      return(
+                        <Link
+                          key={i}
+                          onPress={()=>{
+                            navigate('VenueDetail', {
+                              venueId: item.id,
+                              ideaIndex: this.props.ideaIndex,
+                              topic: this.props.topic,
+                              notFromSchedule: true
+                            });
+                          }}>
+                          <VenueCard venue={item} />
+                        </Link>
+                      );
+                    }
                   }}
                   />
                 }

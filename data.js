@@ -1,4 +1,3 @@
-require('isomorphic-fetch');
 const moment = require('moment');
 
 const foursquareClientId = 'Y1Y51NDFA2GCSXJB00OMXN2QBGGL4ASQLW1OM42BM54KZOKV';
