@@ -12,6 +12,11 @@ const schedule = (state = {}, action) => {
         ...state,
         when: action.when
       }
+    case 'SET_SCHEDULE_SIZE':
+      return {
+        ...state,
+        size: action.size
+      }
     case 'SET_SCHEDULE_DURATION':
       return {
         ...state,

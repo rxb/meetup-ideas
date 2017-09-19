@@ -17,6 +17,11 @@ export const setScheduleDuration = (duration) => ({
   duration
 })
 
+export const setScheduleSize = (size) => ({
+  type: 'SET_SCHEDULE_SIZE',
+  size
+})
+
 export const setUserLocation = (latitude, longitude, city) => ({
   type: 'SET_USER_LOCATION',
   latitude,

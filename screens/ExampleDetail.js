@@ -118,13 +118,6 @@ class VenueDetail extends React.Component {
 
 							</Chunk>
 						</Section>
-						{ example.description &&
-							<Section>
-								<Chunk>
-									<Text style={[styles.text, styles.textSmall]}>{example.description}</Text>
-								</Chunk>
-							</Section>
-						}
 						<Section>
 							<Flex align='center'>
 
@@ -164,7 +157,7 @@ class VenueDetail extends React.Component {
 								<Text style={[styles.text, styles.textSectionHead]}>Description</Text>
 							</Chunk>
 							<Chunk>
-								<Text style={[styles.text]}>{idea.description}</Text>
+								<Text style={[styles.text]}>In the real app, this would be the description of the Meetup event. Right now it's just placeholder. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</Text>
 							</Chunk>
 						</Section>
 

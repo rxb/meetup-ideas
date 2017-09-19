@@ -1,0 +1,35 @@
+<div>
+	{{#examples}}
+		<div>
+			<div>{{title}}</div>
+			<div>{{member_count}} attended</div>
+			<img src="{{photo_url}}" />
+			<div>{{description}}</div>
+		</div>
+	{{/examples}}
+
+
+
+	{{#ideas}}
+		<div class="stripe" style="position: -webkit-sticky; top: 0;">
+			<div class="section" style="border: none;">
+				<div class="sectionHead">{{name}}</div>
+			</div>
+		</div>
+		<div class="stripe">
+			{{#groups}}
+				<div>
+					<div class="sectionHead">{{name}}</div>
+					{{#examples}}
+						<div>
+							<div>{{name}}</div>
+							<div>{{attended}} attended</div>
+							<img src="{{url}}" />
+							<div>{{description}}</div>
+						</div>
+					{{/examples}}
+				</div>
+			{{/groups}}
+		</div>
+	{{/ideas}}
+</div>

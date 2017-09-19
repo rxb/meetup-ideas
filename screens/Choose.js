@@ -155,6 +155,17 @@ class Choose extends React.Component {
 							</Chunk>
 						</Link>
 
+						<Link
+							onPress={()=>{
+								navigate('CalendarPicker');
+							}}
+							>
+							<Chunk>
+								<Text style={[styles.text, styles.textSecondary, {textAlign: 'center'}]}> Test calendar picker</Text>
+							</Chunk>
+						</Link>
+
+
 						{/* facebook log in test
 						<Link
 							onPress={()=>{

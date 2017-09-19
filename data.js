@@ -742,9 +742,69 @@ export const data = {
 				notFinished: false
 			},
 
-
 			{
-				title: "Peer Review",
+				title: "Hackathon",
+				howManyGroups: 42,
+				pastMeetups: [
+					{
+						title: "React Jam",
+						groupName: "Portland JS Meetup",
+						attended: 90,
+						photo: "https://secure.meetupstatic.com/photos/event/b/9/6/0/event_460127456.jpeg"
+					},
+					{
+						title: "Hackathon for Democracy",
+						groupName: "DC Tech Meetup",
+						attended: 96,
+						photo: "https://secure.meetupstatic.com/photos/event/1/7/f/4/event_97806132.jpeg"
+					},
+					{
+						title: "Ethereum Hackathon",
+						groupName: "Berlin Cryptocurrency Meetup",
+						attended: 90,
+						photo: "https://secure.meetupstatic.com/photos/event/8/d/6/event_367922262.jpeg"
+					},
+					{
+						title: "Augmented Reality Day",
+						groupName: "London VR Club",
+						attended: 53,
+						photo: "https://secure.meetupstatic.com/photos/event/6/f/a/1/event_439528577.jpeg"
+					},
+				],
+				description: "At a hackathon, people come together and use technology to transform ideas into reality. Take one day to form teams around a problem or theme and collaboratively design and code a solution from scratch. Whether your teams build a website, mobile app, or even hardware hack, the goal is end up with working prototypes that can be judged for a prize. Find out more about how to host one here: https://www.klipfolio.com/blog/run-hackathon",
+				agenda: [
+					{ label: 'Introductions', minutes: 20},
+					{ label: 'Present the problem or theme', minutes: 20},
+					{ label: 'Team formation', minutes: 10},
+					{ label: 'Hacking block'},
+					{ label: 'Break', minutes: 30},
+					{ label: 'Hacking block'},
+					{ label: 'Demos', minutes: 60},
+				],
+				where: {
+					categoryId: `${foursquareCategories.coworkingSpace},${foursquareCategories.library}`,
+					description: "your office, library meeting rooms, coworking spaces"
+				},
+				when: {
+					options: [
+						{day: 6, hour: 10},
+						{day: 0, hour: 10}
+					],
+					description: "weekends at 10am"
+				},
+				duration: {
+					options: [
+						"4 hours",
+						"6 hours",
+						"8 hours"
+					],
+					description: "6 hours"
+				},
+
+				notFinished: false
+			},
+			{
+				title: "Peer Review Lab",
 				howManyGroups: 27,
 				pastMeetups: [
 					{
@@ -770,19 +830,7 @@ export const data = {
 				notFinished: true
 			},
 
-			{
-				title: "Hackathon",
-				howManyGroups: 27,
-				pastMeetups: [
-					{
-						title: "Dummy Event",
-						groupName: "Dummy Group",
-						attended: 0,
-						photo: "https://secure.meetupstatic.com/photos/event/b/9/6/0/event_460127456.jpeg"
-					},
-				],
-				notFinished: true
-			},
+
 			{
 				title: "Group Discussion",
 				howManyGroups: 27,
@@ -836,20 +884,20 @@ export const data = {
 				notFinished: true
 			},
 			{
-				title: "Bytes & Brews",
+				title: "Social Hangout",
 				howManyGroups: 8,
 				pastMeetups: [
 					{
 						title: "Dummy Event",
 						groupName: "Dummy Group",
 						attended: 0,
-						photo: "http://i.imgur.com/BpzjdAw.jpg"
+						photo: "https://secure.meetupstatic.com/photos/event/3/7/d/f/highres_463034303.jpeg"
 					},
 				],
 				notFinished: true
 			},
 			{
-				title: "Ask an Expert",
+				title: "Hear From an Expert",
 				howManyGroups: 27,
 				pastMeetups: [
 					{
@@ -863,7 +911,7 @@ export const data = {
 			},
 
 			{
-				title: "N00b Welcome Drinks",
+				title: "Welcome Drinks",
 				howManyGroups: 27,
 				pastMeetups: [
 					{
@@ -876,7 +924,7 @@ export const data = {
 				notFinished: true
 			},
 			{
-				title: "Networking Event",
+				title: "Networking",
 				howManyGroups: 27,
 				pastMeetups: [
 					{

@@ -388,7 +388,7 @@ class VenueDetail extends React.Component {
 								</Flex>
 							</Chunk>
 							<Chunk>
-								<Text style={[styles.text, styles.textSmall, styles.textHint, {textAlign: 'center'}]}>Contact the venue to get more information or confirm availability</Text>
+								<Text style={[styles.text, styles.textSmall, styles.textSecondary, {textAlign: 'center'}]}>Contact the venue to get more information or confirm availability</Text>
 							</Chunk>
 						</Section>
 

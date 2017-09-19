@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Linking } from 'react-native';
+import { ScrollView, Linking, Alert } from 'react-native';
 import { View, Text, Image, StyleSheet, Platform } from 'react-native';
 import styles from '../styles/styles';
 import { NavigationActions } from 'react-navigation'
@@ -14,6 +14,7 @@ import moment from 'moment';
 import {data, getFoursquareVenue} from '../data';
 import ModalHeader from '../components/ModalHeader';
 import {DayView, CalendarEvent} from 'react-native-day-planner';
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
 import {
 	DumbButton,
@@ -59,6 +60,15 @@ class CalendarPicker extends React.Component {
 
 				<ModalHeader navigation={this.props.navigation} NavigationActions={NavigationActions} />
 
+				<CalendarList
+					scrollEnabled={true}
+					style={styles.calendar}
+					onDayPress={(day) => {
+						Alert.alert(`day ${day.dateString}`)
+					}}
+					/>
+
+				{/*
 				<ScrollView style={styles.container}>
 					<Stripe>
 						<Bounds>
@@ -78,7 +88,7 @@ class CalendarPicker extends React.Component {
 						</Bounds>
 					</Stripe>
 				</ScrollView>
-
+				*/}
 			</View>
 		);
 	}

@@ -170,16 +170,11 @@ class IdeaDetail extends React.Component {
               </Chunk>
               <Chunk>
                 <Text style={[styles.text, styles.textSmall]}>{idea.where.description}</Text>
+                <Text style={[styles.text, styles.textSmall]}>Here are some nearby suggestions</Text>
               </Chunk>
 
-                {this.state.venues && this.state.venues.length > 0 &&
-                  <Chunk>
-                    <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Here are some nearby possibilities</Text>
-                  </Chunk>
-                }
-
-
               { (this.props.idea.where.dataProvider != 'hikingproject') &&
+                <View>
                 <List
                   variant='hscroll'
                   items={this.state.venues}
@@ -216,6 +211,10 @@ class IdeaDetail extends React.Component {
                     }
                   }}
                   />
+                  <Chunk>
+                    <Text style={[styles.text, styles.textSmall, styles.textSecondary]}>Venue data by <Text>Foursquare</Text></Text>
+                  </Chunk>
+                  </View>
                 }
 
 

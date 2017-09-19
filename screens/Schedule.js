@@ -13,7 +13,8 @@ import {
 	resetSchedule,
 	setScheduleWhere,
 	setScheduleWhen,
-	setScheduleDuration
+	setScheduleDuration,
+	setScheduleSize
 } from '../actions';
 import {
 	data,
@@ -147,6 +148,22 @@ class Schedule extends React.Component {
 			return stepString;
 		}).join('');
 		const defaultDescription = `What we'll do: ${'\n'}${agendaString}`
+		const size = {
+			options: [
+				{
+					title: "Cozy",
+					description: "1-7 people"
+				},
+				{
+					title: "Ideal",
+					description: "7-20 people"
+				},
+				{
+					title: "Big",
+					description: "20-50 people"
+				},
+			]
+		}
 
 		// generate suggested dates
 		const generateWhenOptions = (options, weeksOut) =>{
@@ -370,6 +387,54 @@ class Schedule extends React.Component {
 							</Chunk>
 						</Section>
 
+
+						<Section style={styles.sectionTable}>
+							<Flex>
+								<FlexItem shrink>
+									<Image
+										source={require('../img/icons/User.png')}
+										style={styles.iconInput}
+										/>
+								</FlexItem>
+								<FlexItem>
+									<Chunk>
+										<TextInput
+											placeholder="How many people?"
+											style={[styles.input]}
+											underlineColorAndroid="transparent"
+											value={this.props.schedule.size}
+											/>
+									</Chunk>
+								</FlexItem>
+							</Flex>
+						</Section>
+						<Section style={styles.sectionTableFooter}>
+							<List
+								variant='hscroll'
+								items={size.options}
+								hscrollItemStyle={{width: 120, paddingRight: 8}}
+								hscrollContainerStyle={hscrollContainerStyle}
+								renderItem={(item, i)=>{
+									return(
+										<Link key={i} onPress={()=>{
+											this.props.setScheduleSize(item.description)
+										}}>
+											<Option>
+												<Text style={[styles.text, styles.textSmall, styles.textStrong]}>{item.title}</Text>
+												<Text style={[styles.text, styles.textSmall]}>{item.description}</Text>
+											</Option>
+										</Link>
+									);
+								}}
+								/>
+							{/*
+							<Chunk style={hintStyle}>
+								<Text style={[styles.text, styles.textSmall, styles.textHint]}>Most <Text style={[styles.textStrong]}>{idea.title}</Text> Meetups last {idea.duration.description}</Text>
+							</Chunk>
+							*/}
+						</Section>
+
+
 						<Section style={styles.sectionTable}>
 							<Flex>
 								<FlexItem shrink>
@@ -450,7 +515,8 @@ const actionCreators = {
 	resetSchedule,
 	setScheduleWhere,
 	setScheduleWhen,
-	setScheduleDuration
+	setScheduleDuration,
+	setScheduleSize
 }
 
 export default connect(
